@@ -7,6 +7,11 @@
 #include <Arduboy2.h>
 Arduboy2 a;
 
+const int gravity = 3;
+int ballX = 10;
+int ballY = 5;
+int ballRadius = 3;
+
 void setup() {
     a.begin();
     a.setFrameRate(60);
@@ -16,13 +21,15 @@ void setup() {
 }
 
 void loop() {
-    if (!a.nextFrame()) {
+    if (!(a.nextFrame())) {
         return;
     }
     a.pollButtons();
     a.clear();
 
-    a.print(F("TrickShotz!"));
+    a.fillCircle(ballX, ballY, ballRadius, WHITE);
+
+    ballY += gravity;
     
     a.display();
 }

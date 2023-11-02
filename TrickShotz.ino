@@ -45,6 +45,10 @@ class Plank {
         int16_t x2, y2; // Coordinates of the other end
         uint8_t thickness; // Thickness of the plank
 
+        // Default constructor with default values
+        Plank() : x1(0), y1(0), x2(0), y2(0), thickness(1) {}
+
+
         Plank(int16_t startX1, int16_t startY1, int16_t startX2, int16_t startY2, uint8_t startThickness) {
             x1 = startX1;
             y1 = startY1;
@@ -63,16 +67,21 @@ class Plank {
                 // Case where line is vertical
                 a.print("VERTICAL");
                 a.fillRect(x1, y1, thickness, y2-y1, WHITE);
-            }
-            if (y1 == y2) {
+            } else if (y1 == y2) {
                 // Case where line is horizontal
                 a.print("HORIZONTAL");
                 a.fillRect(x1, y1, x2-x1, thickness, WHITE);
-            }
-            if (x1 != x2 && y1 != y2) {
+            } else {
                 // Case where line is diagonal
-                a.fillTriangle(x1, y1-thickness, x2, y2-thickness, x1, y1+thickness, WHITE);
-                a.fillTriangle(x2, y2-thickness, x2, y2+thickness, x1, y1+thickness, WHITE);
+                a.print("DIAG");
+                if (thickness % 2 == 0) {
+                    uint8_t halfThick = thickness / 2;
+                    a.fillTriangle(x1, y1-halfThick, x2, y2-halfThick, x1, y1+halfThick, WHITE);
+                    a.fillTriangle(x2, y2-halfThick, x2, y2+halfThick, x1, y1+halfThick, WHITE);
+                } else {
+                    a.fillTriangle(x1, y1, x2, y2, x1, y1+thickness, WHITE);
+                    a.fillTriangle(x2, y2, x2, y2+thickness, x1, y1+thickness, WHITE);
+                }
             }
         }
     
@@ -109,7 +118,9 @@ class Plank {
 
         }
 };
-Plank otherPlank(5,60,80,30,1);
+// Create an array to hold Plank objects - MAXIMUM of 10 per level!
+#define MAX_PLANKS 6
+Plank planks[MAX_PLANKS];
 
 enum class GameState {
     Title,
@@ -130,7 +141,15 @@ LevelState levelState = LevelState::Setup;
 void playGame() {
     switch(levelState) {
         case LevelState::Setup:
-            a.print("Level Setup");
+            a.print("Level Setup\n");
+            
+            planks[0] = Plank(80, 10, 80, 40, 5); // Vertical (x1==x2)
+            planks[1] = Plank(30, 58, 60, 58, 2); // Horizontal (y1 == y2)
+            planks[2] = Plank(10, 10, 100, 28, 1); // Diagonal
+            planks[3] = Plank(10, 25, 100, 43, 2); // Diagonal
+            planks[4] = Plank(10, 40, 100, 58, 3); // Diagonal
+            planks[5] = Plank(10, 50, 100, 68, 4); // Diagonal
+
             if (a.justPressed(A_BUTTON)) {
                 levelState = LevelState::Play;
             }
@@ -139,18 +158,23 @@ void playGame() {
         
         case LevelState::Play:
             newBall.update();
-            if (otherPlank.checkCollision(newBall.x, newBall.y, newBall.size)) {
-                newBall.vx = 0;
-                newBall.vy = 0 - GRAVITY;
+            for (int i = 0; i < MAX_PLANKS; i++) {
+                if (planks[i].checkCollision(newBall.x, newBall.y, newBall.size)) {
+                    newBall.vx = 0;
+                    newBall.vy = 0 - GRAVITY;
+                }
             }
+
             break;
         
         case LevelState::End:
             a.print("Level Clear!");
     }
 
+    for (int i = 0; i < MAX_PLANKS; i++) {
+        planks[i].draw();
+    }
     newBall.draw();
-    otherPlank.draw();
 }
 
 void setup() {

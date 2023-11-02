@@ -59,24 +59,21 @@ class Plank {
         }
 
         void draw() {
-            // Calculate diff in x and y
-            float dx = x2 - x1;
-            float dy = y2 - y1;
-            // Pythagoras to get length line between (x1,y1) and (x2,y2)
-            float length = sqrt(dx * dx + dy * dy);
-
-            // Calculate the unit vector of the line
-            // I'll be honest I don't understand this maths
-            float ux = dx / length;
-            float uy = dy / length;
-
-            // Calculate the perpendicular vector for thickness
-            float px = -uy * thickness - 1;
-            float py = ux * thickness - 1;
-
-            // Draw the four corners of the filled rectangle
-            a.fillTriangle(x1 + px, y1 + py, x2 + px, y2 + py, x2 - px, y2 - py, WHITE);
-            a.fillTriangle(x1 + px, y1 + py, x2 - px, y2 - py, x1 - px, y1 - py, WHITE);
+            if (x1 == x2) {
+                // Case where line is vertical
+                a.print("VERTICAL");
+                a.fillRect(x1, y1, thickness, y2-y1, WHITE);
+            }
+            if (y1 == y2) {
+                // Case where line is horizontal
+                a.print("HORIZONTAL");
+                a.fillRect(x1, y1, x2-x1, thickness, WHITE);
+            }
+            if (x1 != x2 && y1 != y2) {
+                // Case where line is diagonal
+                a.fillTriangle(x1, y1-thickness, x2, y2-thickness, x1, y1+thickness, WHITE);
+                a.fillTriangle(x2, y2-thickness, x2, y2+thickness, x1, y1+thickness, WHITE);
+            }
         }
     
     private:
@@ -112,7 +109,7 @@ class Plank {
 
         }
 };
-Plank otherPlank(5,55,120,55,4);
+Plank otherPlank(5,60,80,30,1);
 
 enum class GameState {
     Title,

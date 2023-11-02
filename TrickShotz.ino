@@ -7,6 +7,8 @@
 #include <Arduboy2.h>
 Arduboy2 a;
 
+#define GRAVITY 0.05
+
 class Ball{
     public:
         float x, y; // Position
@@ -22,6 +24,9 @@ class Ball{
         }
 
         void update() {
+            // Gravity applied to ball
+            vy += GRAVITY;
+            
             // Update the ball's position from it's velocity values
             x += vx;
             y += vy;
@@ -31,7 +36,7 @@ class Ball{
             a.fillCircle(static_cast<int16_t>(round(x)), static_cast<int16_t>(round(y)), size, WHITE);
         }
 };
-Ball newBall(10,20,0.5,0.3,2);
+Ball newBall(10,20,0.5,-0.5,2);
 
 class Plank {
     public:
@@ -68,8 +73,7 @@ class Plank {
             a.fillTriangle(x1 + px, y1 + py, x2 - px, y2 - py, x1 - px, y1 - py, WHITE);
     }
 };
-Plank newPlank(17,55,98,2,1);
-Plank otherPlank(5,55,120,55,1);
+Plank otherPlank(5,55,120,55,2);
 
 
 
@@ -90,7 +94,6 @@ void loop() {
     newBall.draw();
     newBall.update();
 
-    newPlank.draw();
     otherPlank.draw();
     
     a.display();

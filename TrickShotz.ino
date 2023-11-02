@@ -3,6 +3,7 @@
 // Copyright Nathan Chapman / nchpmn
 //
 // 01 Nov 2023 - Development Started
+// PROTOTYPE ONLY
 
 #include <Arduboy2.h>
 Arduboy2 a;

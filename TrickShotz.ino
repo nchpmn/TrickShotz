@@ -132,7 +132,7 @@ void loop() {
     newBall.update();
     if (otherPlank.checkCollision(newBall.x, newBall.y, newBall.size)) {
         newBall.vx = 0;
-        newBall.vy = 0;
+        newBall.vy = 0 - GRAVITY;
     }
 
     newBall.draw();

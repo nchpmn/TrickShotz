@@ -9,35 +9,7 @@
 Arduboy2 a;
 
 #define GRAVITY 0.05
-
-class Ball{
-    public:
-        float x, y; // Position
-        float vx, vy; // Velocity (X and Y components)
-        uint8_t size; // Radius of ball
-
-        Ball(float startX, float startY, float startVX, float startVY, uint8_t startSize) {
-            x = startX;
-            y = startY;
-            vx = startVX;
-            vy = startVY;
-            size = startSize;
-        }
-
-        void update() {
-            // Gravity applied to ball
-            vy += GRAVITY;
-            
-            // Update the ball's position from it's velocity values
-            x += vx;
-            y += vy;
-        }
-
-        void draw() {
-            a.fillCircle(static_cast<int16_t>(round(x)), static_cast<int16_t>(round(y)), size, WHITE);
-        }
-};
-Ball newBall(10,20,0.5,-0.5,2);
+#define MAX_PLANKS 6
 
 class Plank {
     public:
@@ -65,15 +37,12 @@ class Plank {
         void draw() {
             if (x1 == x2) {
                 // Case where line is vertical
-                a.print("VERTICAL");
                 a.fillRect(x1, y1, thickness, y2-y1, WHITE);
             } else if (y1 == y2) {
                 // Case where line is horizontal
-                a.print("HORIZONTAL");
                 a.fillRect(x1, y1, x2-x1, thickness, WHITE);
             } else {
                 // Case where line is diagonal
-                a.print("DIAG");
                 if (thickness % 2 == 0) {
                     uint8_t halfThick = thickness / 2;
                     a.fillTriangle(x1, y1-halfThick, x2, y2-halfThick, x1, y1+halfThick, WHITE);
@@ -119,8 +88,46 @@ class Plank {
         }
 };
 // Create an array to hold Plank objects - MAXIMUM of 10 per level!
-#define MAX_PLANKS 6
 Plank planks[MAX_PLANKS];
+
+class Ball{
+    public:
+        float x, y; // Position
+        float vx, vy; // Velocity (X and Y components)
+        uint8_t size; // Radius of ball
+
+        Ball(float startX, float startY, float startVX, float startVY, uint8_t startSize) {
+            x = startX;
+            y = startY;
+            vx = startVX;
+            vy = startVY;
+            size = startSize;
+        }
+
+        void update(Plank planks[], int numPlanks) {
+            // Gravity applied to ball
+            vy += GRAVITY;
+            
+            // Update the ball's position from it's velocity values
+            x += vx;
+            y += vy;
+
+            // Check for collision with planks
+            for (int i = 0; i < MAX_PLANKS; i++) {
+                if (planks[i].checkCollision(x, y, size)) {
+                    // Collision detected with plank[i]
+                    // Bounce!
+                    vx = -vx;
+                    vy = -vy;
+                }
+            }
+        }
+
+        void draw() {
+            a.fillCircle(static_cast<int16_t>(round(x)), static_cast<int16_t>(round(y)), size, WHITE);
+        }
+};
+Ball newBall(10,20,0.5,-0.5,2);
 
 enum class GameState {
     Title,
@@ -144,11 +151,7 @@ void playGame() {
             a.print("Level Setup\n");
             
             planks[0] = Plank(80, 10, 80, 40, 5); // Vertical (x1==x2)
-            planks[1] = Plank(30, 58, 60, 58, 2); // Horizontal (y1 == y2)
-            planks[2] = Plank(10, 10, 100, 28, 1); // Diagonal
-            planks[3] = Plank(10, 25, 100, 43, 2); // Diagonal
-            planks[4] = Plank(10, 40, 100, 58, 3); // Diagonal
-            planks[5] = Plank(10, 50, 100, 68, 4); // Diagonal
+            planks[1] = Plank(10, 40, 100, 58, 2); // Diagonal
 
             if (a.justPressed(A_BUTTON)) {
                 levelState = LevelState::Play;
@@ -157,13 +160,7 @@ void playGame() {
             break;
         
         case LevelState::Play:
-            newBall.update();
-            for (int i = 0; i < MAX_PLANKS; i++) {
-                if (planks[i].checkCollision(newBall.x, newBall.y, newBall.size)) {
-                    newBall.vx = 0;
-                    newBall.vy = 0 - GRAVITY;
-                }
-            }
+            newBall.update(planks, MAX_PLANKS);
 
             break;
         

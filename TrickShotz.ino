@@ -52,6 +52,11 @@ class Plank {
             thickness = startThickness;
         }
 
+        bool checkCollision(int16_t ballX, int16_t ballY, uint8_t ballRadius) {
+            // Check if the ball is within a certain distance from the plane
+            return distanceToLine(x1, y1, x2, y2, ballX, ballY) <= ballRadius + thickness;
+        }
+
         void draw() {
             // Calculate diff in x and y
             float dx = x2 - x1;
@@ -71,9 +76,42 @@ class Plank {
             // Draw the four corners of the filled rectangle
             a.fillTriangle(x1 + px, y1 + py, x2 + px, y2 + py, x2 - px, y2 - py, WHITE);
             a.fillTriangle(x1 + px, y1 + py, x2 - px, y2 - py, x1 - px, y1 - py, WHITE);
-    }
+        }
+    
+    private:
+        float distanceToLine(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t ballX, int16_t ballY) {
+            // Vector from (x1,y1) to (x2,y2)
+            float segmentVectorX = x2 - x1;
+            float segmentVectorY = y2 - y1;
+
+            // Vector from (x1,y1) to (ballX,ballY)
+            float pointVectorX = ballX - x1;
+            float pointVectorY = ballY - y1;
+
+            // Dot Product of these two Vectors
+            float dotProduct = (pointVectorX * segmentVectorX) + (pointVectorY * segmentVectorY);
+
+            // Length of the segment vector squared
+            float segmentLengthSquared = (segmentVectorX * segmentVectorX) + (segmentVectorY * segmentVectorY);
+
+            // Calculate the parameter t (the position on the line segment) at which the closest point on the line occurs
+            float t = dotProduct / segmentLengthSquared;
+
+            // Clamp t to bounds of line segment
+            t = max(0.0f, min(1.0f, t));
+
+            // Coords of closest point on the line
+            float closestX = x1 + t * segmentVectorX;
+            float closestY = y1 + t * segmentVectorY;
+
+            // Distance between (BallX,BallY) and (closestX,closestY)
+            float distance = sqrt((ballX - closestX) * (ballX - closestX) + (ballY - closestY) * (ballY - closestY));
+
+            return distance;
+
+        }
 };
-Plank otherPlank(5,55,120,55,2);
+Plank otherPlank(5,55,120,55,4);
 
 
 
@@ -91,8 +129,13 @@ void loop() {
     a.pollButtons();
     a.clear();
 
-    newBall.draw();
     newBall.update();
+    if (otherPlank.checkCollision(newBall.x, newBall.y, newBall.size)) {
+        newBall.vx = 0;
+        newBall.vy = 0;
+    }
+
+    newBall.draw();
 
     otherPlank.draw();
     

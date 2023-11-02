@@ -150,6 +150,36 @@ class Ball{
 };
 Ball newBall(10,20,0.5,-0.5,2);
 
+class Goal {
+    public:
+        uint8_t x;
+        uint8_t y;
+        uint8_t radius;
+
+        Goal(uint8_t startX, uint8_t startY, uint8_t startRadius) {
+            x = startX;
+            y = startY;
+            radius = startRadius;
+        }
+
+        bool isBallInside(const Ball& ball) {
+            float distance = sqrt((ball.x - x) * (ball.x - x) + (ball.y - y) * (ball.y - y));
+            return distance <= radius;
+        }
+
+        void draw() {
+            // Draw the single-pixel dot border
+            int numDots = 20;  // Adjust this value for the number of dots
+            for (int i = 0; i < numDots; i++) {
+                float angle = TWO_PI / numDots * i;
+                int x1 = x + (radius + 1) * cos(angle);
+                int y1 = y + (radius + 1) * sin(angle);
+                a.drawPixel(x1, y1, WHITE);
+            }
+        }
+};
+Goal levelGoal(100,50,6);
+
 enum class GameState {
     Title,
     Instructions,
@@ -193,6 +223,7 @@ void playGame() {
         planks[i].draw();
     }
     newBall.draw();
+    levelGoal.draw();
 }
 
 void setup() {

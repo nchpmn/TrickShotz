@@ -114,7 +114,47 @@ class Plank {
 };
 Plank otherPlank(5,55,120,55,4);
 
+enum class GameState {
+    Title,
+    Instructions,
+    PlayGame,
+    EndScreen
+};
+GameState gameState = GameState::Title;
 
+enum class LevelState {
+    Setup,
+    Play,
+    End
+};
+LevelState levelState = LevelState::Setup;
+
+
+void playGame() {
+    switch(levelState) {
+        case LevelState::Setup:
+            a.print("Level Setup");
+            if (a.justPressed(A_BUTTON)) {
+                levelState = LevelState::Play;
+            }
+
+            break;
+        
+        case LevelState::Play:
+            newBall.update();
+            if (otherPlank.checkCollision(newBall.x, newBall.y, newBall.size)) {
+                newBall.vx = 0;
+                newBall.vy = 0 - GRAVITY;
+            }
+            break;
+        
+        case LevelState::End:
+            a.print("Level Clear!");
+    }
+
+    newBall.draw();
+    otherPlank.draw();
+}
 
 void setup() {
     a.begin();
@@ -130,15 +170,29 @@ void loop() {
     a.pollButtons();
     a.clear();
 
-    newBall.update();
-    if (otherPlank.checkCollision(newBall.x, newBall.y, newBall.size)) {
-        newBall.vx = 0;
-        newBall.vy = 0 - GRAVITY;
+    switch(gameState) {
+        case GameState::Title:
+            a.print("Main Title\n\nA to Play\nB for Instructions");
+            if (a.justPressed(A_BUTTON)) {
+                gameState = GameState::PlayGame;
+            }
+            if (a.justPressed(B_BUTTON)) {
+                gameState = GameState::Instructions;
+            }
+            break;
+        case GameState::Instructions:
+            a.print("Instructions");
+            if (a.justPressed(B_BUTTON)) {
+                gameState = GameState::Title;
+            }
+            break;
+        case GameState::PlayGame:
+            playGame();
+            break;
+        case GameState::EndScreen:
+            a.print("End Screen");
+            break;
     }
-
-    newBall.draw();
-
-    otherPlank.draw();
     
     a.display();
 }

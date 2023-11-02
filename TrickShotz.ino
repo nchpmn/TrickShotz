@@ -10,12 +10,15 @@ Arduboy2 a;
 
 #define GRAVITY 0.05
 #define MAX_PLANKS 6
+#define BOUNCE_FRICTION 0.98
 
 class Plank {
     public:
         int16_t x1, y1; // Coordinates of one end
         int16_t x2, y2; // Coordinates of the other end
         uint8_t thickness; // Thickness of the plank
+        float normalX; // X component of the normal vector
+        float normalY; // Y component of the normal vector
 
         // Default constructor with default values
         Plank() : x1(0), y1(0), x2(0), y2(0), thickness(1) {}
@@ -27,6 +30,9 @@ class Plank {
             x2 = startX2;
             y2 = startY2;
             thickness = startThickness;
+
+            // Pre-calculate the normal vector components
+            getNormals();
         }
 
         bool checkCollision(int16_t ballX, int16_t ballY, uint8_t ballRadius) {
@@ -55,6 +61,16 @@ class Plank {
         }
     
     private:
+        void getNormals() {
+            // Calculate and store the normal vector components on creation
+            float dx = x2 - x1;
+            float dy = y2 - y1;
+            float length = sqrt(dx*dx + dy*dy);
+
+            normalX = dy / length;
+            normalY = -dx / length; // Negative sign for the Y component since we want perpendicular vector
+        }
+
         float distanceToLine(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t ballX, int16_t ballY) {
             // Vector from (x1,y1) to (x2,y2)
             float segmentVectorX = x2 - x1;
@@ -115,10 +131,15 @@ class Ball{
             // Check for collision with planks
             for (int i = 0; i < MAX_PLANKS; i++) {
                 if (planks[i].checkCollision(x, y, size)) {
-                    // Collision detected with plank[i]
-                    // Bounce!
-                    vx = -vx;
-                    vy = -vy;
+                    // Collision detected with plank[i] - Bounce!
+                    // Calculate dot product of velocity and normals
+                    float dotProduct = (vx * planks[i].normalX) + (vy * planks[i].normalY);
+                    vx -= 2 * dotProduct * planks[i].normalX;
+                    vy -= 2 * dotProduct * planks[i].normalY;
+
+                    // Add friction from bounce
+                    vx *= BOUNCE_FRICTION;
+                    vy *= BOUNCE_FRICTION;
                 }
             }
         }

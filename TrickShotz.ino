@@ -124,24 +124,35 @@ class Ball{
             // Gravity applied to ball
             vy += GRAVITY;
             
-            // Update the ball's position from it's velocity values
-            x += vx;
-            y += vy;
+            // Calc the next frame's position
+            float nextX = x + vx;
+            float nextY = y + vy;
 
             // Check for collision with planks
             for (int i = 0; i < MAX_PLANKS; i++) {
-                if (planks[i].checkCollision(x, y, size)) {
+                if (planks[i].checkCollision(nextX, nextY, size)) {
                     // Collision detected with plank[i] - Bounce!
                     // Calculate dot product of velocity and normals
                     float dotProduct = (vx * planks[i].normalX) + (vy * planks[i].normalY);
-                    vx -= 2 * dotProduct * planks[i].normalX;
-                    vy -= 2 * dotProduct * planks[i].normalY;
+
+                    if (dotProduct < 0) {
+                        // If negative, the ball is moving towards the plank
+                        vx -= 2 * dotProduct * planks[i].normalX;
+                        vy -= 2 * dotProduct * planks[i].normalY;
+
+                        x = nextX;
+                        y = nextY;
+                    }
 
                     // Add friction from bounce
                     vx *= BOUNCE_FRICTION;
                     vy *= BOUNCE_FRICTION;
+
                 }
             }
+
+            x += vx;
+            y += vy;
         }
 
         void draw() {
@@ -201,7 +212,7 @@ void playGame() {
         case LevelState::Setup:
             a.print("Level Setup\n");
             
-            planks[0] = Plank(80, 10, 80, 40, 5); // Vertical (x1==x2)
+            planks[0] = Plank(80, 10, 80, 45, 5); // Vertical (x1==x2)
             planks[1] = Plank(10, 40, 100, 58, 2); // Diagonal
 
             if (a.justPressed(A_BUTTON)) {

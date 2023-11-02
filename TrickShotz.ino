@@ -48,12 +48,29 @@ class Plank {
         }
 
         void draw() {
-            for (uint8_t i = 0; i < thickness; i++) {
-                a.drawLine(x1+i,y1+i, x2+i,y2+i, WHITE);
-            }
-        }
+            // Calculate diff in x and y
+            float dx = x2 - x1;
+            float dy = y2 - y1;
+            // Pythagoras to get length line between (x1,y1) and (x2,y2)
+            float length = sqrt(dx * dx + dy * dy);
+
+            // Calculate the unit vector of the line
+            // I'll be honest I don't understand this maths
+            float ux = dx / length;
+            float uy = dy / length;
+
+            // Calculate the perpendicular vector for thickness
+            float px = -uy * thickness - 1;
+            float py = ux * thickness - 1;
+
+            // Draw the four corners of the filled rectangle
+            a.fillTriangle(x1 + px, y1 + py, x2 + px, y2 + py, x2 - px, y2 - py, WHITE);
+            a.fillTriangle(x1 + px, y1 + py, x2 - px, y2 - py, x1 - px, y1 - py, WHITE);
+    }
 };
-Plank newPlank(5,30,135,40,4);
+Plank newPlank(17,55,98,2,1);
+Plank otherPlank(5,55,120,55,1);
+
 
 
 void setup() {
@@ -74,6 +91,7 @@ void loop() {
     newBall.update();
 
     newPlank.draw();
+    otherPlank.draw();
     
     a.display();
 }

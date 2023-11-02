@@ -29,7 +29,7 @@ class Plank {
             y1 = startY1;
             x2 = startX2;
             y2 = startY2;
-            thickness = startThickness;
+            thickness = 2;
 
             // Pre-calculate the normal vector components
             getNormals();

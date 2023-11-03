@@ -9,8 +9,8 @@
 Arduboy2 a;
 
 #define GRAVITY 0.05
-#define MAX_PLANKS 2
-#define BOUNCE_FRICTION 0.98
+#define MAX_PLANKS 6
+#define BOUNCE_FRICTION 0.97
 
 class Plank {
     public:
@@ -36,11 +36,11 @@ class Plank {
         }
 
         bool checkCollision(int16_t ballX, int16_t ballY, uint8_t ballRadius) {
-            // Calculate the dot product between the ball's position and the normal vector
-            float dotProduct = (ballX - x1) * normalX + (ballY - y1) * normalY;
+            // Calculate the distance between the ball's center and the line segment
+            float distance = distanceToLine(x1, y1, x2, y2, ballX, ballY);
 
-            // Check if the absolute value of the dot product is less than or equal to the sum of radii
-            return fabs(dotProduct) <= ballRadius + thickness;
+            // Check if the distance is less than the sum of the ball's radius and the Plank's thickness
+            return distance <= ballRadius + (thickness / 2);
         }
 
         void draw() {
@@ -240,7 +240,7 @@ void playGame() {
             a.print("Level Setup\n");
             
             planks[0] = Plank(10, 40, 100, 58, 2); // Diagonal
-            planks[1] = Plank(80, 15, 80, 40, 5); // Vertical (x1==x2)
+            planks[1] = Plank(85, 15, 80, 40, 5); // Vertical (x1==x2)
 
 
             if (a.justPressed(A_BUTTON)) {

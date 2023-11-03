@@ -206,6 +206,14 @@ enum class LevelState {
 };
 LevelState levelState = LevelState::Setup;
 
+void drawObjects() {
+    // Draw all physics/level objects to screen
+        for (int i = 0; i < MAX_PLANKS; i++) {
+        planks[i].draw();
+    }
+    newBall.draw();
+    levelGoal.draw();
+}
 
 void playGame() {
     switch(levelState) {
@@ -230,11 +238,8 @@ void playGame() {
             a.print("Level Clear!");
     }
 
-    for (int i = 0; i < MAX_PLANKS; i++) {
-        planks[i].draw();
-    }
-    newBall.draw();
-    levelGoal.draw();
+    drawObjects();
+
 }
 
 void setup() {

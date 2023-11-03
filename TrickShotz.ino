@@ -9,7 +9,7 @@
 Arduboy2 a;
 
 #define GRAVITY 0.05
-#define MAX_PLANKS 6
+#define MAX_PLANKS 2
 #define BOUNCE_FRICTION 0.98
 
 class Plank {
@@ -36,8 +36,11 @@ class Plank {
         }
 
         bool checkCollision(int16_t ballX, int16_t ballY, uint8_t ballRadius) {
-            // Check if the ball is within a certain distance from the plane
-            return distanceToLine(x1, y1, x2, y2, ballX, ballY) <= ballRadius + thickness;
+            // Calculate the dot product between the ball's position and the normal vector
+            float dotProduct = (ballX - x1) * normalX + (ballY - y1) * normalY;
+
+            // Check if the absolute value of the dot product is less than or equal to the sum of radii
+            return fabs(dotProduct) <= ballRadius + thickness;
         }
 
         void draw() {
@@ -69,6 +72,13 @@ class Plank {
 
             normalX = dy / length;
             normalY = -dx / length; // Negative sign for the Y component since we want perpendicular vector
+            
+            // Ensure that the normal vector points outward
+            // This should allow collisions on both sides of line
+            if (normalX < 0) {
+                normalX = -normalX;
+                normalY = -normalY;
+        }
         }
 
         float distanceToLine(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t ballX, int16_t ballY) {
@@ -135,19 +145,28 @@ class Ball{
                     // Calculate dot product of velocity and normals
                     float dotProduct = (vx * planks[i].normalX) + (vy * planks[i].normalY);
 
-                    if (dotProduct < 0) {
-                        // If negative, the ball is moving towards the plank
-                        vx -= 2 * dotProduct * planks[i].normalX;
-                        vy -= 2 * dotProduct * planks[i].normalY;
+                    // Calculate reflection direction
+                    float reflectionX = 2.0 * dotProduct * planks[i].normalX;
+                    float reflectionY = 2.0 * dotProduct * planks[i].normalY;
 
-                        x = nextX;
-                        y = nextY;
-                    }
+                    // Update the ball's velocity
+                    vx = vx - reflectionX;
+                    vy = vy - reflectionY;
+
+                    x = nextX;
+                    y = nextY;
 
                     // Add friction from bounce
                     vx *= BOUNCE_FRICTION;
                     vy *= BOUNCE_FRICTION;
 
+                    Serial.print("Bounce - Plank ");
+                    Serial.print(i);
+                    Serial.print("\n");
+                    Serial.print(vx);
+                    Serial.print("  ");
+                    Serial.print(vy);
+                    Serial.print("\n\n");
                 }
             }
 
@@ -208,7 +227,7 @@ LevelState levelState = LevelState::Setup;
 
 void drawObjects() {
     // Draw all physics/level objects to screen
-        for (int i = 0; i < MAX_PLANKS; i++) {
+    for (int i = 0; i < MAX_PLANKS; i++) {
         planks[i].draw();
     }
     newBall.draw();
@@ -220,8 +239,9 @@ void playGame() {
         case LevelState::Setup:
             a.print("Level Setup\n");
             
-            planks[0] = Plank(80, 10, 80, 45, 5); // Vertical (x1==x2)
-            planks[1] = Plank(10, 40, 100, 58, 2); // Diagonal
+            planks[0] = Plank(10, 40, 100, 58, 2); // Diagonal
+            planks[1] = Plank(80, 15, 80, 40, 5); // Vertical (x1==x2)
+
 
             if (a.justPressed(A_BUTTON)) {
                 levelState = LevelState::Play;

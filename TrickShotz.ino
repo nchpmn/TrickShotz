@@ -11,6 +11,25 @@ Arduboy2 a;
 #define GRAVITY 0.05
 #define MAX_PLANKS 6
 #define BOUNCE_FRICTION 0.97
+#define OFFSCREEN_SECONDS 1
+#define FRAME_RATE 60
+
+enum class GameState {
+    Title,
+    Instructions,
+    PlayGame,
+    EndScreen
+};
+GameState gameState = GameState::Title;
+
+enum class LevelState {
+    Setup,
+    Play,
+    LevelWin,
+    LevelLose
+};
+LevelState levelState = LevelState::Setup;
+
 
 class Plank {
     public:
@@ -116,11 +135,16 @@ class Plank {
 // Create an array to hold Plank objects - MAXIMUM of 10 per level!
 Plank planks[MAX_PLANKS];
 
+void levelLose() {
+    levelState = LevelState::LevelLose;
+}
+
 class Ball{
     public:
         float x, y; // Position
         float vx, vy; // Velocity (X and Y components)
         uint8_t size; // Radius of ball
+        uint8_t offscreenTimer; // Millisecond timer for ball offscreen
 
         Ball(float startX, float startY, float startVX, float startVY, uint8_t startSize) {
             x = startX;
@@ -172,13 +196,30 @@ class Ball{
 
             x += vx;
             y += vy;
+
+            // Check if ball is offscreen
+            if (checkOffscreen()) {
+                // Start timer
+                offscreenTimer++;
+                if (offscreenTimer == (OFFSCREEN_SECONDS * FRAME_RATE)) {
+                    levelLose();
+                }
+            } else {
+                // Reset timer to 0
+                offscreenTimer = 0;
+            }
         }
 
         void draw() {
             a.fillCircle(static_cast<int16_t>(round(x)), static_cast<int16_t>(round(y)), size, WHITE);
         }
+    
+    private:
+        bool checkOffscreen() {
+            return (x < 0 || x > WIDTH || y < 0 || y > HEIGHT);
+        }
 };
-Ball newBall(10,20,0.5,-0.5,2);
+Ball newBall(10,20,0.5,-2,2);
 
 class Goal {
     public:
@@ -212,21 +253,6 @@ class Goal {
 };
 Goal levelGoal(100,50,5);
 
-enum class GameState {
-    Title,
-    Instructions,
-    PlayGame,
-    EndScreen
-};
-GameState gameState = GameState::Title;
-
-enum class LevelState {
-    Setup,
-    Play,
-    End
-};
-LevelState levelState = LevelState::Setup;
-
 void drawObjects() {
     // Draw all physics/level objects to screen
     for (int i = 0; i < MAX_PLANKS; i++) {
@@ -254,13 +280,17 @@ void playGame() {
 
             if (levelGoal.isBallInside(newBall)) {
                     Serial.print("Inside!");
-                    levelState = LevelState::End;
+                    levelState = LevelState::LevelWin;
                 }
             newBall.update(planks, MAX_PLANKS);
             break;
         
-        case LevelState::End:
+        case LevelState::LevelWin:
             a.print("Level Clear!");
+            break;
+        case LevelState::LevelLose:
+            a.print("You Lose!");
+            break;
     }
 
     drawObjects();
@@ -269,7 +299,7 @@ void playGame() {
 
 void setup() {
     a.begin();
-    a.setFrameRate(60);
+    a.setFrameRate(FRAME_RATE);
     a.initRandomSeed();
     a.clear();
 }

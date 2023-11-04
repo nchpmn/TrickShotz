@@ -160,13 +160,13 @@ class Ball{
                     vx *= BOUNCE_FRICTION;
                     vy *= BOUNCE_FRICTION;
 
-                    Serial.print("Bounce - Plank ");
+                    /*Serial.print("Bounce - Plank ");
                     Serial.print(i);
                     Serial.print("\n");
                     Serial.print(vx);
                     Serial.print("  ");
                     Serial.print(vy);
-                    Serial.print("\n\n");
+                    Serial.print("\n\n");*/
                 }
             }
 
@@ -194,7 +194,9 @@ class Goal {
 
         bool isBallInside(const Ball& ball) {
             float distance = sqrt((ball.x - x) * (ball.x - x) + (ball.y - y) * (ball.y - y));
-            return distance <= radius;
+            Serial.print(distance + ball.size);
+            Serial.print("\n");
+            return distance + ball.size <= radius + ball.size;
         }
 
         void draw() {
@@ -208,7 +210,7 @@ class Goal {
             }
         }
 };
-Goal levelGoal(100,50,6);
+Goal levelGoal(100,50,5);
 
 enum class GameState {
     Title,
@@ -240,18 +242,21 @@ void playGame() {
             a.print("Level Setup\n");
             
             planks[0] = Plank(10, 40, 100, 58, 2); // Diagonal
-            planks[1] = Plank(85, 15, 80, 40, 5); // Vertical (x1==x2)
+            planks[1] = Plank(80, 15, 80, 25, 5); // Vertical (x1==x2)
 
 
             if (a.justPressed(A_BUTTON)) {
                 levelState = LevelState::Play;
             }
-
             break;
         
         case LevelState::Play:
-            newBall.update(planks, MAX_PLANKS);
 
+            if (levelGoal.isBallInside(newBall)) {
+                    Serial.print("Inside!");
+                    levelState = LevelState::End;
+                }
+            newBall.update(planks, MAX_PLANKS);
             break;
         
         case LevelState::End:

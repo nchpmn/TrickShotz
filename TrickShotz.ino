@@ -8,12 +8,16 @@
 #include <Arduboy2.h>
 Arduboy2 a;
 
-#define GRAVITY 0.05
-#define MAX_PLANKS 6
-#define BOUNCE_FRICTION 0.97
-#define OFFSCREEN_SECONDS 1
-#define FRAME_RATE 60
 
+// CONSTANTS
+const float GRAVITY = 0.05;
+const uint8_t MAX_PLANKS = 6;
+const float BOUNCE_FRICTION = 0.97;
+const uint8_t OFFSCREEN_SECONDS = 1;
+const uint8_t FRAME_RATE = 60;
+
+
+// GAME STATES (STRUCTURES)
 enum class GameState {
     Title,
     Instructions,
@@ -31,6 +35,14 @@ enum class LevelState {
 LevelState levelState = LevelState::Setup;
 
 
+// FORWARD DELCARATIONS
+class Plank;
+class Ball;
+class Goal;
+void levelLose();
+
+
+// CLASSES
 class Plank {
     public:
         int16_t x1, y1; // Coordinates of one end
@@ -133,11 +145,7 @@ class Plank {
         }
 };
 // Create an array to hold Plank objects - MAXIMUM of 10 per level!
-Plank planks[MAX_PLANKS];
 
-void levelLose() {
-    levelState = LevelState::LevelLose;
-}
 
 class Ball{
     public:
@@ -219,7 +227,7 @@ class Ball{
             return (x < 0 || x > WIDTH || y < 0 || y > HEIGHT);
         }
 };
-Ball newBall(10,20,0.5,-2,2);
+
 
 class Goal {
     public:
@@ -251,8 +259,13 @@ class Goal {
             }
         }
 };
+
+// OBJECTS (DURING PROTOTYPE ONLY)
+Plank planks[MAX_PLANKS];
+Ball newBall(10,20,0.5,-2,2);
 Goal levelGoal(100,50,5);
 
+// FUNCTIONS
 void drawObjects() {
     // Draw all physics/level objects to screen
     for (int i = 0; i < MAX_PLANKS; i++) {
@@ -297,6 +310,11 @@ void playGame() {
 
 }
 
+void levelLose() {
+    levelState = LevelState::LevelLose;
+}
+
+// MAIN SETUP
 void setup() {
     a.begin();
     a.setFrameRate(FRAME_RATE);
@@ -304,6 +322,7 @@ void setup() {
     a.clear();
 }
 
+// MAIN LOOP
 void loop() {
     if (!(a.nextFrame())) {
         return;

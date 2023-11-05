@@ -228,7 +228,7 @@ class Ball{
 
         void setVelocity() {
             // Adjust launchAngle so 0 deg = up
-            float adjustedAngle = launchAngle - 90;
+            int16_t adjustedAngle = launchAngle - 90;
             if (adjustedAngle < 0) {
                 adjustedAngle += 360;
             }

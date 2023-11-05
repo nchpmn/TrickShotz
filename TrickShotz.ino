@@ -347,15 +347,10 @@ void drawUI() {
 void playGame() {
     switch(levelState) {
         case LevelState::Load:
-            font3x5.setCursor(0,0);
-            font3x5.print("Level Loading");
             loadLevel(currentLevel);
             levelState = LevelState::Aim;
         
         case LevelState::Aim:
-            font3x5.setCursor(0,0);
-            font3x5.print("Aiming");
-
             if (a.justPressed(A_BUTTON)) {
                 currentBall.setVelocity();
                 levelState = LevelState::Play;

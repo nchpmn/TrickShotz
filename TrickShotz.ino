@@ -310,16 +310,23 @@ void drawObjects() {
 }
 
 void drawUI() {
+    const int uiAngleX = 20;
+    const int uiPowerX = 70;
     // Draw the bottom UI bar and elements
     a.fillRect(0, 55, 128, 15, BLACK);
     a.drawLine(0, 55, 128, 55, WHITE);
 
-    font3x5.setCursor(10, 57);
+    // Draw Angle
+    font3x5.setCursor(uiAngleX, 57);
     font3x5.print(F("ANGLE:"));
     font3x5.print(String(balls[currentLevel].launchAngle, 1));
-    font3x5.setCursor(60, 57);
+
+    // Draw Power
+    font3x5.setCursor(uiPowerX, 57);
     font3x5.print(F("POWER:"));
-    font3x5.print(balls[currentLevel].launchPower);
+        for (int i = 0; i < balls[currentLevel].launchPower; i++) {
+        a.fillRect((uiPowerX + 25 + i*4), (62 - i), 3, i+1);
+    }
 }
 
 void playGame() {
@@ -360,15 +367,12 @@ void playGame() {
                     balls[currentLevel].launchPower -= 1;
                 }
             }
-
             break;
         
         case LevelState::Play:
-
             if (goals[currentLevel].isBallInside(balls[currentLevel])) {
-                    Serial.print("Inside!");
-                    levelState = LevelState::LevelWin;
-                }
+                levelState = LevelState::LevelWin;
+            }
             balls[currentLevel].update(planks[currentLevel], MAX_PLANKS);
             break;
         
@@ -382,6 +386,10 @@ void playGame() {
             break;
         case LevelState::LevelLose:
             a.print("You Lose!");
+
+            if (a.justPressed(B_BUTTON)) {
+                levelState = LevelState::Setup;
+            }
             break;
     }
 

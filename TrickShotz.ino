@@ -266,15 +266,15 @@ class Goal {
 
 // LEVELS
 const uint8_t maxLevels = 3; // Adjust as needed
-uint8_t currentLevel = 1;
+uint8_t currentLevel = 0;
 Ball balls[maxLevels];
 Goal goals[maxLevels];
 Plank planks[maxLevels][MAX_PLANKS];
 
 void defineLevels() {
     // Level 0
-    balls[0] = { 10, 20, 0.5, -2, 2 };
-    goals[0] = { 100, 50, 5 };
+    balls[0] = { 30, 20, 0.25, -.35, 2 };
+    goals[0] = { 100, 50, 8 };
     planks[0][0] = {10, 40, 100, 58}; // Plank 0 (Diagonal)
     planks[0][1] = {80, 15, 80, 25};  // Plank 1 (Vertical)
     planks[0][2] = {3, 60, 67, 60};   // Plank 2 (Horizontal)
@@ -324,6 +324,11 @@ void playGame() {
         
         case LevelState::LevelWin:
             a.print("Level Clear!");
+
+            if (a.justPressed(A_BUTTON)) {
+                currentLevel++;
+                levelState = LevelState::Setup;
+            }
             break;
         case LevelState::LevelLose:
             a.print("You Lose!");

@@ -5,8 +5,13 @@
 // 01 Nov 2023 - Development Started
 // PROTOTYPE ONLY
 
+// LIBRARIES
 #include <Arduboy2.h>
 Arduboy2 a;
+#include "src/Font3x5.h"
+Font3x5 font3x5 = Font3x5();
+// Micro font courtesy of @filmote - BSD 3-Clause License
+
 
 // CONSTANTS
 const float GRAVITY = 0.05;
@@ -305,7 +310,8 @@ void drawUI() {
 void playGame() {
     switch(levelState) {
         case LevelState::Setup:
-            a.print("Level Setup\n");
+            font3x5.setCursor(0,0);
+            font3x5.print("Level Setup");
 
             if (a.justPressed(A_BUTTON)) {
                 levelState = LevelState::Play;

@@ -267,23 +267,23 @@ class Goal {
 // LEVELS
 const uint8_t maxLevels = 3; // Adjust as needed
 uint8_t currentLevel = 1;
-Ball levelBalls[maxLevels];
-Goal levelGoals[maxLevels];
-Plank levelPlanks[maxLevels][MAX_PLANKS];
+Ball balls[maxLevels];
+Goal goals[maxLevels];
+Plank planks[maxLevels][MAX_PLANKS];
 
 void defineLevels() {
     // Level 0
-    levelBalls[0] = { 10, 20, 0.5, -2, 2 };
-    levelGoals[0] = { 100, 50, 5 };
-    levelPlanks[0][0] = {10, 40, 100, 58}; // Plank 0 (Diagonal)
-    levelPlanks[0][1] = {80, 15, 80, 25};  // Plank 1 (Vertical)
-    levelPlanks[0][2] = {3, 60, 67, 60};   // Plank 2 (Horizontal)
+    balls[0] = { 10, 20, 0.5, -2, 2 };
+    goals[0] = { 100, 50, 5 };
+    planks[0][0] = {10, 40, 100, 58}; // Plank 0 (Diagonal)
+    planks[0][1] = {80, 15, 80, 25};  // Plank 1 (Vertical)
+    planks[0][2] = {3, 60, 67, 60};   // Plank 2 (Horizontal)
 
     // Level 1
-    levelBalls[1] = { 64, 16, 0, 0, 2 };
-    levelGoals[1] = { 64, 55, 5 } ;
-    levelPlanks[1][0] = {20, 15, 20, 45};
-    levelPlanks[1][1] = {108, 15, 108, 45};
+    balls[1] = { 64, 16, 0, 0, 2 };
+    goals[1] = { 64, 55, 5 } ;
+    planks[1][0] = {20, 15, 20, 45};
+    planks[1][1] = {108, 15, 108, 45};
 
 }
 
@@ -291,10 +291,10 @@ void defineLevels() {
 void drawObjects() {
     // Draw all physics/level objects to screen
     for (int i = 0; i < MAX_PLANKS; i++) {
-        levelPlanks[currentLevel][i].draw();
+        planks[currentLevel][i].draw();
     }
-    levelBalls[currentLevel].draw();
-    levelGoals[currentLevel].draw();
+    balls[currentLevel].draw();
+    goals[currentLevel].draw();
 }
 
 void drawUI() {
@@ -315,11 +315,11 @@ void playGame() {
         
         case LevelState::Play:
 
-            if (levelGoals[currentLevel].isBallInside(levelBalls[currentLevel])) {
+            if (goals[currentLevel].isBallInside(balls[currentLevel])) {
                     Serial.print("Inside!");
                     levelState = LevelState::LevelWin;
                 }
-            levelBalls[currentLevel].update(levelPlanks[currentLevel], MAX_PLANKS);
+            balls[currentLevel].update(planks[currentLevel], MAX_PLANKS);
             break;
         
         case LevelState::LevelWin:

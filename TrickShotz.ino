@@ -53,7 +53,6 @@ class Plank {
         // Default constructor with default values
         Plank() : x1(0), y1(0), x2(0), y2(0), thickness(1) {}
 
-
         Plank(int16_t startX1, int16_t startY1, int16_t startX2, int16_t startY2) {
             x1 = startX1;
             y1 = startY1;

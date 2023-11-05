@@ -223,7 +223,7 @@ class Ball{
         }
 
         void draw() const {
-            a.fillCircle(static_cast<int16_t>(round(x)), static_cast<int16_t>(round(y)), size, WHITE);
+            a.fillCircle(round(x), round(y), size, WHITE);
         }
 
         void setVelocity() {

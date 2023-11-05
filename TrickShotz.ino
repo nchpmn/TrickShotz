@@ -20,6 +20,8 @@ const float GRAVITY = 0.05;
 const uint8_t MAX_PLANKS = 6;
 const float BOUNCE_FRICTION = 0.97;
 const uint8_t OFFSCREEN_SECONDS = 1;
+const uint8_t HELD_FRAMES_DELAY = 45;
+const uint8_t HELD_FRAMES_FREQ = 3;
 
 
 // GAME STATES (STRUCTURES)
@@ -156,7 +158,7 @@ class Ball{
         uint8_t size; // Radius of ball
         uint8_t offscreenTimer; // Millisecond timer for ball offscreen
         int launchPower; // Index of launchPowerLevels[] array
-        float launchAngle; // Launch angle 0.0 to 359.9
+        uint16_t launchAngle; // Launch angle 0 to 359
 
         // Default constructor with default values
         Ball() : x(0), y(0), size(1) {}
@@ -168,7 +170,7 @@ class Ball{
             vx = 0;
             vy = 0;
             size = startSize;
-            launchAngle = 0.0;
+            launchAngle = 0;
             launchPower = 1;
         }
 
@@ -280,6 +282,7 @@ class Goal {
 Ball currentBall;
 Goal currentGoal;
 Plank currentPlanks[MAX_PLANKS];
+uint16_t heldFrames = 0;
 
 // LEVELS
 struct LevelData { 
@@ -334,13 +337,30 @@ void drawUI() {
     // Draw Angle
     font3x5.setCursor(uiAngleX, 57);
     font3x5.print(F("ANGLE:"));
-    font3x5.print(String(currentBall.launchAngle, 1));
+    font3x5.print(currentBall.launchAngle);
 
     // Draw Power
     font3x5.setCursor(uiPowerX, 57);
     font3x5.print(F("POWER:"));
         for (int i = 0; i < currentBall.launchPower; i++) {
         a.fillRect((uiPowerX + 25 + i*4), (62 - i), 3, i+1);
+    }
+}
+
+void launchAngleUp(bool up) {
+    uint8_t adjustStep = 1;
+    if (up) {
+        if (currentBall.launchAngle < 359) {
+            currentBall.launchAngle += adjustStep;
+        } else {
+            currentBall.launchAngle = 0.0;
+        }
+    } else {
+        if (currentBall.launchAngle > 0) {
+            currentBall.launchAngle -= adjustStep;
+        } else {
+            currentBall.launchAngle = 360 - adjustStep;
+        }
     }
 }
 
@@ -358,18 +378,23 @@ void playGame() {
 
             // Set launchAngle (Left/Right)
             if (a.justPressed(RIGHT_BUTTON)) {
-                if (currentBall.launchAngle < 359.9) {
-                    currentBall.launchAngle += 10;
-                } else {
-                    currentBall.launchAngle = 0.0;
+                launchAngleUp(true);
+            } else if (a.pressed(RIGHT_BUTTON)) {
+                if (heldFrames > HELD_FRAMES_DELAY && heldFrames % HELD_FRAMES_FREQ == 0) {
+                    launchAngleUp(true);
                 }
+                heldFrames++;
             }
             if (a.justPressed(LEFT_BUTTON)) {
-                if (currentBall.launchAngle > 0.1) {
-                    currentBall.launchAngle -= 10;
-                } else {
-                    currentBall.launchAngle = 350;
+                launchAngleUp(false);
+            }else if (a.pressed(LEFT_BUTTON)) {
+                if (heldFrames > HELD_FRAMES_DELAY && heldFrames % HELD_FRAMES_FREQ == 0) {
+                    launchAngleUp(false);
                 }
+                heldFrames++;
+            }
+            if (a.justReleased(RIGHT_BUTTON) || (a.justReleased(LEFT_BUTTON))) {
+                heldFrames = 0;
             }
 
             // Set launchPower (Up/Down)

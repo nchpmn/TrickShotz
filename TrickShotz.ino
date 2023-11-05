@@ -8,7 +8,6 @@
 #include <Arduboy2.h>
 Arduboy2 a;
 
-
 // CONSTANTS
 const float GRAVITY = 0.05;
 const uint8_t MAX_PLANKS = 6;
@@ -144,8 +143,6 @@ class Plank {
 
         }
 };
-// Create an array to hold Plank objects - MAXIMUM of 10 per level!
-
 
 class Ball{
     public:
@@ -153,6 +150,10 @@ class Ball{
         float vx, vy; // Velocity (X and Y components)
         uint8_t size; // Radius of ball
         uint8_t offscreenTimer; // Millisecond timer for ball offscreen
+
+        // Default constructor with default values
+        Ball() : x(0), y(0), vx(0), vy(0), size(1) {}
+
 
         Ball(float startX, float startY, float startVX, float startVY, uint8_t startSize) {
             x = startX;
@@ -235,6 +236,9 @@ class Goal {
         uint8_t y;
         uint8_t radius;
 
+        // Default constructor with default values
+        Goal() : x(0), y(0), radius(1) {}
+
         Goal(uint8_t startX, uint8_t startY, uint8_t startRadius) {
             x = startX;
             y = startY;
@@ -260,38 +264,49 @@ class Goal {
         }
 };
 
-// OBJECTS (DURING PROTOTYPE ONLY)
-Plank planks[MAX_PLANKS];
-Ball newBall(10,20,0.5,-2,2);
-Goal levelGoal(100,50,5);
+// LEVELS
+const uint8_t maxLevels = 3; // Adjust as needed
+uint8_t currentLevel = 1;
+Ball levelBalls[maxLevels];
+Goal levelGoals[maxLevels];
+Plank levelPlanks[maxLevels][MAX_PLANKS];
+
+void defineLevels() {
+    // Level 0
+    levelBalls[0] = { 10, 20, 0.5, -2, 2 };
+    levelGoals[0] = { 100, 50, 5 };
+    levelPlanks[0][0] = {10, 40, 100, 58}; // Plank 0 (Diagonal)
+    levelPlanks[0][1] = {80, 15, 80, 25};  // Plank 1 (Vertical)
+    levelPlanks[0][2] = {3, 60, 67, 60};   // Plank 2 (Horizontal)
+
+    // Level 1
+    levelBalls[1] = { 64, 16, 0, 0, 2 };
+    levelGoals[1] = { 64, 55, 5 } ;
+    levelPlanks[1][0] = {20, 15, 20, 45};
+    levelPlanks[1][1] = {108, 15, 108, 45};
+
+}
 
 // FUNCTIONS
 void drawObjects() {
     // Draw all physics/level objects to screen
     for (int i = 0; i < MAX_PLANKS; i++) {
-        planks[i].draw();
+        levelPlanks[currentLevel][i].draw();
     }
-    newBall.draw();
-    levelGoal.draw();
+    levelBalls[currentLevel].draw();
+    levelGoals[currentLevel].draw();
 }
 
 void drawUI() {
     // Draw the bottom UI bar and elements
-    a.fillRect(0, 50, 128, 15, BLACK);
-    a.drawLine(0, 50, 128, 50, WHITE);
-    a.setCursor(5,65);
-    a.print(F("Angle: 35"));
+    a.fillRect(0, 55, 128, 15, BLACK);
+    a.drawLine(0, 55, 128, 55, WHITE);
 }
 
 void playGame() {
     switch(levelState) {
         case LevelState::Setup:
             a.print("Level Setup\n");
-            
-            planks[0] = Plank(10, 40, 100, 58); // Diagonal
-            planks[1] = Plank(80, 15, 80, 25); // Vertical (x1==x2)
-            planks[2] = Plank(3, 60, 67, 60); // Horizontal
-
 
             if (a.justPressed(A_BUTTON)) {
                 levelState = LevelState::Play;
@@ -300,11 +315,11 @@ void playGame() {
         
         case LevelState::Play:
 
-            if (levelGoal.isBallInside(newBall)) {
+            if (levelGoals[currentLevel].isBallInside(levelBalls[currentLevel])) {
                     Serial.print("Inside!");
                     levelState = LevelState::LevelWin;
                 }
-            newBall.update(planks, MAX_PLANKS);
+            levelBalls[currentLevel].update(levelPlanks[currentLevel], MAX_PLANKS);
             break;
         
         case LevelState::LevelWin:
@@ -330,6 +345,8 @@ void setup() {
     a.setFrameRate(FRAME_RATE);
     a.initRandomSeed();
     a.clear();
+
+    defineLevels();
 }
 
 // MAIN LOOP

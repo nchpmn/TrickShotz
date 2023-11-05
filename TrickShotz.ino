@@ -15,7 +15,7 @@ Font3x5 font3x5 = Font3x5();
 
 // CONSTANTS
 const uint8_t FRAME_RATE = 60;
-const uint8_t MAX_LEVELS = 2;
+const uint8_t MAX_LEVELS = 5;
 const float GRAVITY = 0.05;
 const uint8_t MAX_PLANKS = 6;
 const float BOUNCE_FRICTION = 0.97;
@@ -157,7 +157,7 @@ class Ball{
         float vx, vy; // Velocity (X and Y components)
         uint8_t size; // Radius of ball
         uint8_t offscreenTimer; // Millisecond timer for ball offscreen
-        int launchPower; // Index of launchPowerLevels[] array
+        uint8_t launchPower; // Index of launchPowerLevels[] array
         uint16_t launchAngle; // Launch angle 0 to 359
 
         // Default constructor with default values
@@ -291,21 +291,27 @@ struct LevelData {
     Plank planks[MAX_PLANKS];
 };
 LevelData levels[MAX_LEVELS]; // An array of LevelData objects to store all levels
-uint8_t currentLevel = 0;
+uint8_t currentLevel = 2;
 
 void defineLevels() {
     // Level 0
     levels[0].ball = { 30, 20, 2 };
     levels[0].goal = { 100, 50, 8 };
-    levels[0].planks[0] = {10, 40, 100, 58}; // Plank 0 (Diagonal)
-    levels[0].planks[1] = {80, 15, 80, 25};  // Plank 1 (Vertical)
-    levels[0].planks[2] = {3, 60, 67, 60};   // Plank 2 (Horizontal)
+    levels[0].planks[0] = {10, 40, 100, 58};
+    levels[0].planks[1] = {80, 15, 80, 25};
+    levels[0].planks[2] = {3, 60, 67, 60};
 
     // Level 1
     levels[1].ball = { 64, 16, 2 };
     levels[1].goal = { 64, 55, 5 } ;
     levels[1].planks[0] = {20, 15, 20, 45};
     levels[1].planks[1] = {108, 15, 108, 45};
+
+    // Level 2
+    levels[2].ball = { 110, 50, 2 };
+    levels[2].goal = { 110, 10, 5 };
+    levels[2].planks[0] = { 80, 20, 128, 20 };
+    levels[2].planks[1] = { 15, 0, 15, 64 };
 }
 
 void loadLevel(uint8_t n) {
@@ -428,7 +434,7 @@ void playGame() {
             break;
         
         case LevelState::LevelWin:
-            a.print("Level Clear!");
+            a.print(F("Level Clear!"));
 
             if (a.justPressed(A_BUTTON)) {
                 currentLevel++;
@@ -436,7 +442,7 @@ void playGame() {
             }
             break;
         case LevelState::LevelLose:
-            a.print("You Lose!");
+            a.print(F("You Lose!"));
 
             if (a.justPressed(B_BUTTON)) {
                 levelState = LevelState::Load;
@@ -473,7 +479,7 @@ void loop() {
 
     switch(gameState) {
         case GameState::Title:
-            a.print("Main Title\n\nA to Play\nB for Instructions");
+            a.print(F("Main Title\n\nA to Play\nB for Instructions"));
             if (a.justPressed(A_BUTTON)) {
                 gameState = GameState::PlayGame;
             }
@@ -482,7 +488,7 @@ void loop() {
             }
             break;
         case GameState::Instructions:
-            a.print("Instructions");
+            a.print(F("Instructions"));
             if (a.justPressed(B_BUTTON)) {
                 gameState = GameState::Title;
             }
@@ -491,7 +497,7 @@ void loop() {
             playGame();
             break;
         case GameState::EndScreen:
-            a.print("End Screen");
+            a.print(F("End Screen"));
             break;
     }
     

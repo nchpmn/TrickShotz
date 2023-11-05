@@ -14,11 +14,12 @@ Font3x5 font3x5 = Font3x5();
 
 
 // CONSTANTS
+const uint8_t FRAME_RATE = 60;
+const uint8_t MAX_LEVELS = 2;
 const float GRAVITY = 0.05;
 const uint8_t MAX_PLANKS = 6;
 const float BOUNCE_FRICTION = 0.97;
 const uint8_t OFFSCREEN_SECONDS = 1;
-const uint8_t FRAME_RATE = 60;
 
 
 // GAME STATES (STRUCTURES)
@@ -31,12 +32,13 @@ enum class GameState {
 GameState gameState = GameState::Title;
 
 enum class LevelState {
-    Setup,
+    Load,
+    Aim,
     Play,
     LevelWin,
     LevelLose
 };
-LevelState levelState = LevelState::Setup;
+LevelState levelState = LevelState::Load;
 
 
 // FORWARD DELCARATIONS
@@ -44,7 +46,6 @@ class Plank;
 class Ball;
 class Goal;
 void levelLose();
-
 
 // CLASSES
 class Plank {
@@ -77,7 +78,7 @@ class Plank {
             return distance <= ballRadius + (thickness / 2);
         }
 
-        void draw() {
+        void draw() const {
             if (x1 == x2) {
                 // Case where line is vertical
                 a.fillRect(x1, y1, thickness, y2-y1, WHITE);
@@ -219,7 +220,7 @@ class Ball{
             }
         }
 
-        void draw() {
+        void draw() const {
             a.fillCircle(static_cast<int16_t>(round(x)), static_cast<int16_t>(round(y)), size, WHITE);
         }
 
@@ -243,7 +244,6 @@ class Ball{
         }
 };
 
-
 class Goal {
     public:
         uint8_t x;
@@ -264,7 +264,7 @@ class Goal {
             return distance + ball.size <= radius + ball.size;
         }
 
-        void draw() {
+        void draw() const {
             // Draw the single-pixel dot border
             int numDots = 20;  // Adjust this value for the number of dots
             for (int i = 0; i < numDots; i++) {
@@ -276,37 +276,52 @@ class Goal {
         }
 };
 
+// GLOBAL VARIABLES
+Ball currentBall;
+Goal currentGoal;
+Plank currentPlanks[MAX_PLANKS];
+
 // LEVELS
-const uint8_t maxLevels = 3; // Adjust as needed
+struct LevelData { 
+    Ball ball;
+    Goal goal;
+    Plank planks[MAX_PLANKS];
+};
+LevelData levels[MAX_LEVELS]; // An array of LevelData objects to store all levels
 uint8_t currentLevel = 0;
-Ball balls[maxLevels];
-Goal goals[maxLevels];
-Plank planks[maxLevels][MAX_PLANKS];
 
 void defineLevels() {
     // Level 0
-    balls[0] = { 30, 20, 2 };
-    goals[0] = { 100, 50, 8 };
-    planks[0][0] = {10, 40, 100, 58}; // Plank 0 (Diagonal)
-    planks[0][1] = {80, 15, 80, 25};  // Plank 1 (Vertical)
-    planks[0][2] = {3, 60, 67, 60};   // Plank 2 (Horizontal)
+    levels[0].ball = { 30, 20, 2 };
+    levels[0].goal = { 100, 50, 8 };
+    levels[0].planks[0] = {10, 40, 100, 58}; // Plank 0 (Diagonal)
+    levels[0].planks[1] = {80, 15, 80, 25};  // Plank 1 (Vertical)
+    levels[0].planks[2] = {3, 60, 67, 60};   // Plank 2 (Horizontal)
 
     // Level 1
-    balls[1] = { 64, 16, 2 };
-    goals[1] = { 64, 55, 5 } ;
-    planks[1][0] = {20, 15, 20, 45};
-    planks[1][1] = {108, 15, 108, 45};
+    levels[1].ball = { 64, 16, 2 };
+    levels[1].goal = { 64, 55, 5 } ;
+    levels[1].planks[0] = {20, 15, 20, 45};
+    levels[1].planks[1] = {108, 15, 108, 45};
+}
 
+void loadLevel(uint8_t n) {
+    // Reset all game objects using data from levels[n]
+    currentBall = levels[n].ball;
+    currentGoal = levels[n].goal;
+    for (uint8_t i = 0; i < MAX_PLANKS; i++) {
+        currentPlanks[i] = levels[n].planks[i];
+    }
 }
 
 // FUNCTIONS
 void drawObjects() {
     // Draw all physics/level objects to screen
+    currentBall.draw();
+    currentGoal.draw();
     for (int i = 0; i < MAX_PLANKS; i++) {
-        planks[currentLevel][i].draw();
+        currentPlanks[i].draw();
     }
-    balls[currentLevel].draw();
-    goals[currentLevel].draw();
 }
 
 void drawUI() {
@@ -319,61 +334,67 @@ void drawUI() {
     // Draw Angle
     font3x5.setCursor(uiAngleX, 57);
     font3x5.print(F("ANGLE:"));
-    font3x5.print(String(balls[currentLevel].launchAngle, 1));
+    font3x5.print(String(currentBall.launchAngle, 1));
 
     // Draw Power
     font3x5.setCursor(uiPowerX, 57);
     font3x5.print(F("POWER:"));
-        for (int i = 0; i < balls[currentLevel].launchPower; i++) {
+        for (int i = 0; i < currentBall.launchPower; i++) {
         a.fillRect((uiPowerX + 25 + i*4), (62 - i), 3, i+1);
     }
 }
 
 void playGame() {
     switch(levelState) {
-        case LevelState::Setup:
+        case LevelState::Load:
             font3x5.setCursor(0,0);
-            font3x5.print("Level Setup");
+            font3x5.print("Level Loading");
+            loadLevel(currentLevel);
+            levelState = LevelState::Aim;
+        
+        case LevelState::Aim:
+            font3x5.setCursor(0,0);
+            font3x5.print("Aiming");
 
             if (a.justPressed(A_BUTTON)) {
-                balls[currentLevel].setVelocity();
+                currentBall.setVelocity();
                 levelState = LevelState::Play;
             }
 
             // Set launchAngle (Left/Right)
             if (a.justPressed(RIGHT_BUTTON)) {
-                if (balls[currentLevel].launchAngle < 359.9) {
-                    balls[currentLevel].launchAngle += 10;
+                if (currentBall.launchAngle < 359.9) {
+                    currentBall.launchAngle += 10;
                 } else {
-                    balls[currentLevel].launchAngle = 0.0;
+                    currentBall.launchAngle = 0.0;
                 }
             }
             if (a.justPressed(LEFT_BUTTON)) {
-                if (balls[currentLevel].launchAngle > 0.1) {
-                    balls[currentLevel].launchAngle -= 10;
+                if (currentBall.launchAngle > 0.1) {
+                    currentBall.launchAngle -= 10;
                 } else {
-                    balls[currentLevel].launchAngle = 350;
+                    currentBall.launchAngle = 350;
                 }
             }
 
             // Set launchPower (Up/Down)
             if (a.justPressed(UP_BUTTON)) {
-                if (balls[currentLevel].launchPower < 5) {
-                    balls[currentLevel].launchPower += 1;
+                if (currentBall.launchPower < 5) {
+                    currentBall.launchPower += 1;
                 }
             }
             if (a.justPressed(DOWN_BUTTON)) {
-                if (balls[currentLevel].launchPower > 1) {
-                    balls[currentLevel].launchPower -= 1;
+                if (currentBall.launchPower > 1) {
+                    currentBall.launchPower -= 1;
                 }
             }
             break;
         
         case LevelState::Play:
-            if (goals[currentLevel].isBallInside(balls[currentLevel])) {
+            if (currentGoal.isBallInside(currentBall)) {
                 levelState = LevelState::LevelWin;
             }
-            balls[currentLevel].update(planks[currentLevel], MAX_PLANKS);
+            currentBall.update(currentPlanks, MAX_PLANKS);
             break;
         
         case LevelState::LevelWin:
@@ -381,14 +402,14 @@ void playGame() {
 
             if (a.justPressed(A_BUTTON)) {
                 currentLevel++;
-                levelState = LevelState::Setup;
+                levelState = LevelState::Load;
             }
             break;
         case LevelState::LevelLose:
             a.print("You Lose!");
 
             if (a.justPressed(B_BUTTON)) {
-                levelState = LevelState::Setup;
+                levelState = LevelState::Load;
             }
             break;
     }

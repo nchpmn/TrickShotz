@@ -8,9 +8,9 @@
 // LIBRARIES
 #include <Arduboy2.h>
 Arduboy2 a;
+// Micro font courtesy of @filmote - BSD 3-Clause License
 #include "src/Font3x5.h"
 Font3x5 font3x5 = Font3x5();
-// Micro font courtesy of @filmote - BSD 3-Clause License
 
 
 // CONSTANTS
@@ -305,6 +305,11 @@ void drawUI() {
     // Draw the bottom UI bar and elements
     a.fillRect(0, 55, 128, 15, BLACK);
     a.drawLine(0, 55, 128, 55, WHITE);
+
+    font3x5.setCursor(5, 57);
+    font3x5.print(F("Angle: 35.5"));
+    font3x5.setCursor(60, 57);
+    font3x5.print(F("Power: HIGH"));
 }
 
 void playGame() {

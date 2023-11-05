@@ -55,7 +55,7 @@ class Plank {
         Plank() : x1(0), y1(0), x2(0), y2(0), thickness(1) {}
 
 
-        Plank(int16_t startX1, int16_t startY1, int16_t startX2, int16_t startY2, uint8_t startThickness) {
+        Plank(int16_t startX1, int16_t startY1, int16_t startX2, int16_t startY2) {
             x1 = startX1;
             y1 = startY1;
             x2 = startX2;
@@ -275,13 +275,22 @@ void drawObjects() {
     levelGoal.draw();
 }
 
+void drawUI() {
+    // Draw the bottom UI bar and elements
+    a.fillRect(0, 50, 128, 15, BLACK);
+    a.drawLine(0, 50, 128, 50, WHITE);
+    a.setCursor(5,65);
+    a.print(F("Angle: 35"));
+}
+
 void playGame() {
     switch(levelState) {
         case LevelState::Setup:
             a.print("Level Setup\n");
             
-            planks[0] = Plank(10, 40, 100, 58, 2); // Diagonal
-            planks[1] = Plank(80, 15, 80, 25, 5); // Vertical (x1==x2)
+            planks[0] = Plank(10, 40, 100, 58); // Diagonal
+            planks[1] = Plank(80, 15, 80, 25); // Vertical (x1==x2)
+            planks[2] = Plank(3, 60, 67, 60); // Horizontal
 
 
             if (a.justPressed(A_BUTTON)) {
@@ -307,6 +316,7 @@ void playGame() {
     }
 
     drawObjects();
+    drawUI();
 
 }
 

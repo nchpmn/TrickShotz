@@ -154,17 +154,21 @@ class Ball{
         float vx, vy; // Velocity (X and Y components)
         uint8_t size; // Radius of ball
         uint8_t offscreenTimer; // Millisecond timer for ball offscreen
+        int launchPower; // Index of launchPowerLevels[] array
+        float launchAngle; // Launch angle 0.0 to 359.9
 
         // Default constructor with default values
-        Ball() : x(0), y(0), vx(0), vy(0), size(1) {}
+        Ball() : x(0), y(0), size(1) {}
 
 
-        Ball(float startX, float startY, float startVX, float startVY, uint8_t startSize) {
+        Ball(float startX, float startY, uint8_t startSize) {
             x = startX;
             y = startY;
-            vx = startVX;
-            vy = startVY;
+            vx = 0;
+            vy = 0;
             size = startSize;
+            launchAngle = 0.0;
+            launchPower = 1;
         }
 
         void update(Plank planks[], int numPlanks) {
@@ -196,14 +200,6 @@ class Ball{
                     // Add friction from bounce
                     vx *= BOUNCE_FRICTION;
                     vy *= BOUNCE_FRICTION;
-
-                    /*Serial.print("Bounce - Plank ");
-                    Serial.print(i);
-                    Serial.print("\n");
-                    Serial.print(vx);
-                    Serial.print("  ");
-                    Serial.print(vy);
-                    Serial.print("\n\n");*/
                 }
             }
 
@@ -226,8 +222,22 @@ class Ball{
         void draw() {
             a.fillCircle(static_cast<int16_t>(round(x)), static_cast<int16_t>(round(y)), size, WHITE);
         }
+
+        void setVelocity() {
+            // Adjust launchAngle so 0 deg = up
+            float adjustedAngle = launchAngle - 90;
+            if (adjustedAngle < 0) {
+                adjustedAngle += 360;
+            }
+
+            // Calulcate vx and vy from angle and power
+            vx = launchPowerLevels[launchPower - 1] * cos(radians(adjustedAngle));
+            vy = launchPowerLevels[launchPower - 1] * sin(radians(adjustedAngle));
+        }
     
     private:
+        float launchPowerLevels[5] = {0.5, 1, 1.5, 2, 2.5};
+        
         bool checkOffscreen() {
             return (x < 0 || x > WIDTH || y < 0 || y > HEIGHT);
         }
@@ -251,8 +261,6 @@ class Goal {
 
         bool isBallInside(const Ball& ball) {
             float distance = sqrt((ball.x - x) * (ball.x - x) + (ball.y - y) * (ball.y - y));
-            Serial.print(distance + ball.size);
-            Serial.print("\n");
             return distance + ball.size <= radius + ball.size;
         }
 
@@ -277,14 +285,14 @@ Plank planks[maxLevels][MAX_PLANKS];
 
 void defineLevels() {
     // Level 0
-    balls[0] = { 30, 20, 0.25, -.35, 2 };
+    balls[0] = { 30, 20, 2 };
     goals[0] = { 100, 50, 8 };
     planks[0][0] = {10, 40, 100, 58}; // Plank 0 (Diagonal)
     planks[0][1] = {80, 15, 80, 25};  // Plank 1 (Vertical)
     planks[0][2] = {3, 60, 67, 60};   // Plank 2 (Horizontal)
 
     // Level 1
-    balls[1] = { 64, 16, 0, 0, 2 };
+    balls[1] = { 64, 16, 2 };
     goals[1] = { 64, 55, 5 } ;
     planks[1][0] = {20, 15, 20, 45};
     planks[1][1] = {108, 15, 108, 45};
@@ -306,10 +314,12 @@ void drawUI() {
     a.fillRect(0, 55, 128, 15, BLACK);
     a.drawLine(0, 55, 128, 55, WHITE);
 
-    font3x5.setCursor(5, 57);
-    font3x5.print(F("Angle: 35.5"));
+    font3x5.setCursor(10, 57);
+    font3x5.print(F("ANGLE:"));
+    font3x5.print(String(balls[currentLevel].launchAngle, 1));
     font3x5.setCursor(60, 57);
-    font3x5.print(F("Power: HIGH"));
+    font3x5.print(F("POWER:"));
+    font3x5.print(balls[currentLevel].launchPower);
 }
 
 void playGame() {
@@ -319,8 +329,38 @@ void playGame() {
             font3x5.print("Level Setup");
 
             if (a.justPressed(A_BUTTON)) {
+                balls[currentLevel].setVelocity();
                 levelState = LevelState::Play;
             }
+
+            // Set launchAngle (Left/Right)
+            if (a.justPressed(RIGHT_BUTTON)) {
+                if (balls[currentLevel].launchAngle < 359.9) {
+                    balls[currentLevel].launchAngle += 10;
+                } else {
+                    balls[currentLevel].launchAngle = 0.0;
+                }
+            }
+            if (a.justPressed(LEFT_BUTTON)) {
+                if (balls[currentLevel].launchAngle > 0.1) {
+                    balls[currentLevel].launchAngle -= 10;
+                } else {
+                    balls[currentLevel].launchAngle = 350;
+                }
+            }
+
+            // Set launchPower (Up/Down)
+            if (a.justPressed(UP_BUTTON)) {
+                if (balls[currentLevel].launchPower < 5) {
+                    balls[currentLevel].launchPower += 1;
+                }
+            }
+            if (a.justPressed(DOWN_BUTTON)) {
+                if (balls[currentLevel].launchPower > 1) {
+                    balls[currentLevel].launchPower -= 1;
+                }
+            }
+
             break;
         
         case LevelState::Play:

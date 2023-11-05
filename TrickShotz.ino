@@ -338,6 +338,16 @@ void drawUI() {
     font3x5.setCursor(uiAngleX, 57);
     font3x5.print(F("ANGLE:"));
     font3x5.print(currentBall.launchAngle);
+    if (currentBall.launchAngle >= 100) {
+        // 3 digits = 9 Characters
+        a.drawRect(uiAngleX + (9 * 4), 58, 3, 3, WHITE);
+    } else if (currentBall.launchAngle >= 10) {
+        // 2 digits = 8 Characters
+        a.drawRect(uiAngleX + (8 * 4), 58, 3, 3, WHITE);
+    } else {
+        // 1 digit = 7 Characters
+        a.drawRect(uiAngleX + (7 * 4), 58, 3, 3, WHITE);
+    }
 
     // Draw Power
     font3x5.setCursor(uiPowerX, 57);

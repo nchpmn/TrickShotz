@@ -452,7 +452,11 @@ void playGame() {
             break;
         
         case LevelState::LevelWin:
-            a.print(F("Level Clear!"));
+            a.drawLine(0, 10, 128, 10, WHITE);
+            a.fillRect(0, 11, 128, 7, BLACK);
+            font3x5.setCursor((64 - 12*3), 12);
+            font3x5.print("LEVEL CLEAR!");
+            a.drawLine(0, 19, 128, 19, WHITE);
 
             if (a.justPressed(A_BUTTON)) {
                 currentLevel++;

@@ -475,11 +475,11 @@ void playGame() {
             }
             break;
         case LevelState::LevelLose:
-            a.print(F("You Lose!"));
-
-            if (a.justPressed(B_BUTTON)) {
-                levelState = LevelState::Load;
-            }
+            a.drawLine(0, 10, 128, 10, WHITE);
+            a.fillRect(0, 11, 128, 7, BLACK);
+            font3x5.setCursor((64 - 12*3), 12);
+            font3x5.print("OUT OF BOUNDS!");
+            a.drawLine(0, 19, 128, 19, WHITE);
             break;
     }
 

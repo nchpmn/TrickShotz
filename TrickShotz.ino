@@ -161,15 +161,15 @@ class Ball{
         uint16_t launchAngle; // Launch angle 0 to 359
 
         // Default constructor with default values
-        Ball() : x(0), y(0), size(1) {}
+        Ball() : x(64), y(32) {}
 
 
-        Ball(float startX, float startY, uint8_t startSize) {
+        Ball(float startX, float startY) {
             x = startX;
             y = startY;
             vx = 0;
             vy = 0;
-            size = startSize;
+            size = 2;
             launchAngle = 0;
             launchPower = 1;
         }
@@ -291,8 +291,16 @@ struct LevelData {
     Plank planks[MAX_PLANKS];
 };
 const LevelData levels[MAX_LEVELS] = {
+    { // ACTUAL Level 0
+        { 30, 20 }, // Ball
+        { 98, 25, 6 }, // Goal
+        { // Planks
+            { 15, 50, 103, 50 }
+        }
+
+    },
     { // Level 0
-        { 30, 20, 2 }, // Ball
+        { 30, 20 }, // Ball
         { 100, 50, 8 }, // Goal
         { // Planks
             {10, 40, 100, 58},
@@ -301,7 +309,7 @@ const LevelData levels[MAX_LEVELS] = {
         }
     },
     { // Level 1
-        { 64, 16, 2 }, // Ball
+        { 64, 16 }, // Ball
         { 64, 55, 5 }, // Goal
         { // Planks
             {20, 15, 20, 45},
@@ -309,7 +317,7 @@ const LevelData levels[MAX_LEVELS] = {
         }
     },
     { // Level 2
-        { 110, 50, 2 }, // Ball
+        { 110, 50 }, // Ball
         { 110, 10, 5 }, // Goal
         { // Planks
             {80, 20, 128, 20},

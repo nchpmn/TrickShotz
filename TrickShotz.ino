@@ -383,7 +383,7 @@ void drawUI() {
 
     // Reset level at any time
     if (a.pressed(B_BUTTON)) {
-        if (heldFrames == 130) {
+        if (heldFrames == 70) {
             levelState = LevelState::Load;
         } else {
             heldFrames++;

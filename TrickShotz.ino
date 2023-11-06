@@ -290,36 +290,47 @@ struct LevelData {
     Goal goal;
     Plank planks[MAX_PLANKS];
 };
-LevelData levels[MAX_LEVELS]; // An array of LevelData objects to store all levels
+const LevelData levels[MAX_LEVELS] = {
+    { // Level 0
+        { 30, 20, 2 }, // Ball
+        { 100, 50, 8 }, // Goal
+        { // Planks
+            {10, 40, 100, 58},
+            {80, 15, 80, 25},
+            {3, 60, 67, 60}
+        }
+    },
+    { // Level 1
+        { 64, 16, 2 }, // Ball
+        { 64, 55, 5 }, // Goal
+        { // Planks
+            {20, 15, 20, 45},
+            {108, 15, 108, 45}
+        }
+    },
+    { // Level 2
+        { 110, 50, 2 }, // Ball
+        { 110, 10, 5 }, // Goal
+        { // Planks
+            {80, 20, 128, 20},
+            {15, 0, 15, 64}
+        }
+    },
+    // Add more levels as needed
+};
 uint8_t currentLevel = 0;
-
-void defineLevels() {
-    // Level 0
-    levels[0].ball = { 30, 20, 2 };
-    levels[0].goal = { 100, 50, 8 };
-    levels[0].planks[0] = {10, 40, 100, 58};
-    levels[0].planks[1] = {80, 15, 80, 25};
-    levels[0].planks[2] = {3, 60, 67, 60};
-
-    // Level 1
-    levels[1].ball = { 64, 16, 2 };
-    levels[1].goal = { 64, 55, 5 } ;
-    levels[1].planks[0] = {20, 15, 20, 45};
-    levels[1].planks[1] = {108, 15, 108, 45};
-
-    // Level 2
-    levels[2].ball = { 110, 50, 2 };
-    levels[2].goal = { 110, 10, 5 };
-    levels[2].planks[0] = { 80, 20, 128, 20 };
-    levels[2].planks[1] = { 15, 0, 15, 64 };
-}
 
 void loadLevel(uint8_t n) {
     // Reset all game objects using data from levels[n]
-    currentBall = levels[n].ball;
-    currentGoal = levels[n].goal;
+    // Define a temporary structure to hold the level data in RAM
+    LevelData levelData;
+
+    // Retreieve levelData from PROGMEM into RAM
+
+    currentBall = levels[0].ball;
+    currentGoal = levels[0].goal;
     for (uint8_t i = 0; i < MAX_PLANKS; i++) {
-        currentPlanks[i] = levels[n].planks[i];
+        currentPlanks[i] = levels[0].planks[i];
     }
 }
 
@@ -481,14 +492,13 @@ void levelLose() {
     levelState = LevelState::LevelLose;
 }
 
+
 // MAIN SETUP
 void setup() {
     a.begin();
     a.setFrameRate(FRAME_RATE);
     a.initRandomSeed();
     a.clear();
-
-    defineLevels();
 }
 
 // MAIN LOOP

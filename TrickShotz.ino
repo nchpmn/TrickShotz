@@ -17,7 +17,7 @@ Font3x5 font3x5 = Font3x5();
 const uint8_t FRAME_RATE = 60;
 const uint8_t MAX_LEVELS = 5;
 const float GRAVITY = 0.05;
-const uint8_t MAX_PLANKS = 6;
+const uint8_t MAX_PLANKS = 5;
 const float BOUNCE_FRICTION = 0.97;
 const uint8_t OFFSCREEN_SECONDS = 1;
 const uint8_t HELD_FRAMES_DELAY = 45;
@@ -59,7 +59,7 @@ class Plank {
         float normalY; // Y component of the normal vector
 
         // Default constructor with default values
-        Plank() : x1(0), y1(0), x2(0), y2(0), thickness(1) {}
+        Plank() : x1(0), y1(0), x2(0), y2(0) {}
 
         Plank(int16_t startX1, int16_t startY1, int16_t startX2, int16_t startY2) {
             x1 = startX1;

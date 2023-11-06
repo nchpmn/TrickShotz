@@ -291,7 +291,7 @@ struct LevelData {
     Plank planks[MAX_PLANKS];
 };
 LevelData levels[MAX_LEVELS]; // An array of LevelData objects to store all levels
-uint8_t currentLevel = 2;
+uint8_t currentLevel = 0;
 
 void defineLevels() {
     // Level 0
@@ -360,6 +360,23 @@ void drawUI() {
     font3x5.print(F("POWER:"));
         for (int i = 0; i < currentBall.launchPower; i++) {
         a.fillRect((uiPowerX + 25 + i*4), (62 - i), 3, i+1);
+    }
+
+    // Reset level at any time
+    if (a.pressed(B_BUTTON)) {
+        if (heldFrames == 130) {
+            levelState = LevelState::Load;
+        } else {
+            heldFrames++;
+            a.fillRect(0, 57, heldFrames*2, 8);
+            font3x5.setCursor(3, 57);
+            font3x5.setTextColor(BLACK);
+            font3x5.print(F("RESTART LEVEL..."));
+            font3x5.setTextColor(WHITE);
+        }
+    }
+    if (a.justReleased(B_BUTTON)) {
+        heldFrames = 0;
     }
 }
 
@@ -430,6 +447,7 @@ void playGame() {
             if (currentGoal.isBallInside(currentBall)) {
                 levelState = LevelState::LevelWin;
             }
+
             currentBall.update(currentPlanks, MAX_PLANKS);
             break;
         

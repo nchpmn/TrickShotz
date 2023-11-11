@@ -243,6 +243,22 @@ class Ball{
 
         void draw() const {
             a.fillCircle(round(x), round(y), size, WHITE);
+
+            // Draw a dotted line while aiming
+            if (levelState == LevelState::Aim) {
+                uint8_t lineLength = 10;
+                int16_t adjustedAngle = launchAngle - 90;
+                if (adjustedAngle < 0) {
+                    adjustedAngle += 360;
+                }
+                float angleRad = radians(adjustedAngle);
+
+                for (int i = 0; i < lineLength; i += 3) {
+                    float dottedX = x + i * cos(angleRad);
+                    float dottedY = y + i * sin(angleRad);
+                    a.drawPixel(round(dottedX), round(dottedY), WHITE);
+                }
+            }
         }
 
         void setVelocity() {

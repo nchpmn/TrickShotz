@@ -8,6 +8,9 @@
 // LIBRARIES
 #include <Arduboy2.h>
 Arduboy2 a;
+#include <ArduboyTones.h>
+#include <ArduboyTonesPitches.h>
+ArduboyTones sound(a.audio.enabled);
 // Micro font courtesy of @filmote - BSD 3-Clause License
 #include "src/Font3x5.h"
 Font3x5 font3x5 = Font3x5();
@@ -18,7 +21,7 @@ const uint8_t FRAME_RATE = 60;
 const uint8_t MAX_LEVELS = 5;
 const float GRAVITY = 0.05;
 const uint8_t MAX_PLANKS = 5;
-const float BOUNCE_FRICTION = 0.97;
+const float BOUNCE_FRICTION = 0.9;
 const uint8_t OFFSCREEN_SECONDS = 1;
 const uint8_t HELD_FRAMES_DELAY = 45;
 const uint8_t HELD_FRAMES_FREQ = 3;
@@ -217,6 +220,8 @@ class Ball{
                     // Add friction from bounce
                     vx *= BOUNCE_FRICTION;
                     vy *= BOUNCE_FRICTION;
+
+                    sound.tone(55 + (5 * i), 60);
                 }
             }
 

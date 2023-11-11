@@ -519,7 +519,7 @@ void loop() {
 
     switch(gameState) {
         case GameState::Title:
-            a.print(F("Main Title\n\nA to Play\nB for Instructions"));
+            font3x5.print(F("Main Title\n\nA to Play\nB for Instructions"));
             if (a.justPressed(A_BUTTON)) {
                 gameState = GameState::PlayGame;
             }
@@ -528,7 +528,7 @@ void loop() {
             }
             break;
         case GameState::Instructions:
-            a.print(F("Instructions"));
+            font3x5.print(F("Instructions"));
             if (a.justPressed(B_BUTTON)) {
                 gameState = GameState::Title;
             }
@@ -537,7 +537,7 @@ void loop() {
             playGame();
             break;
         case GameState::EndScreen:
-            a.print(F("End Screen"));
+            font3x5.print(F("End Screen"));
             break;
     }
     

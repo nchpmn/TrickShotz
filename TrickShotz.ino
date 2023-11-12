@@ -380,10 +380,10 @@ void loadLevel(uint8_t n) {
     // Define a temporary structure to hold the level data in RAM
     LevelData levelData;
 
-    currentBall = levels[0].ball;
-    currentGoal = levels[0].goal;
+    currentBall = levels[n].ball;
+    currentGoal = levels[n].goal;
     for (uint8_t i = 0; i < MAX_PLANKS; i++) {
-        currentPlanks[i] = levels[0].planks[i];
+        currentPlanks[i] = levels[n].planks[i];
     }
 }
 

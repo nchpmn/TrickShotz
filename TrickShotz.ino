@@ -314,13 +314,27 @@ class Goal {
         }
 
         void draw() const {
-            // Draw the single-pixel dot border
-            int numDots = 20;  // Adjust this value for the number of dots
-            for (int i = 0; i < numDots; i++) {
-                float angle = TWO_PI / numDots * i;
-                int x1 = x + (radius + 1) * cos(angle);
-                int y1 = y + (radius + 1) * sin(angle);
-                a.drawPixel(x1, y1, WHITE);
+            static float rotationAngle = 0.0;
+            int numDashes = 30;  // Adjust this value for the number of dashes
+            float dashLength = (2 * PI * radius) / numDashes;
+
+            for (int i = 0; i < numDashes; i += 3) {
+                float angle1 = TWO_PI / numDashes * i + rotationAngle;
+                float angle2 = TWO_PI / numDashes * (i + 1) + rotationAngle;
+
+                int x1 = x + radius * cos(angle1);
+                int y1 = y + radius * sin(angle1);
+                int x2 = x + radius * cos(angle2);
+                int y2 = y + radius * sin(angle2);
+
+                // Draw each dash as a line segment
+                a.drawLine(x1, y1, x2, y2, WHITE);
+            }
+
+            // Update rotation angle for the next frame
+            rotationAngle += 0.0043625;  // 0.5 degree in radians
+            if (rotationAngle >= TWO_PI) {
+                rotationAngle -= TWO_PI;
             }
         }
 };

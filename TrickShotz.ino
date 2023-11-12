@@ -187,8 +187,8 @@ class Ball{
             vx = 0;
             vy = 0;
             size = 2;
-            launchAngle = 0;
-            launchPower = 1;
+            launchAngle = 25;
+            launchPower = 2;
         }
 
         void update(Plank planks[], int numPlanks) {
@@ -246,18 +246,30 @@ class Ball{
 
             // Draw a dotted line while aiming
             if (levelState == LevelState::Aim) {
-                uint8_t lineLength = 10;
+                uint8_t lineLength = 25;
                 int16_t adjustedAngle = launchAngle - 90;
                 if (adjustedAngle < 0) {
                     adjustedAngle += 360;
                 }
                 float angleRad = radians(adjustedAngle);
 
-                for (int i = 0; i < lineLength; i += 3) {
-                    float dottedX = x + i * cos(angleRad);
-                    float dottedY = y + i * sin(angleRad);
-                    a.drawPixel(round(dottedX), round(dottedY), WHITE);
+                float simX = x;
+                float simY = y;
+                float simVX = launchPowerLevels[launchPower - 1] * cos(radians(adjustedAngle));
+                float simVY = launchPowerLevels[launchPower - 1] * sin(radians(adjustedAngle));
+
+                for (int8_t t = 0; t < lineLength; t++) {
+                    // Gravity applied to ball
+                    simVY += GRAVITY;
+
+                    simX += simVX;
+                    simY += simVY;
+
+                    if (t % 3 == 0) {
+                        a.drawPixel(round(simX), round(simY), WHITE);
+                    }
                 }
+                
             }
         }
 
@@ -367,8 +379,6 @@ void loadLevel(uint8_t n) {
     // Reset all game objects using data from levels[n]
     // Define a temporary structure to hold the level data in RAM
     LevelData levelData;
-
-    // Retreieve levelData from PROGMEM into RAM
 
     currentBall = levels[0].ball;
     currentGoal = levels[0].goal;

@@ -354,21 +354,14 @@ const LevelData levels[MAX_LEVELS] = {
         }
     },
     { // Level 2
-        { 64, 16 }, // Ball
-        { 64, 55, 5 }, // Goal
+        { 89, 12 }, // Ball
+        { 89, 34, 5 }, // Goal
         { // Planks
-            {20, 15, 20, 45},
-            {108, 15, 108, 45}
+            {69, 19, 128, 19},
+            {20, 50, 128, 50},
+            {20, 0, 20, 50}
         }
-    },
-    { // Level 2
-        { 110, 50 }, // Ball
-        { 110, 10, 5 }, // Goal
-        { // Planks
-            {80, 20, 128, 20},
-            {15, 0, 15, 64}
-        }
-    },
+    }
     // Add more levels as needed
 };
 uint8_t currentLevel = 0;

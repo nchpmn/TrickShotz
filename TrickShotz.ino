@@ -404,6 +404,21 @@ void drawUI() {
     a.fillRect(0, 55, 128, 15, BLACK);
     a.drawLine(0, 55, 128, 55, WHITE);
 
+
+
+    // Reset level at any time
+    if (a.pressed(B_BUTTON)) {
+        if (heldFrames == 70) {
+            levelState = LevelState::Load;
+        } else {
+            heldFrames++;
+            a.fillRect(0, 57, heldFrames*2, 8);
+            font3x5.setCursor(3, 57);
+            font3x5.setTextColor(BLACK);
+            font3x5.print(F("RESTART LEVEL..."));
+            font3x5.setTextColor(WHITE);
+        }
+    } else {
     // Draw Angle
     font3x5.setCursor(uiAngleX, 57);
     font3x5.print(F("ANGLE:"));
@@ -424,19 +439,6 @@ void drawUI() {
     font3x5.print(F("POWER:"));
         for (int i = 0; i < currentBall.launchPower; i++) {
         a.fillRect((uiPowerX + 25 + i*4), (62 - i), 3, i+1);
-    }
-
-    // Reset level at any time
-    if (a.pressed(B_BUTTON)) {
-        if (heldFrames == 70) {
-            levelState = LevelState::Load;
-        } else {
-            heldFrames++;
-            a.fillRect(0, 57, heldFrames*2, 8);
-            font3x5.setCursor(3, 57);
-            font3x5.setTextColor(BLACK);
-            font3x5.print(F("RESTART LEVEL..."));
-            font3x5.setTextColor(WHITE);
         }
     }
     if (a.justReleased(B_BUTTON)) {

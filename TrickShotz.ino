@@ -338,24 +338,22 @@ struct LevelData {
     Plank planks[MAX_PLANKS];
 };
 const LevelData levels[MAX_LEVELS] = {
-    { // ACTUAL Level 0
+    { // Level 0
         { 30, 20 }, // Ball
         { 98, 25, 6 }, // Goal
         { // Planks
-            { 15, 50, 103, 50 }
-        }
-
-    },
-    { // Level 0
-        { 30, 20 }, // Ball
-        { 100, 50, 8 }, // Goal
-        { // Planks
-            {10, 40, 100, 58},
-            {80, 15, 80, 25},
-            {3, 60, 67, 60}
+            { 10, 50, 118, 50 }
         }
     },
     { // Level 1
+        { 30, 20 }, // Ball
+        { 98, 25, 5}, // Goal
+        { // Planks
+            {50, 50, 78, 50},
+            {64, 5, 64, 30},
+        }
+    },
+    { // Level 2
         { 64, 16 }, // Ball
         { 64, 55, 5 }, // Goal
         { // Planks
@@ -419,26 +417,26 @@ void drawUI() {
             font3x5.setTextColor(WHITE);
         }
     } else {
-    // Draw Angle
-    font3x5.setCursor(uiAngleX, 57);
-    font3x5.print(F("ANGLE:"));
-    font3x5.print(currentBall.launchAngle);
-    if (currentBall.launchAngle >= 100) {
-        // 3 digits = 9 Characters
-        a.drawRect(uiAngleX + (9 * 4), 58, 3, 3, WHITE);
-    } else if (currentBall.launchAngle >= 10) {
-        // 2 digits = 8 Characters
-        a.drawRect(uiAngleX + (8 * 4), 58, 3, 3, WHITE);
-    } else {
-        // 1 digit = 7 Characters
-        a.drawRect(uiAngleX + (7 * 4), 58, 3, 3, WHITE);
-    }
+        // Draw Angle
+        font3x5.setCursor(uiAngleX, 57);
+        font3x5.print(F("ANGLE:"));
+        font3x5.print(currentBall.launchAngle);
+        if (currentBall.launchAngle >= 100) {
+            // 3 digits = 9 Characters
+            a.drawRect(uiAngleX + (9 * 4), 58, 3, 3, WHITE);
+        } else if (currentBall.launchAngle >= 10) {
+            // 2 digits = 8 Characters
+            a.drawRect(uiAngleX + (8 * 4), 58, 3, 3, WHITE);
+        } else {
+            // 1 digit = 7 Characters
+            a.drawRect(uiAngleX + (7 * 4), 58, 3, 3, WHITE);
+        }
 
-    // Draw Power
-    font3x5.setCursor(uiPowerX, 57);
-    font3x5.print(F("POWER:"));
-        for (int i = 0; i < currentBall.launchPower; i++) {
-        a.fillRect((uiPowerX + 25 + i*4), (62 - i), 3, i+1);
+        // Draw Power
+        font3x5.setCursor(uiPowerX, 57);
+        font3x5.print(F("POWER:"));
+            for (int i = 0; i < currentBall.launchPower; i++) {
+            a.fillRect((uiPowerX + 25 + i*4), (62 - i), 3, i+1);
         }
     }
     if (a.justReleased(B_BUTTON)) {

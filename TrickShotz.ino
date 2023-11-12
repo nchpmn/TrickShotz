@@ -338,14 +338,14 @@ struct LevelData {
     Plank planks[MAX_PLANKS];
 };
 const LevelData levels[MAX_LEVELS] = {
-    { // Level 0
+    { // Level 1
         { 30, 20 }, // Ball
         { 98, 25, 6 }, // Goal
         { // Planks
             { 10, 50, 118, 50 }
         }
     },
-    { // Level 1
+    { // Level 2
         { 30, 20 }, // Ball
         { 98, 25, 5}, // Goal
         { // Planks
@@ -353,7 +353,7 @@ const LevelData levels[MAX_LEVELS] = {
             {64, 5, 64, 30},
         }
     },
-    { // Level 2
+    { // Level 3
         { 89, 12 }, // Ball
         { 89, 34, 5 }, // Goal
         { // Planks
@@ -362,7 +362,7 @@ const LevelData levels[MAX_LEVELS] = {
             {20, 0, 20, 50}
         }
     },
-    { // Level 3
+    { // Level 4
         { 14, 42 }, // Ball
         { 106, 39, 4 }, // Goal
         { // Planks

@@ -479,6 +479,27 @@ void drawUI() {
     }
 }
 
+void drawMessagesBanner() {
+    a.drawLine(0, 10, 128, 10, WHITE);
+    a.fillRect(0, 11, 128, 9, BLACK);
+    a.drawLine(0, 20, 128, 20, WHITE);
+}
+
+void drawMessages() {
+    switch(levelState) {
+        case LevelState::LevelWin:
+            drawMessagesBanner();
+            font3x5.setCursor((64 - 6*4), 12);
+            font3x5.print("LEVEL CLEAR!");
+            break;
+
+        case LevelState::LevelLose:
+            drawMessagesBanner();
+            font3x5.setCursor((64 - 7*4), 12);
+            font3x5.print("OUT OF BOUNDS!");
+    }
+}
+
 void launchAngleUp(bool up) {
     uint8_t adjustStep = 1;
     if (up) {
@@ -585,6 +606,7 @@ void playGame() {
 
     drawObjects();
     drawUI();
+    drawMessages();
 
 }
 

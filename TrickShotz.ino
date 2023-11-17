@@ -179,11 +179,7 @@ class Ball{
         uint16_t launchAngle; // Launch angle 0 to 359
 
         // Default constructor with default values
-        Ball() : x(64), y(32) {
-            size = 2;
-            launchAngle = 25;
-            launchPower = 2;
-        }
+        Ball() : x(64), y(32) {}
 
 
         Ball(float startX, float startY) {
@@ -191,6 +187,9 @@ class Ball{
             y = startY;
             vx = 0;
             vy = 0;
+            size = 2;
+            launchAngle = 25;
+            launchPower = 2;
         }
 
         void update(Plank planks[], int numPlanks) {
@@ -358,56 +357,46 @@ const LevelData levels[MAX_LEVELS] = {
     { // Level 1
         { 30, 20 }, // Ball
         { 98, 25, 6 }, // Goal
-        1,
-        { // Planks
+        1, { // Planks
             { 10, 50, 118, 50 }
         }
     },
+    { // Level 2
+        { 30, 20 }, // Ball
+        { 98, 25, 5}, // Goal
+        2, { // Planks
+            {50, 50, 78, 50},
+            {64, 5, 64, 30},
+        }
+    },
+    { // Level 3
+        { 89, 12 }, // Ball
+        { 89, 34, 5 }, // Goal
+        3, { // Planks
+            {69, 19, 128, 19},
+            {20, 50, 128, 50},
+            {20, 0, 20, 50}
+        }
+    },
+    { // Level 4
+        { 14, 42 }, // Ball
+        { 106, 39, 4 }, // Goal
+        5, { // Planks
+            {0, 51, 128, 51},
+            {0, 25, 25, 0},
+            {27, 19, 69, 19},
+            {67, 21, 67, 51},
+            {126, 0, 126, 51}
+        }
+    }
+    // Add more levels as needed
 };
-//     { // Level 2
-//         { 30, 20 }, // Ball
-//         { 98, 25, 5}, // Goal
-//         { // Planks
-//             {50, 50, 78, 50},
-//             {64, 5, 64, 30},
-//         }
-//     },
-//     { // Level 3
-//         { 89, 12 }, // Ball
-//         { 89, 34, 5 }, // Goal
-//         { // Planks
-//             {69, 19, 128, 19},
-//             {20, 50, 128, 50},
-//             {20, 0, 20, 50}
-//         }
-//     },
-//     { // Level 4
-//         { 14, 42 }, // Ball
-//         { 106, 39, 4 }, // Goal
-//         { // Planks
-//             {0, 51, 128, 51},
-//             {0, 25, 25, 0},
-//             {27, 19, 69, 19},
-//             {67, 21, 67, 51},
-//             {126, 0, 126, 51}
-//         }
-//     }
-//     // Add more levels as needed
-// };
 uint8_t currentLevel = 0;
 
 void loadLevel(uint8_t n) {
     // Reset all game objects using data from levels[n]
 
-    currentBall = Ball();
-
-    currentBall.x = levels[n].levelBallData[0];
-    currentBall.y = levels[n].levelBallData[1];
-    currentBall.size = 2;
-
-    currentGoal.x = levels[n].levelGoalData[0];
-    currentGoal.y = levels[n].levelGoalData[1];
-    currentGoal.radius = levels[n].levelGoalData[2];
+    currentBall = Ball(levels[n].levelBallData[0], levels[n].levelBallData[1]);
 
     for (uint8_t i = 0; i < levels[n].numPlanks; i++) {
         currentPlanks[i].x1 = levels[n].levelPlanksData[i][0];

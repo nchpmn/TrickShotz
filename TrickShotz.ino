@@ -646,8 +646,9 @@ void loop() {
             }
             break;
         case GameState::Instructions:
-            font3x5.print(F("Instructions"));
-            if (a.justPressed(B_BUTTON)) {
+            font3x5.setCursor(5,5);
+            font3x5.print(F("Instructions\nL/R: Set Angle\nU/D: Set Power\nA: Launch!\nB: Reset Level"));
+            if (a.justPressed(A_BUTTON)) {
                 gameState = GameState::Title;
             }
             break;
@@ -655,7 +656,7 @@ void loop() {
             playGame();
             break;
         case GameState::EndScreen:
-            font3x5.print(F("End Screen"));
+            font3x5.print(F("Congratulations!\nYou Completed All Levels!"));
             break;
     }
     

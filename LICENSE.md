@@ -1,9 +1,11 @@
-All Code and Assets, except where noted, are Copyright (c) Nathan Chapman / nchpmn, 2023
+**All Code and Assets, except where noted, are Copyright (c) Nathan Chapman / nchpmn, 2023**
 
-Code and Assets created by nchpmn are licenced as Open Source under GNU GPL 3.0
+Code and Assets created by myself are licenced as Open Source under GNU GPL 3.0
+
 Some code from other libraries and repositories are licenced under different terms.
 
-                    
+---
+
                     GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 

@@ -1,6 +1,7 @@
 // TrickShotz
 // A Physics-Based Puzzler
 // Copyright Nathan Chapman / nchpmn
+// Licenced under GNU GPL 3.0
 //
 // 01 Nov 2023 - Development Started
 // PROTOTYPE ONLY

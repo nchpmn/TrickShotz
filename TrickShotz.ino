@@ -41,6 +41,16 @@ constexpr uint8_t title[] PROGMEM {
 };
 
 
+// TUNES
+// You Win
+const uint16_t winSong[] PROGMEM = {
+    NOTE_REST,100,
+    NOTE_B4,200, NOTE_REST,50, NOTE_D5,200, NOTE_REST,50,
+    NOTE_G5,100, NOTE_B5,100, NOTE_REST,50,
+    NOTE_C6,300, 
+    TONES_END };
+
+
 // GAME STATES (STRUCTURES)
 enum class GameState {
     Title,
@@ -525,6 +535,7 @@ void playGame() {
         
         case LevelState::Play:
             if (currentGoal.isBallInside(currentBall)) {
+                sound.tones(winSong);
                 levelState = LevelState::LevelWin;
             }
 

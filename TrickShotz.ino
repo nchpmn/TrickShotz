@@ -399,6 +399,15 @@ const LevelData levels[MAX_LEVELS] = {
             {67, 21, 67, 51},
             {126, 0, 126, 51}
         }
+    },
+    { // Level 5
+        { 64, 6 }, // Ball
+        { 64, 50, 5 }, // Goal
+        3, { // Planks
+            {50, 10, 78, 10},
+            {0, 24, 40, 64},
+            {128, 24, 88, 64}
+        }
     }
     // Add more levels as needed
 };

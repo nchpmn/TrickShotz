@@ -52,6 +52,7 @@ GameState gameState = GameState::Title;
 
 enum class LevelState {
     Load,
+    Reload,
     Aim,
     Play,
     LevelWin,
@@ -134,7 +135,7 @@ class Plank {
                 normalY = -normalY;
             }
         }
-        
+
         float distanceToLine(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t ballX, int16_t ballY) {
             // Vector from (x1,y1) to (x2,y2)
             float segmentVectorX = x2 - x1;
@@ -393,12 +394,14 @@ const LevelData levels[MAX_LEVELS] = {
 uint8_t currentLevel = 0;
 
 void loadLevel(uint8_t n) {
+        Serial.print("Start Load Level\t...\t");
     // Reset all game objects using data from levels[n]
     currentBall = Ball(levels[n].levelBallData[0], levels[n].levelBallData[1]);
     currentGoal = Goal(levels[n].levelGoalData[0],levels[n].levelGoalData[1],levels[n].levelGoalData[2]);
     for (uint8_t i = 0; i < levels[n].numPlanks; i++) {
         currentPlanks[i] = Plank(levels[n].levelPlanksData[i][0], levels[n].levelPlanksData[i][1], levels[n].levelPlanksData[i][2], levels[n].levelPlanksData[i][3]);
     }
+        Serial.print("Finish Load Level\n");
 }
 
 // FUNCTIONS
@@ -418,12 +421,10 @@ void drawUI() {
     a.fillRect(0, 55, 128, 15, BLACK);
     a.drawLine(0, 55, 128, 55, WHITE);
 
-
-
     // Reset level at any time
     if (a.pressed(B_BUTTON)) {
         if (heldFrames == 70) {
-            levelState = LevelState::Load;
+            levelState = LevelState::Reload;
         } else {
             heldFrames++;
             a.fillRect(0, 57, heldFrames*2, 8);
@@ -480,10 +481,23 @@ void launchAngleUp(bool up) {
 void playGame() {
     switch(levelState) {
         case LevelState::Load:
+            Serial.print("Load\n");
             loadLevel(currentLevel);
             levelState = LevelState::Aim;
+            break;
+        
+        case LevelState::Reload:
+            Serial.print("Reload\n");
+            uint8_t restartAngle = currentBall.launchAngle;
+            uint8_t restartPower = currentBall.launchPower;
+            loadLevel(currentLevel);
+            currentBall.launchAngle = restartAngle;
+            currentBall.launchPower = restartPower;
+            levelState = LevelState::Aim;
+            break;
         
         case LevelState::Aim:
+            Serial.print("Aim\n");
             if (a.justPressed(A_BUTTON)) {
                 currentBall.setVelocity();
                 levelState = LevelState::Play;

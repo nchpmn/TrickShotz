@@ -581,8 +581,12 @@ void playGame() {
             a.drawLine(0, 19, 128, 19, WHITE);
 
             if (a.justPressed(A_BUTTON)) {
-                currentLevel++;
-                levelState = LevelState::Load;
+                if (currentLevel == MAX_LEVELS) {
+                    gameState = GameState::EndScreen;
+                } else {
+                    currentLevel++;
+                    levelState = LevelState::Load;
+                }
             }
             break;
 

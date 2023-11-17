@@ -76,15 +76,16 @@ class Plank {
         float normalY; // Y component of the normal vector
 
         // Default constructor with default values
-        Plank() : x1(0), y1(0), x2(0), y2(0) {}
+        Plank() : x1(0), y1(0), x2(0), y2(0) {
+            thickness = 2;
+        }
 
         Plank(int16_t startX1, int16_t startY1, int16_t startX2, int16_t startY2) {
             x1 = startX1;
             y1 = startY1;
             x2 = startX2;
             y2 = startY2;
-            thickness = 2;
-
+            
             // Pre-calculate the normal vector components
             getNormals();
         }
@@ -116,8 +117,7 @@ class Plank {
                 }
             }
         }
-    
-    private:
+
         void getNormals() {
             // Calculate and store the normal vector components on creation
             float dx = x2 - x1;
@@ -132,9 +132,10 @@ class Plank {
             if (normalX < 0) {
                 normalX = -normalX;
                 normalY = -normalY;
+            }
         }
-        }
-
+    
+    private:
         float distanceToLine(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t ballX, int16_t ballY) {
             // Vector from (x1,y1) to (x2,y2)
             float segmentVectorX = x2 - x1;
@@ -413,6 +414,8 @@ void loadLevel(uint8_t n) {
         currentPlanks[i].y1 = levels[n].levelPlanksData[i][1];
         currentPlanks[i].x2 = levels[n].levelPlanksData[i][2];
         currentPlanks[i].y2 = levels[n].levelPlanksData[i][3];
+
+        currentPlanks[i].getNormals();
     }
 }
 

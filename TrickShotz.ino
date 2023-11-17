@@ -486,16 +486,6 @@ void playGame() {
             levelState = LevelState::Aim;
             break;
         
-        case LevelState::Reload:
-            Serial.print("Reload\n");
-            uint8_t restartAngle = currentBall.launchAngle;
-            uint8_t restartPower = currentBall.launchPower;
-            loadLevel(currentLevel);
-            currentBall.launchAngle = restartAngle;
-            currentBall.launchPower = restartPower;
-            levelState = LevelState::Aim;
-            break;
-        
         case LevelState::Aim:
             Serial.print("Aim\n");
             if (a.justPressed(A_BUTTON)) {
@@ -557,12 +547,23 @@ void playGame() {
                 levelState = LevelState::Load;
             }
             break;
+
         case LevelState::LevelLose:
             a.drawLine(0, 10, 128, 10, WHITE);
             a.fillRect(0, 11, 128, 7, BLACK);
             font3x5.setCursor((64 - 12*3), 12);
             font3x5.print("OUT OF BOUNDS!");
             a.drawLine(0, 19, 128, 19, WHITE);
+            break;
+        
+        case LevelState::Reload:
+            Serial.print("Reload\n");
+            uint8_t restartAngle = currentBall.launchAngle;
+            uint8_t restartPower = currentBall.launchPower;
+            loadLevel(currentLevel);
+            currentBall.launchAngle = restartAngle;
+            currentBall.launchPower = restartPower;
+            levelState = LevelState::Aim;
             break;
     }
 

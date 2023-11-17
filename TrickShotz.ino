@@ -76,15 +76,14 @@ class Plank {
         float normalY; // Y component of the normal vector
 
         // Default constructor with default values
-        Plank() : x1(0), y1(0), x2(0), y2(0) {
-            thickness = 2;
-        }
+        Plank() : x1(0), y1(0), x2(0), y2(0) {}
 
         Plank(int16_t startX1, int16_t startY1, int16_t startX2, int16_t startY2) {
             x1 = startX1;
             y1 = startY1;
             x2 = startX2;
             y2 = startY2;
+            thickness = 2;
             
             // Pre-calculate the normal vector components
             getNormals();
@@ -117,7 +116,8 @@ class Plank {
                 }
             }
         }
-
+    
+    private:
         void getNormals() {
             // Calculate and store the normal vector components on creation
             float dx = x2 - x1;
@@ -134,8 +134,7 @@ class Plank {
                 normalY = -normalY;
             }
         }
-    
-    private:
+        
         float distanceToLine(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t ballX, int16_t ballY) {
             // Vector from (x1,y1) to (x2,y2)
             float segmentVectorX = x2 - x1;
@@ -395,16 +394,10 @@ uint8_t currentLevel = 0;
 
 void loadLevel(uint8_t n) {
     // Reset all game objects using data from levels[n]
-
     currentBall = Ball(levels[n].levelBallData[0], levels[n].levelBallData[1]);
-
+    currentGoal = Goal(levels[n].levelGoalData[0],levels[n].levelGoalData[1],levels[n].levelGoalData[2]);
     for (uint8_t i = 0; i < levels[n].numPlanks; i++) {
-        currentPlanks[i].x1 = levels[n].levelPlanksData[i][0];
-        currentPlanks[i].y1 = levels[n].levelPlanksData[i][1];
-        currentPlanks[i].x2 = levels[n].levelPlanksData[i][2];
-        currentPlanks[i].y2 = levels[n].levelPlanksData[i][3];
-
-        currentPlanks[i].getNormals();
+        currentPlanks[i] = Plank(levels[n].levelPlanksData[i][0], levels[n].levelPlanksData[i][1], levels[n].levelPlanksData[i][2], levels[n].levelPlanksData[i][3]);
     }
 }
 

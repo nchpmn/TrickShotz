@@ -394,14 +394,12 @@ const LevelData levels[MAX_LEVELS] = {
 uint8_t currentLevel = 0;
 
 void loadLevel(uint8_t n) {
-        Serial.print("Start Load Level\t...\t");
     // Reset all game objects using data from levels[n]
     currentBall = Ball(levels[n].levelBallData[0], levels[n].levelBallData[1]);
     currentGoal = Goal(levels[n].levelGoalData[0],levels[n].levelGoalData[1],levels[n].levelGoalData[2]);
     for (uint8_t i = 0; i < levels[n].numPlanks; i++) {
         currentPlanks[i] = Plank(levels[n].levelPlanksData[i][0], levels[n].levelPlanksData[i][1], levels[n].levelPlanksData[i][2], levels[n].levelPlanksData[i][3]);
     }
-        Serial.print("Finish Load Level\n");
 }
 
 // FUNCTIONS
@@ -481,13 +479,11 @@ void launchAngleUp(bool up) {
 void playGame() {
     switch(levelState) {
         case LevelState::Load:
-            Serial.print("Load\n");
             loadLevel(currentLevel);
             levelState = LevelState::Aim;
             break;
         
         case LevelState::Aim:
-            Serial.print("Aim\n");
             if (a.justPressed(A_BUTTON)) {
                 currentBall.setVelocity();
                 levelState = LevelState::Play;
@@ -557,7 +553,6 @@ void playGame() {
             break;
         
         case LevelState::Reload:
-            Serial.print("Reload\n");
             uint8_t restartAngle = currentBall.launchAngle;
             uint8_t restartPower = currentBall.launchPower;
             loadLevel(currentLevel);

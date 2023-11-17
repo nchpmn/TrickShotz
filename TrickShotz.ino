@@ -367,7 +367,7 @@ struct LevelData {
 const LevelData levels[MAX_LEVELS] = {
     { // Level 1
         { 30, 20 }, // Ball
-        { 98, 25, 6 }, // Goal
+        { 98, 25, 10 }, // Goal
         1, { // Planks
             { 10, 50, 118, 50 }
         }

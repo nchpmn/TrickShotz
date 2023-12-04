@@ -4,7 +4,10 @@
 // Licenced under GNU GPL 3.0
 //
 // 01 Nov 2023 - Development Started
+// 04 December 2023 - First Demo Released
 // PROTOTYPE ONLY
+
+#define VERSION "v231204 DEV"
 
 // LIBRARIES
 #include <Arduboy2.h>
@@ -650,6 +653,15 @@ void loop() {
             font3x5.print(F("Instructions\nL/R: Set Angle\nU/D: Set Power\nA: Launch!\nB: Reset Level"));
             if (a.justPressed(A_BUTTON)) {
                 gameState = GameState::Title;
+            }
+            // Toggle showing version number
+            static bool showVersion = false;
+            if (showVersion) {
+                font3x5.setCursor(0,50);
+                font3x5.print(VERSION);
+            }
+            if (a.justPressed(DOWN_BUTTON)) {
+                showVersion = !showVersion;
             }
             break;
         case GameState::PlayGame:

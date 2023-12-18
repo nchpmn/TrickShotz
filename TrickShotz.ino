@@ -22,6 +22,7 @@ Font3x5 font3x5 = Font3x5();
 
 // HEADER FILES
 #include "Globals.h"
+#include "VectorPos.h"
 #include "Graphics.h"
 #include "Tunes.h"
 #include "Levels.h"

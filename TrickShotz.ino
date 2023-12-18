@@ -38,8 +38,6 @@ Ball currentBall;
 Goal currentGoal;
 Plank currentPlanks[MAX_PLANKS];
 uint16_t heldFrames = 0;
-
-
 uint8_t currentLevel = 0;
 
 void loadLevel(uint8_t n) {

@@ -8,25 +8,31 @@ void levelLose();
 
 class Ball {
     public:
-        float x, y; // Position
-        float vx, vy; // Velocity (X and Y components)
-        uint8_t size; // Radius of ball
-        uint8_t offscreenTimer; // Millisecond timer for ball offscreen
-        uint8_t launchPower; // Index of launchPowerLevels[] array
-        uint16_t launchAngle; // Launch angle 0 to 359
+        // Position
+        float x = 64;
+        float y = 32;
+
+        // Velocity (X and Y components)
+        float vx = 0;
+        float vy = 0;
+
+        // Radius of ball
+        uint8_t size = 2;
+
+        // Millisecond timer for ball offscreen
+        uint8_t offscreenTimer = 0;
+
+        // Index of launchPowerLevels[] array
+        uint8_t launchPower = 2;
+
+        // Launch angle 0 to 359
+        uint16_t launchAngle = 25;
 
         // Default constructor with default values
-        Ball() : x(64), y(32) {}
+        Ball() = default;
 
-
-        Ball(float startX, float startY) {
-            x = startX;
-            y = startY;
-            vx = 0;
-            vy = 0;
-            size = 2;
-            launchAngle = 25;
-            launchPower = 2;
+        Ball(float startX, float startY) :
+            x(startX), y(startY) {
         }
 
         void update(Plank planks[], int numPlanks) {

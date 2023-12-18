@@ -5,17 +5,16 @@
 
 class Goal {
     public:
-        uint8_t x;
-        uint8_t y;
-        uint8_t radius;
+        uint8_t x = 64;
+        uint8_t y = 32;
+        uint8_t radius = 2;
 
         // Default constructor with default values
-        Goal() : x(0), y(0), radius(1) {}
+        Goal() = default;
 
-        Goal(uint8_t startX, uint8_t startY, uint8_t startRadius) {
-            x = startX;
-            y = startY;
-            radius = startRadius;
+        Goal(uint8_t startX, uint8_t startY, uint8_t startRadius) :
+            x (startX), y(startY), radius(startRadius) {
+            
         }
 
         bool isBallInside(const Ball& ball) {

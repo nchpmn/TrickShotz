@@ -5,22 +5,26 @@
 
 class Plank {
     public:
-        int16_t x1, y1; // Coordinates of one end
-        int16_t x2, y2; // Coordinates of the other end
-        uint8_t thickness; // Thickness of the plank
-        float normalX; // X component of the normal vector
-        float normalY; // Y component of the normal vector
+        // Coordinates of one end
+        int16_t x1 = 0;
+        int16_t y1 = 0;
+
+        // Coordinates of the other end
+        int16_t x2 = 0;
+        int16_t y2 = 0;
+
+        // Thickness of the plank
+        uint8_t thickness = 2;
+
+        // The components of the normal vector
+        float normalX;
+        float normalY;
 
         // Default constructor with default values
-        Plank() : x1(0), y1(0), x2(0), y2(0) {}
+        Plank() = default;
 
-        Plank(int16_t startX1, int16_t startY1, int16_t startX2, int16_t startY2) {
-            x1 = startX1;
-            y1 = startY1;
-            x2 = startX2;
-            y2 = startY2;
-            thickness = 2;
-            
+        Plank(int16_t startX1, int16_t startY1, int16_t startX2, int16_t startY2) :
+            x1(startX1), y1(startY1), x2(startX2), y2(startY2) {
             // Pre-calculate the normal vector components
             getNormals();
         }

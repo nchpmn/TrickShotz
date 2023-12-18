@@ -1,11 +1,6 @@
 #ifndef LEVELS_H
 #define LEVELS_H
 
-// CONSTANTS
-const uint8_t MAX_LEVELS = 5;
-const uint8_t MAX_PLANKS = 5;
-
-
 // LEVELS
 struct LevelData { 
     uint8_t levelBallData[2];

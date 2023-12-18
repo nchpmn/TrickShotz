@@ -21,18 +21,12 @@ ArduboyTones sound(a.audio.enabled);
 Font3x5 font3x5 = Font3x5();
 
 // HEADER FILES
+#include "Constants.h"
 #include "Graphics.h"
 #include "Tunes.h"
 #include "Levels.h"
 #include "Plank.h"
 
-// CONSTANTS
-const uint8_t FRAME_RATE = 60;
-const float GRAVITY = 0.05;
-const float BOUNCE_FRICTION = 0.9;
-const uint8_t OFFSCREEN_SECONDS = 1;
-const uint8_t HELD_FRAMES_DELAY = 45;
-const uint8_t HELD_FRAMES_FREQ = 3;
 
 
 // GAME STATES (STRUCTURES)

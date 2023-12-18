@@ -5,9 +5,10 @@
 //
 // 01 Nov 2023 - Development Started
 // 04 December 2023 - First Demo Released
+// 18 Dec 2023 - Major Refactor Begun
 // PROTOTYPE ONLY
 
-#define VERSION "v231204 DEV"
+#define VERSION "v231218 DEV"
 
 // LIBRARIES
 #include <Arduboy2.h>
@@ -16,7 +17,7 @@ Arduboy2 a;
 #include <ArduboyTonesPitches.h>
 ArduboyTones sound(a.audio.enabled);
 // Micro font courtesy of @filmote - BSD 3-Clause License
-#include "src/Font3x5.h"
+#include "lib/Font3x5.h"
 Font3x5 font3x5 = Font3x5();
 
 

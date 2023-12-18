@@ -1,3 +1,5 @@
+#ifndef LEVELS_H
+#define LEVELS_H
 
 // CONSTANTS
 
@@ -9,3 +11,5 @@ const float BOUNCE_FRICTION = 0.9;
 const uint8_t OFFSCREEN_SECONDS = 1;
 const uint8_t HELD_FRAMES_DELAY = 45;
 const uint8_t HELD_FRAMES_FREQ = 3;
+
+#endif

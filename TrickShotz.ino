@@ -17,8 +17,9 @@ Arduboy2 a;
 #include <ArduboyTonesPitches.h>
 ArduboyTones sound(a.audio.enabled);
 // Micro font courtesy of @filmote - BSD 3-Clause License
-#include "lib/Font3x5.h"
+#include "src/Font3x5.h"
 Font3x5 font3x5 = Font3x5();
+
 
 
 // CONSTANTS

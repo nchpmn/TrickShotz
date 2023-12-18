@@ -33,9 +33,6 @@ Font3x5 font3x5 = Font3x5();
 GameState gameState = GameState::Title;
 LevelState levelState = LevelState::Load;
 
-// FORWARD DELCARATIONS
-void levelLose();
-
 // GLOBAL VARIABLES
 Ball currentBall;
 Goal currentGoal;

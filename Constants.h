@@ -1,5 +1,5 @@
-#ifndef LEVELS_H
-#define LEVELS_H
+#ifndef CONSTANTS_H
+#define CONSTANTS_H
 
 // CONSTANTS
 

@@ -5,21 +5,23 @@
 
 class Goal {
     public:
-        uint8_t x = 64;
-        uint8_t y = 32;
+        Position<uint8_t> position = Position<uint8_t>(64, 32);
         uint8_t radius = 2;
 
         // Default constructor with default values
         Goal() = default;
 
-        Goal(uint8_t startX, uint8_t startY, uint8_t startRadius) :
-            x (startX), y(startY), radius(startRadius) {
+        Goal(uint8_t x, uint8_t y, uint8_t startRadius) :
+            position(x,y), radius(startRadius) {
             
         }
 
         bool isBallInside(const Ball& ball) {
-            float distance = sqrt((ball.x - x) * (ball.x - x) + (ball.y - y) * (ball.y - y));
-            return distance + ball.size <= radius + ball.size;
+            //float distance = sqrt((ball.x - x) * (ball.x - x) + (ball.y - y) * (ball.y - y));
+            //return distance + ball.size <= radius + ball.size;
+
+            float distance = sqrt(pow((ball.x - position.x), 2) + pow((ball.y - position.y), 2));
+            return distance <= radius;
         }
 
         void draw() const {
@@ -31,10 +33,10 @@ class Goal {
                 float angle1 = TWO_PI / numDashes * i + rotationAngle;
                 float angle2 = TWO_PI / numDashes * (i + 1) + rotationAngle;
 
-                int x1 = x + radius * cos(angle1);
-                int y1 = y + radius * sin(angle1);
-                int x2 = x + radius * cos(angle2);
-                int y2 = y + radius * sin(angle2);
+                int x1 = position.x + radius * cos(angle1);
+                int y1 = position.y + radius * sin(angle1);
+                int x2 = position.x + radius * cos(angle2);
+                int y2 = position.y + radius * sin(angle2);
 
                 // Draw each dash as a line segment
                 a.drawLine(x1, y1, x2, y2, WHITE);

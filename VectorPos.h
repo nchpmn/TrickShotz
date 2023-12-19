@@ -1,11 +1,14 @@
 #ifndef VECTORPOS_H
 #define VECTORPOS
 
+// POSITION CLASS
+// Uses templates to work for various int/float types
+template <typename T>
 class Position {
     public:
-        float x;
-        float y;
-        Position(float x, float y) : x(x), y(y) {}
+        T x;
+        T y;
+        Position(T x, T y) : x(x), y(y) {}
 };
 
 class Vector {

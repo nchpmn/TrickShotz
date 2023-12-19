@@ -5,7 +5,7 @@
 
 class Goal {
     public:
-        Position<uint8_t> position = Position<uint8_t>(64, 32);
+        Pos<uint8_t> position = Pos<uint8_t>(64, 32);
         uint8_t radius = 2;
 
         // Default constructor with default values

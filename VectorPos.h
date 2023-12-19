@@ -4,18 +4,20 @@
 // POSITION CLASS
 // Uses templates to work for various int/float types
 template <typename T>
-class Position {
+class Pos {
     public:
         T x;
         T y;
-        Position(T x, T y) : x(x), y(y) {}
+        Pos(T x, T y) : x(x), y(y) {}
 };
 
+
+// VECTOR CLASS
 class Vector {
     public:
-        float x;
-        float y;
-        Vector(float xComponent, float yComponent) : x(xComponent), y(yComponent) {}
+        float dx;
+        float dy;
+        Vector(float dxComponent, float dyComponent) : dx(dxComponent), dy(dyComponent) {}
 };
 
 

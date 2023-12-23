@@ -1,8 +1,6 @@
 #ifndef POS_H
 #define POS
 
-#include "Vector.h"  // Add this line to include the Vector class
-
 // Uses templates to work for various int/float types
 template <typename T>
 class Pos {

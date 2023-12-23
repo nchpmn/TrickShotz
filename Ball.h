@@ -34,11 +34,25 @@ public:
         updateOffscreen();
     }
 
-    void draw() const {
+    void draw() {
         drawBall();
         if (levelState == LevelState::Aim) {
             drawAiming();
         }
+    }
+
+    void updateLaunch() {
+        // Adjust launchAngle so 0 deg = up
+        int16_t adjustedAngle = adjustLaunchAngle(launchAngle);
+
+        // Calculate velocity vector from angle and power
+        Vector launchVector = {
+            launchPowerLevels[launchPower - 1] * cos(radians(adjustedAngle)),
+            launchPowerLevels[launchPower - 1] * sin(radians(adjustedAngle))
+        };
+
+        // Set the velocity vector
+        velocity = launchVector;
     }
 
 private:
@@ -85,14 +99,14 @@ private:
         }
     }
 
-    void collideGoal() {
+    void collideGoal() const {
         if (ballInsideGoal()) {
             sound.tones(winSong);
             levelState = LevelState::LevelWin;
         }
     }
 
-    bool ballInsideGoal() {
+    bool ballInsideGoal() const {
         // Calculate the distance between the ball's center and the goal's center
         float distance = sqrt(pow(position.x - currentGoal->position.x, 2) + pow(position.y - currentGoal->position.y, 2));
 
@@ -121,13 +135,10 @@ private:
         a.fillCircle(round(position.x), round(position.y), size, WHITE);
     }
 
-    void drawAiming() const {
+    void drawAiming() {
         // Draw a dotted line projecting where the ball will travel
         uint8_t lineLength = 25;
-        int16_t adjustedAngle = launchAngle - 90;
-        if (adjustedAngle < 0) {
-            adjustedAngle += 360;
-        }
+        int16_t adjustedAngle = adjustLaunchAngle(launchAngle);
 
         Pos<float> simPosition = position;
         Vector simVelocity = {
@@ -144,6 +155,13 @@ private:
         }
     }
 
+    int16_t adjustLaunchAngle(int16_t angle) {
+        angle -= 90;
+        if (angle < 0) {
+            angle += 360;
+        }
+        return angle;
+    }
 
 };
 

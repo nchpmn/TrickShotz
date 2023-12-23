@@ -19,8 +19,10 @@ public:
     // Default constructor with default values
     Ball() = default;
 
-    Ball(float startX, float startY) : position(startX, startY) {
-    };
+    // Constructor with references to planks and numPlanks
+    Ball(float startX, float startY, Plank* planks, int& numPlanks) : 
+        position(startX, startY), planks(planks), numPlanks(numPlanks) {}
+
 
     // MOVE COLLIDE FUNCTIONS HERE? - I.E.
     // 1. Move Ball
@@ -50,16 +52,45 @@ private:
     // Millisecond timer for ball offscreen
     uint8_t offscreenTimer = 0;
 
+    // References to planks and numPlanks
+    Plank* planks;
+    int& numPlanks;
+
     void move() {
         // Apply gravity to ball's velocity (acceleration each frame)
         velocity.dy += GRAVITY;
 
         // Update ball position
         position += velocity;
-    };
+    }
 
     void collidePlanks() {
-        
+        for (int i = 0; i < MAX_PLANKS; i++) {
+            if (planks[i].checkCollision(position, size)) {
+                // Collision detected with plank[i] - Bounce!
+                // Calculate dot product of velocity and normals
+                float dotProduct = velocity.dot(planks[i].normalVector);
+
+                // Calculate reflection direction
+                Vector reflectionVector = planks[i].normalVector * (2.0f * dotProduct);
+
+                // Update the ball's velocity
+                velocity -= reflectionVector;
+
+                // Move the ball slightly away from the collision point to prevent repeated collisions
+                position += velocity * 0.5;
+
+                // Add friction from bounce
+                velocity *= BOUNCE_FRICTION;
+
+                // Play a sound or perform other bounce-related actions
+                sound.tone(55 + (5 * i), 60);
+            }
+        }
+    }
+
+    void collideGoal() {
+
     }
 
     void drawBall() const {

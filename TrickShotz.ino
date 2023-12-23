@@ -8,7 +8,7 @@
 // 18 Dec 2023 - Major Refactor Begun
 // PROTOTYPE ONLY
 
-#define VERSION "v231218 DEV"
+#define VERSION "v231223 DEV"
 
 // LIBRARIES
 #include <Arduboy2.h>

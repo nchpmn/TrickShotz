@@ -17,6 +17,10 @@ class Vector {
     public:
         float dx;
         float dy;
+
+        // Default constructor with initialization
+        Vector() : dx(0), dy(0) {}
+
         Vector(float dxComponent, float dyComponent) : dx(dxComponent), dy(dyComponent) {}
 };
 

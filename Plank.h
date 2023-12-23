@@ -18,9 +18,34 @@ public:
             calculateNormal();
         }
 
+    void draw() {
+        // Draw a line of thickness 2 (hardcoded... :S)
+        a.drawLine(startPos.x, startPos.y, endPos.x, endPos.y);
+        if (startPos.x != endPos.x && startPos.y != endPos.y) {
+            // If line is diagonal
+            a.drawLine(startPos.x + 1, startPos.y + 1, endPos.x + 1, endPos.y + 1);
+        } else {
+            if (startPos.x == endPos.x) {
+                // If line is horizontal
+                a.drawLine(startPos.x + 1, startPos.y, endPos.x + 1, endPos.y);
+            } else {
+                // If line is vertical
+                a.drawLine(startPos.x, startPos.y + 1, endPos.x, endPos.y + 1);
+            }
+        }
+    }
+
+    bool checkCollision(int16_t ballX, int16_t ballY, uint8_t ballRadius) {
+        // Calculate the distance between the ball's center and the line segment
+        float distance = distanceToLine(ballPos);
+
+        // Check if the distance is less than the sum of the ball's radius and the Plank's thickness
+        return distance <= ballRadius + (thickness / 2);
+    }
+
 private:
-    float vectorSquared(const Vector& vector) {
-        // Calculate the 
+    float vectorSquared(const Vector& vector) const {
+        // Calculate the sum of squared vector components
         return (vector.dx * vector.dx) + (vector.dy * vector.dy);
     }
 
@@ -42,6 +67,35 @@ private:
             normalVector.dy /= length;
         }
     }
+
+    float distanceToLine(const Pos<int16_t>& ballPos) const {
+        // Calculates the perpendicular distance from a ballPos(x,y) to the line segment of Plank
+        // Create vectors
+        Vector segmentVector(endPos.x - startPos.x, endPos.y - startPos.y);
+        Vector pointVector(ballPos.x - startPos.x, ballPos.y - startPos.y);
+
+        // Dot Product of these two Vectors
+        float dotProduct = (pointVector.dx * segmentVector.dx) + (pointVector.dy * segmentVector.dy);
+
+        // Length of the segment vector squared
+        float segmentLengthSquared = vectorSquared(segmentVector);
+
+        // Calculate the parameter t (the position on the line segment) at which the closest point on the line occurs
+        float t = dotProduct / segmentLengthSquared;
+
+        // Clamp t to bounds of line segment
+        t = max(0.0f, min(1.0f, t));
+
+        // Coords of closest point on the line
+        Pos<int16_t> closestPoint(startPos.x + static_cast<int16_t>(t * segmentVector.dx),
+                                startPos.y + static_cast<int16_t>(t * segmentVector.dy));
+
+        // Distance between ballPos and closestPoint
+        float distance = sqrt(vectorSquared(Vector{ballPos.x - closestPoint.x, ballPos.y - closestPoint.y}));
+
+        return distance;
+    }
+
 };
 
 #endif

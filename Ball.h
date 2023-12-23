@@ -35,6 +35,13 @@ class Ball {
             x(startX), y(startY) {
         }
 
+        // MOVE COLLIDE FUNCTIONS HERE - I.E.
+        // 1. Move Ball
+        // 2. Check collide with Planks (and update ball)
+        // 3. Check collie with Goal (and upload level complete)
+        // 4. Draw Ball
+
+        
         void update(Plank planks[], int numPlanks) {
             // Gravity applied to ball
             vy += GRAVITY;

@@ -31,7 +31,7 @@ public:
     void draw() const {
         drawBall();
         if (levelState == LevelState::Aim) {
-            drawBallAiming();
+            drawAiming();
         }
     }
 
@@ -45,7 +45,7 @@ private:
         a.fillCircle(round(position.x), round(position.y), size, WHITE);
     }
 
-    void drawBallAiming() const {
+    void drawAiming() const {
         // Draw a dotted line projecting where the ball will travel
         uint8_t lineLength = 25;
         int16_t adjustedAngle = launchAngle - 90;

@@ -15,8 +15,6 @@ public:
     uint8_t launchPower = 2;
     // Launch angle 0 to 359
     uint16_t launchAngle = 25;
-    // Millisecond timer for ball offscreen
-    uint8_t offscreenTimer = 0;
 
     // Default constructor with default values
     Ball() = default;
@@ -38,7 +36,10 @@ public:
     }
 
 private:
+    // Preset power levels for launch - accessed via index of launchPower
     float launchPowerLevels[5] = {0.5, 1, 1.5, 2, 2.5};
+    // Millisecond timer for ball offscreen
+    uint8_t offscreenTimer = 0;
 
     void drawBall() const {
         a.fillCircle(round(position.x), round(position.y), size, WHITE);

@@ -37,6 +37,8 @@ public:
         collidePlanks();
         // 3. Check collision with Goal (and update level complete)
         collideGoal();
+        // 4. Check if ball offscreen and start timer
+        updateOffscreen();
     }
 
     void draw() const {
@@ -91,6 +93,23 @@ private:
 
     void collideGoal() {
 
+    }
+
+    void updateOffscreen() {
+        if (checkOffscreen()) {
+            // Start timer
+            offscreenTimer++;
+            if (offscreenTimer == (OFFSCREEN_SECONDS * FRAME_RATE)) {
+                levelLose();
+            }
+        } else {
+            // Reset timer to 0
+            offscreenTimer = 0;
+        }
+    }
+
+    bool checkOffscreen() const {
+        return (position.x < 0 || position.x > WIDTH || position.y < 0 || position.y > HEIGHT);
     }
 
     void drawBall() const {

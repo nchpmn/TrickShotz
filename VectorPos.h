@@ -9,6 +9,13 @@ class Pos {
         T x;
         T y;
         Pos(T x, T y) : x(x), y(y) {}
+
+        // Define operator+= for adding a Vector to Pos
+        Pos<T>& operator+=(const Vector& vector) {
+            x += vector.dx;
+            y += vector.dy;
+            return *this;
+        }
 };
 
 

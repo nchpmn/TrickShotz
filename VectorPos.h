@@ -16,6 +16,12 @@ class Pos {
             y += vector.dy;
             return *this;
         }
+
+        // Define operator - for subtracting two Pos of any type (i.e. float and uint8_t)
+        template <typename U>
+        Pos<T> operator-(const Pos<U>& other) const {
+            return Pos<T>(x - static_cast<T>(other.x), y - static_cast<T>(other.y));
+        }
 };
 
 
@@ -58,6 +64,7 @@ class Vector {
             dy -= other.dy;
             return *this;
         }
+
 };
 
 

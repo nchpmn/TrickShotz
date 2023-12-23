@@ -23,21 +23,12 @@ public:
     Ball(float startX, float startY, Plank* planks, int& numPlanks) : 
         position(startX, startY), planks(planks), numPlanks(numPlanks) {}
 
-
-    // MOVE COLLIDE FUNCTIONS HERE? - I.E.
-    // 1. Move Ball
-    // 2. Check collide with Planks (and update ball)
-    // 3. Check collie with Goal (and upload level complete)
-    // 4. Draw Ball
-
     void update() {
         // 1. Move Ball
         move();
         // 2. Check collision with Planks (and bounce)
         collidePlanks();
-        // 3. Check collision with Goal (and update level complete)
-        collideGoal();
-        // 4. Check if ball offscreen and start timer
+        // 3. Check if ball offscreen and start timer
         updateOffscreen();
     }
 
@@ -89,10 +80,6 @@ private:
                 sound.tone(55 + (5 * i), 60);
             }
         }
-    }
-
-    void collideGoal() {
-
     }
 
     void updateOffscreen() {

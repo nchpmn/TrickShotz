@@ -35,7 +35,7 @@ public:
         }
     }
 
-    bool checkCollision(int16_t ballX, int16_t ballY, uint8_t ballRadius) {
+    bool checkCollision(Pos ballPos, uint8_t ballRadius) {
         // Calculate the distance between the ball's center and the line segment
         float distance = distanceToLine(ballPos);
 

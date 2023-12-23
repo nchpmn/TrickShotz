@@ -20,15 +20,17 @@ public:
     Ball() = default;
 
     // Constructor with references to planks and numPlanks
-    Ball(float startX, float startY, Plank* planks, int& numPlanks) : 
-        position(startX, startY), planks(planks), numPlanks(numPlanks) {}
+    Ball(float startX, float startY, Plank* planks, int& numPlanks, Goal* currentGoal) : 
+        position(startX, startY), planks(planks), numPlanks(numPlanks), currentGoal(currentGoal) {}
 
     void update() {
-        // 1. Move Ball
+        // 1. Check collision with Goal (and win level)
+        collideGoal();
+        // 2. Move Ball
         move();
-        // 2. Check collision with Planks (and bounce)
+        // 3. Check collision with Planks (and bounce)
         collidePlanks();
-        // 3. Check if ball offscreen and start timer
+        // 4. Check if ball offscreen and start timer
         updateOffscreen();
     }
 
@@ -45,9 +47,10 @@ private:
     // Millisecond timer for ball offscreen
     uint8_t offscreenTimer = 0;
 
-    // References to planks and numPlanks
+    // References to planks and numPlanks and Goal
     Plank* planks;
     int& numPlanks;
+    Goal* currentGoal;
 
     void move() {
         // Apply gravity to ball's velocity (acceleration each frame)
@@ -80,6 +83,21 @@ private:
                 sound.tone(55 + (5 * i), 60);
             }
         }
+    }
+
+    void collideGoal() {
+        if (ballInsideGoal()) {
+            sound.tones(winSong);
+            levelState = LevelState::LevelWin;
+        }
+    }
+
+    bool ballInsideGoal() {
+        // Calculate the distance between the ball's center and the goal's center
+        float distance = sqrt(pow(position.x - currentGoal->position.x, 2) + pow(position.y - currentGoal->position.y, 2));
+
+        // Check if the distance is less than the sum of the radii, indicating a collision
+        return (distance < (size + currentGoal->radius));
     }
 
     void updateOffscreen() {

@@ -28,6 +28,15 @@ public:
     // 3. Check collie with Goal (and upload level complete)
     // 4. Draw Ball
 
+    void update() {
+        // 1. Move Ball
+        move();
+        // 2. Check collision with Planks (and bounce)
+        collidePlanks();
+        // 3. Check collision with Goal (and update level complete)
+        collideGoal();
+    }
+
     void draw() const {
         drawBall();
         if (levelState == LevelState::Aim) {
@@ -40,6 +49,18 @@ private:
     float launchPowerLevels[5] = {0.5, 1, 1.5, 2, 2.5};
     // Millisecond timer for ball offscreen
     uint8_t offscreenTimer = 0;
+
+    void move() {
+        // Apply gravity to ball's velocity (acceleration each frame)
+        velocity.dy += GRAVITY;
+
+        // Update ball position
+        position += velocity;
+    };
+
+    void collidePlanks() {
+        
+    }
 
     void drawBall() const {
         a.fillCircle(round(position.x), round(position.y), size, WHITE);

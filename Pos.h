@@ -1,3 +1,5 @@
+#pragma once
+
 // Uses templates to work for various int/float types
 template <typename T>
 class Pos {

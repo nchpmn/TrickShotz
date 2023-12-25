@@ -1,5 +1,4 @@
-#ifndef BALL_H
-#define BALL_H
+#pragma once
 
 #include <Arduboy2.h>
 
@@ -164,6 +163,3 @@ private:
     }
 
 };
-
-
-#endif

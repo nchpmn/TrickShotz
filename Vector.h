@@ -1,5 +1,4 @@
-#ifndef VECTOR_H
-#define VECTOR
+#pragma once
 
 class Vector {
     public:
@@ -41,5 +40,3 @@ class Vector {
         }
 
 };
-
-#endif

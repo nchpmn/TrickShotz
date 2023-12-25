@@ -1,6 +1,3 @@
-#ifndef PLANK_H
-#define PLANK_H
-
 #include <Arduboy2.h>
 
 class Plank {
@@ -97,5 +94,3 @@ private:
     }
 
 };
-
-#endif

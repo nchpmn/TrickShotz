@@ -1,5 +1,4 @@
-#ifndef GOAL_H
-#define GOAL_H
+#pragma once
 
 #include <Arduboy2.h>
 
@@ -41,5 +40,3 @@ public:
     }
 
 };
-
-#endif

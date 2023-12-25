@@ -1,6 +1,3 @@
-#ifndef POS_H
-#define POS
-
 // Uses templates to work for various int/float types
 template <typename T>
 class Pos {
@@ -22,5 +19,3 @@ class Pos {
             return Pos<T>(x - static_cast<T>(other.x), y - static_cast<T>(other.y));
         }
 };
-
-#endif;

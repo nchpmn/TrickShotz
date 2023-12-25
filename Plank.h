@@ -34,7 +34,7 @@ public:
         }
     }
 
-    bool checkCollision(Pos ballPos, uint8_t ballRadius) {
+    bool checkCollision(Pos<float> ballPos, uint8_t ballRadius) {
         // Calculate the distance between the ball's center and the line segment
         float distance = distanceToLine(ballPos);
 
@@ -67,7 +67,7 @@ private:
         }
     }
 
-    float distanceToLine(const Pos<int16_t>& ballPos) const {
+    float distanceToLine(const Pos<float>& ballPos) const {
         // Calculates the perpendicular distance from a ballPos(x,y) to the line segment of Plank
         // Create vectors
         Vector segmentVector(endPos.x - startPos.x, endPos.y - startPos.y);

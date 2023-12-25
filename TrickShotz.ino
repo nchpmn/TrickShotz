@@ -31,6 +31,7 @@ Font3x5 font3x5 = Font3x5();
 
 
 // FUNCTIONS
+// GameState::Title
 void updateTitle() {
     if (a.justPressed(A_BUTTON)) {
         gameState = GameState::PlayGame;
@@ -46,6 +47,7 @@ void drawTitle() {
 
 }
 
+// GameState::Instructions
 void updateInstructions() {
     if (a.justPressed(A_BUTTON) || a.justPressed(B_BUTTON)) {
         gameState = GameState::Title;
@@ -64,29 +66,37 @@ void drawInstructions() {
     font3x5.print(F("INSTRUCTIONS\nL+R: Set Angle\nU/D: Set Power\nA: Launch!\nB (HOLD): Reset Level"));
 }
 
+// GameState::PlayGame
 void playGame() {
     switch(levelState) {
         case LevelState::Load:
             font3x5.setCursor(5,10);
             font3x5.print(F("Load Level"));
+            break;
         case LevelState::ResetLevel:
             font3x5.setCursor(5,10);
             font3x5.print(F("Reset Level"));
+            break;
         case LevelState::Aim:
             font3x5.setCursor(5,10);
             font3x5.print(F("Aiming"));
+            break;
         case LevelState::Launch:
             font3x5.setCursor(5,10);
             font3x5.print(F("Ball Launched!"));
+            break;
         case LevelState::LevelWin:
             font3x5.setCursor(5,10);
             font3x5.print(F("You Win!"));
+            break;
         case LevelState::LevelLose:
             font3x5.setCursor(5,10);
             font3x5.print(F("You Lose! Ha ha!"));
+            break;
     }
 }
 
+// GameState::EndGame
 void drawEndScreen() {
     font3x5.setCursor(10,10);
     font3x5.print(F("Congratulations!\nYou Completed All Levels!"));

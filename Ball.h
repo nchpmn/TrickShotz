@@ -118,7 +118,7 @@ private:
             // Start timer
             offscreenTimer++;
             if (offscreenTimer == (OFFSCREEN_SECONDS * FRAME_RATE)) {
-                levelLose();
+                // levelLose();
             }
         } else {
             // Reset timer to 0

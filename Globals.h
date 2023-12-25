@@ -24,9 +24,9 @@ GameState gameState;
 // LEVEL STATE
 enum class LevelState {
     Load,
-    Reload,
+    ResetLevel,
     Aim,
-    Play,
+    Launch,
     LevelWin,
     LevelLose
 };

@@ -8,7 +8,7 @@
 // 18 Dec 2023 - Major Refactor Begun
 // PROTOTYPE ONLY
 
-#define VERSION "v231223 DEV"
+#define VERSION "v231225 DEV"
 
 // LIBRARIES
 #include <Arduboy2.h>
@@ -29,6 +29,70 @@ Font3x5 font3x5 = Font3x5();
 #include "Levels.h"
 #include "Ball.h"
 
+
+// FUNCTIONS
+void updateTitle() {
+    if (a.justPressed(A_BUTTON)) {
+        gameState = GameState::PlayGame;
+    }
+    if (a.justPressed(B_BUTTON)) {
+        gameState = GameState::Instructions;
+    }
+}
+void drawTitle() {
+    Sprites::drawOverwrite(0, 0, title, 0);
+    font3x5.setCursor(2,5);
+    font3x5.print(F("Press B for Instructions"));
+
+}
+
+void updateInstructions() {
+    if (a.justPressed(A_BUTTON) || a.justPressed(B_BUTTON)) {
+        gameState = GameState::Title;
+    }
+    static bool showVersion = false;
+    if (showVersion) {
+        font3x5.setCursor(0,50);
+        font3x5.print(F(VERSION));
+    }
+    if (a.justPressed(DOWN_BUTTON)) {
+        showVersion = !showVersion;
+    }
+}
+void drawInstructions() {
+    font3x5.setCursor(5,5);
+    font3x5.print(F("INSTRUCTIONS\nL+R: Set Angle\nU/D: Set Power\nA: Launch!\nB (HOLD): Reset Level"));
+}
+
+void playGame() {
+    switch(levelState) {
+        case LevelState::Load:
+            font3x5.setCursor(5,10);
+            font3x5.print(F("Load Level"));
+        case LevelState::ResetLevel:
+            font3x5.setCursor(5,10);
+            font3x5.print(F("Reset Level"));
+        case LevelState::Aim:
+            font3x5.setCursor(5,10);
+            font3x5.print(F("Aiming"));
+        case LevelState::Launch:
+            font3x5.setCursor(5,10);
+            font3x5.print(F("Ball Launched!"));
+        case LevelState::LevelWin:
+            font3x5.setCursor(5,10);
+            font3x5.print(F("You Win!"));
+        case LevelState::LevelLose:
+            font3x5.setCursor(5,10);
+            font3x5.print(F("You Lose! Ha ha!"));
+    }
+}
+
+void drawEndScreen() {
+    font3x5.setCursor(10,10);
+    font3x5.print(F("Congratulations!\nYou Completed All Levels!"));
+}
+
+
 // MAIN SETUP
 void setup() {
     a.begin();
@@ -45,29 +109,21 @@ void loop() {
     a.pollButtons();
     a.clear();
 
-    font3x5.setCursor(10,10);
-
     switch(gameState) {
         case GameState::Title:
-            font3x5.print("Title");
+            updateTitle();
+            drawTitle();
             break;
         case GameState::Instructions:
-            font3x5.print("Instructions");
+            updateInstructions();
+            drawInstructions();
             break;
         case GameState::PlayGame:
-            font3x5.print("Pla yGame");
+            playGame();
             break;
         case GameState::EndGame:
-            font3x5.print("End Game Screen");
+            drawEndScreen();
             break;
-    }
-    
-    if (a.justPressed("A_BUTTON")) {
-        if (gameState == GameState::EndGame) {
-            gameState = GameState::Title;
-        } else {
-            gameState = static_cast<GameState>(static_cast<int>(gameState) + 1);
-        }
     }
 
     a.display();

@@ -1,11 +1,12 @@
 #pragma once
 
 #include <Arduboy2.h>
+
+#include "Globals.h"
 #include "Vector.h"
 #include "Pos.h"
 #include "Plank.h"
 #include "Goal.h"
-#include "Globals.h"
 
 class Ball {
 public:

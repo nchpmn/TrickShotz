@@ -27,9 +27,7 @@ Font3x5 font3x5 = Font3x5();
 #include "Graphics.h"
 #include "Tunes.h"
 #include "Levels.h"
-#include "Plank.h"
 #include "Ball.h"
-#include "Goal.h"
 
 // MAIN SETUP
 void setup() {

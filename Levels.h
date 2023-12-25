@@ -1,5 +1,4 @@
-#ifndef LEVELS_H
-#define LEVELS_H
+#pragma once
 
 // LEVELS
 struct LevelData { 
@@ -55,5 +54,3 @@ const LevelData levels[MAX_LEVELS] = {
     }
     // Add more levels as needed
 };
-
-#endif

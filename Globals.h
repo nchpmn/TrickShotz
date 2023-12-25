@@ -1,5 +1,4 @@
-#ifndef GLOBALS_H
-#define GLOBALS_H
+#pragma once
 
 // CONSTANTS
 const uint8_t MAX_LEVELS = 5;
@@ -12,6 +11,16 @@ const uint8_t HELD_FRAMES_DELAY = 45;
 const uint8_t HELD_FRAMES_FREQ = 3;
 
 
+// GAME STATE
+enum class GameState {
+    Title,
+    Instructions,
+    PlayGame,
+    EndGame
+};
+extern GameState gameState;
+
+
 // LEVEL STATE
 enum class LevelState {
     Load,
@@ -22,14 +31,3 @@ enum class LevelState {
     LevelLose
 };
 extern LevelState levelState;
-
-// GAME STATE
-enum class GameState {
-    Title,
-    Instructions,
-    PlayGame,
-    EndScreen
-};
-extern GameState gameState;
-
-#endif

@@ -1,5 +1,4 @@
-#ifndef TUNES_H
-#define TUNES_H
+#pragma once
 
 #include <ArduboyTones.h>
 #include <ArduboyTonesPitches.h>
@@ -12,6 +11,3 @@ const uint16_t winSong[] PROGMEM = {
     NOTE_G5,100, NOTE_B5,100, NOTE_REST,50,
     NOTE_C6,300, 
     TONES_END };
-
-
-#endif

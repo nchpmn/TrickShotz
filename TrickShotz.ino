@@ -22,12 +22,19 @@ Font3x5 font3x5 = Font3x5();
 
 // HEADER FILES
 #include "Globals.h"
-#include "Vector.h"
-#include "Pos.h"
 #include "Graphics.h"
 #include "Tunes.h"
 #include "Levels.h"
-#include "Ball.h"
+
+// FUNCTIONS - GLOBAL / UTILITY
+void loadLevel(uint8_t n) {
+    // Create all game objects using data from levels[n]
+    currentGoal = Goal(levels[n].levelGoalData[0],levels[n].levelGoalData[1],levels[n].levelGoalData[2]);
+    for (uint8_t i = 0; i < levels[n].numPlanks; i++) {
+        currentPlanks[i] = Plank(levels[n].levelPlanksData[i][0], levels[n].levelPlanksData[i][1], levels[n].levelPlanksData[i][2], levels[n].levelPlanksData[i][3]);
+    }
+    currentBall = Ball(levels[n].levelBallData[0], levels[n].levelBallData[1], currentPlanks, MAX_PLANKS, currentGoal);
+}
 
 // FUNCTIONS - LEVEL STATE
 // LevelState::Load

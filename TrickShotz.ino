@@ -29,8 +29,55 @@ Font3x5 font3x5 = Font3x5();
 #include "Levels.h"
 #include "Ball.h"
 
+// FUNCTIONS - LEVEL STATE
+// LevelState::Load
+void updateLoadLevel() {
 
-// FUNCTIONS
+}
+
+// LevelState::Reset
+void updateResetLevel() {
+
+}
+
+// LevelState::Aim
+void updateAim() {
+
+}
+void drawAim() {
+    font3x5.setCursor(5,10);
+    font3x5.print(F("Load Level"));
+}
+
+// LevelState::Launch
+void updateLaunch() {
+
+}
+void drawLaunch() {
+    font3x5.setCursor(5,10);
+    font3x5.print(F("Ball Launched!"));
+}
+
+// LevelState::Win
+void updateWinLevel() {
+
+}
+void drawWinLevel() {
+    font3x5.setCursor(5,10);
+    font3x5.print(F("You Win!"));
+}
+
+// LevelState::Lose
+void updateLoseLevel() {
+
+}
+void drawLoseLevel() {
+    font3x5.setCursor(5,10);
+    font3x5.print(F("You Lose! Ha ha!"));
+}
+
+
+// FUNCTIONS - GAME STATE
 // GameState::Title
 void updateTitle() {
     if (a.justPressed(A_BUTTON)) {
@@ -70,28 +117,26 @@ void drawInstructions() {
 void playGame() {
     switch(levelState) {
         case LevelState::Load:
-            font3x5.setCursor(5,10);
-            font3x5.print(F("Load Level"));
+            updateLoadLevel();
             break;
         case LevelState::ResetLevel:
-            font3x5.setCursor(5,10);
-            font3x5.print(F("Reset Level"));
+            updateResetLevel();
             break;
         case LevelState::Aim:
-            font3x5.setCursor(5,10);
-            font3x5.print(F("Aiming"));
+            updateAim();
+            drawAim();
             break;
         case LevelState::Launch:
-            font3x5.setCursor(5,10);
-            font3x5.print(F("Ball Launched!"));
+            updateLaunch();
+            drawLaunch();
             break;
         case LevelState::LevelWin:
-            font3x5.setCursor(5,10);
-            font3x5.print(F("You Win!"));
+            updateWinLevel();
+            drawWinLevel();
             break;
         case LevelState::LevelLose:
-            font3x5.setCursor(5,10);
-            font3x5.print(F("You Lose! Ha ha!"));
+            updateLoseLevel();
+            drawLoseLevel();
             break;
     }
 }

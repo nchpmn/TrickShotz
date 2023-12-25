@@ -45,5 +45,30 @@ void loop() {
     a.pollButtons();
     a.clear();
 
+    font3x5.setCursor(10,10);
+
+    switch(gameState) {
+        case GameState::Title:
+            font3x5.print("Title");
+            break;
+        case GameState::Instructions:
+            font3x5.print("Instructions");
+            break;
+        case GameState::PlayGame:
+            font3x5.print("Pla yGame");
+            break;
+        case GameState::EndGame:
+            font3x5.print("End Game Screen");
+            break;
+    }
+    
+    if (a.justPressed("A_BUTTON")) {
+        if (gameState == GameState::EndGame) {
+            gameState = GameState::Title;
+        } else {
+            gameState = static_cast<GameState>(static_cast<int>(gameState) + 1);
+        }
+    }
+
     a.display();
 }

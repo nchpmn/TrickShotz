@@ -18,7 +18,7 @@ enum class GameState {
     PlayGame,
     EndGame
 };
-extern GameState gameState;
+GameState gameState;
 
 
 // LEVEL STATE
@@ -30,4 +30,4 @@ enum class LevelState {
     LevelWin,
     LevelLose
 };
-extern LevelState levelState;
+LevelState levelState;

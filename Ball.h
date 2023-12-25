@@ -7,6 +7,7 @@
 #include "Pos.h"
 #include "Plank.h"
 #include "Goal.h"
+#include "Tunes.h"
 
 class Ball {
 public:
@@ -21,12 +22,39 @@ public:
     // Launch angle 0 to 359
     uint16_t launchAngle = 25;
 
-    // Default constructor with default values
-    Ball() = default;
+    // Default Constructor
+    // Default Constructor
+    Ball::Ball() : planks(nullptr), numPlanks(*reinterpret_cast<int*>(0xDEADBEEF)), currentGoal(nullptr) {
+        // Initialize other members or perform additional setup if needed
+    }
 
-    // Constructor with references to planks and numPlanks
-    Ball(float startX, float startY, Plank* planks, int& numPlanks, Goal* currentGoal) : 
-        position(startX, startY), planks(planks), numPlanks(numPlanks), currentGoal(currentGoal) {}
+
+Ball::Ball(float startX, float startY, Plank* planks[], int& numPlanks, Goal* currentGoal) :
+    position(startX, startY), numPlanks(numPlanks), currentGoal(currentGoal) {
+    this->planks = planks;
+}
+
+
+    // Copy assignment operator
+    Ball& operator=(const Ball& other) {
+        if (this != &other) {
+            // Copy members from 'other' to 'this'
+            position = other.position;
+            velocity = other.velocity;
+            size = other.size;
+            launchPower = other.launchPower;
+            launchAngle = other.launchAngle;
+            offscreenTimer = other.offscreenTimer;
+            // Copy other members as needed
+
+            // Note: Be careful with reference members, you may need to handle them differently if necessary
+        }
+        return *this;
+    }
+
+
+
+
 
     void update() {
         // 1. Check collision with Goal (and win level)
@@ -67,7 +95,7 @@ private:
     uint8_t offscreenTimer = 0;
 
     // References to planks and numPlanks and Goal
-    Plank* planks;
+    Plank* planks[];
     int& numPlanks;
     Goal* currentGoal;
 

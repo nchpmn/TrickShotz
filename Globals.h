@@ -10,14 +10,6 @@ const uint8_t OFFSCREEN_SECONDS = 1;
 const uint8_t HELD_FRAMES_DELAY = 45;
 const uint8_t HELD_FRAMES_FREQ = 3;
 
-#include "Ball.h"
-
-// GLOBAL VARIABLES
-Ball currentBall;
-Goal currentGoal;
-Plank currentPlanks[MAX_PLANKS];
-uint16_t heldFrames = 0;
-uint8_t currentLevel = 0;
 
 
 // GAME STATE
@@ -40,3 +32,12 @@ enum class LevelState {
     LevelLose
 };
 LevelState levelState;
+
+#include "Ball.h"
+
+// GLOBAL VARIABLES
+Ball currentBall;
+Goal currentGoal;
+Plank currentPlanks[MAX_PLANKS];
+uint16_t heldFrames = 0;
+uint8_t currentLevel = 0;

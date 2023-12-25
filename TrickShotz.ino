@@ -28,7 +28,31 @@ Font3x5 font3x5 = Font3x5();
 
 // FUNCTIONS - LEVEL STATE
 // LevelState::Load
+void loadLevelData(uint8_t n) {
+    n--;
+    currentGoal = Goal(
+        levels[n].levelGoalData[0],
+        levels[n].levelGoalData[1],
+        levels[n].levelGoalData[2]
+    );
+    currentBall = Ball(
+        levels[n].levelBallData[0],
+        levels[n].levelBallData[1],
+        &currentPlanks,
+        levels[n].numPlanks,
+        &currentGoal
+    );
+}
 void updateLoadLevel() {
+    loadLevelData(1);
+
+}
+
+void drawLevel() {
+
+}
+
+void drawLevelUI() {
 
 }
 
@@ -42,6 +66,7 @@ void updateAim() {
 
 }
 void drawAim() {
+
     font3x5.setCursor(5,10);
     font3x5.print(F("Load Level"));
 }

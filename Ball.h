@@ -1,6 +1,8 @@
 #pragma once
 
 #include <Arduboy2.h>
+#include "Plank.h"
+#include "Goal.h"
 
 class Ball {
 public:

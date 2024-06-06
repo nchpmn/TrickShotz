@@ -37,7 +37,9 @@ Font3x5 font3x5 = Font3x5();
 Ball playerBall(10, 10, 3);
 Line lines[] = {
     Line(20, 20, 50, 50),
-    Line(120, 50, 35, 64)
+    Line(120, 50, 35, 64),
+    Line(110, 10, 110, 50),
+    Line(30, 15, 95, 15)
 };
 
 

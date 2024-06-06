@@ -6,7 +6,23 @@ public:
     Line(int x1, int y1, int x2, int y2) : x1(x1), y1(y1), x2(x2), y2(y2) {}
     
     void draw() {
-        a.drawLine(x1, y1, x2, y2);
+        if (x1 == x2) {
+            // Case where line is vertical
+            a.fillRect(x1, y1, thickness, y2-y1, WHITE);
+        } else if (y1 == y2) {
+            // Case where line is horizontal
+            a.fillRect(x1, y1, x2-x1, thickness, WHITE);
+        } else {
+            // Case where line is diagonal
+            if (thickness % 2 == 0) {
+                uint8_t halfThick = thickness / 2;
+                a.fillTriangle(x1, y1-halfThick, x2, y2-halfThick, x1, y1+halfThick, WHITE);
+                a.fillTriangle(x2, y2-halfThick, x2, y2+halfThick, x1, y1+halfThick, WHITE);
+            } else {
+                a.fillTriangle(x1, y1, x2, y2, x1, y1+thickness, WHITE);
+                a.fillTriangle(x2, y2, x2, y2+thickness, x1, y1+thickness, WHITE);
+            }
+        }
     }
 
     int getX1() const { return x1; }
@@ -19,6 +35,7 @@ private:
     int y1;
     int x2;
     int y2;
+    static const int thickness = 2;
 
 };
 

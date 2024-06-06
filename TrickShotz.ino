@@ -25,6 +25,7 @@ Font3x5 font3x5 = Font3x5();
 
 // HEADER FILES
 #include "Ball.h";
+#include "Line.h";
 
 
 // GLOBAL DEFINITIONS
@@ -34,6 +35,10 @@ Font3x5 font3x5 = Font3x5();
 
 // CLASS OBJECTS
 Ball playerBall(10, 10, 3);
+Line lines[] = {
+    Line(20, 20, 50, 50),
+    Line(120, 50, 35, 64)
+};
 
 
 // MAIN SETUP
@@ -73,6 +78,15 @@ void loop() {
     if (a.pressed(UP_BUTTON)) { playerBall.move(0, MOVE_SPEED * -1); };
     if (a.pressed(DOWN_BUTTON)) { playerBall.move(0, MOVE_SPEED); };
     playerBall.draw();
+
+    // Draw lines and detect collision
+    for (const auto &l : lines) {
+        l.draw();
+        if (playerBall.collideLine(l.getX1(), l.getY1(), l.getX2(), l.getY2())) {
+            font3x5.setCursor(0,25);
+            font3x5.print("Collide!");
+        }
+    }
 
     a.display();
 }

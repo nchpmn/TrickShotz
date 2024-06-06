@@ -75,10 +75,22 @@ void loop() {
     font3x5.print(F("TRICKSHOTZ PROTOTYPE"));
 
     // Move and draw playerBall
-    if (a.justPressed(LEFT_BUTTON)) { playerBall.move(MOVE_SPEED * -1, 0); };
-    if (a.justPressed(RIGHT_BUTTON)) { playerBall.move(MOVE_SPEED, 0); };
-    if (a.justPressed(UP_BUTTON)) { playerBall.move(0, MOVE_SPEED * -1); };
-    if (a.justPressed(DOWN_BUTTON)) { playerBall.move(0, MOVE_SPEED); };
+    static bool moveFast = true;
+    if (a.justPressed(A_BUTTON)) {
+        moveFast = !moveFast;
+    }
+    if (moveFast) {
+        if (a.pressed(LEFT_BUTTON)) { playerBall.move(MOVE_SPEED * -1, 0); };
+        if (a.pressed(RIGHT_BUTTON)) { playerBall.move(MOVE_SPEED, 0); };
+        if (a.pressed(UP_BUTTON)) { playerBall.move(0, MOVE_SPEED * -1); };
+        if (a.pressed(DOWN_BUTTON)) { playerBall.move(0, MOVE_SPEED); };
+    } else {
+        if (a.justPressed(LEFT_BUTTON)) { playerBall.move(MOVE_SPEED * -1, 0); };
+        if (a.justPressed(RIGHT_BUTTON)) { playerBall.move(MOVE_SPEED, 0); };
+        if (a.justPressed(UP_BUTTON)) { playerBall.move(0, MOVE_SPEED * -1); };
+        if (a.justPressed(DOWN_BUTTON)) { playerBall.move(0, MOVE_SPEED); };
+
+    }
     playerBall.draw();
 
     // Draw lines and detect collision

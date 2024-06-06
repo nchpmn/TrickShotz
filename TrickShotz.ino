@@ -7,12 +7,13 @@
 // 01 Nov 2023 - Development Started
 // 04 December 2023 - First Demo Released
 // 06 June 2024 - Prototype-Collide Branch Started
+// 07 June 2024 - Prototype-LoadLevels Branch Started
 // 
 // PROTOTYPE GOALS:
-//   1. Refactor collision detection
-//   2. Splitting code into multiple files
+//   1. Add Goal class & win conditions
+//   2. Create level loading data structure & methods
 
-#define VERSION "v240606 PROTO-COLLIDE"
+#define VERSION "v240607 PROTO-LOADLEVELS"
 
 
 // LIBRARIES

@@ -14,46 +14,38 @@ public:
         a.fillCircle(x, y, radius);
     }
 
-bool collideLine(int x1, int y1, int x2, int y2, int thickness) const {
-    float cx = x;
-    float cy = y;
+    bool collideLine(int x1, int y1, int x2, int y2, int thickness) const {
+        // Calculate the distance between the ball's center and the line segment
+        // Vector from (x1,y1) to (x2,y2)
+        float segmentVectorX = x2 - x1;
+        float segmentVectorY = y2 - y1;
 
-    // Vector from point A to B
-    float ABx = x2 - x1;
-    float ABy = y2 - y1;
-    
-    // Vector from point A to the circle center
-    float ACx = cx - x1;
-    float ACy = cy - y1;
+        // Vector from (x1,y1) to (ballX,ballY)
+        float pointVectorX = x - x1;
+        float pointVectorY = y - y1;
 
-    // Project vector AC onto AB to get the closest point on the line segment
-    float AB_mag_sq = ABx * ABx + ABy * ABy; // Magnitude squared of AB
-    float dot_product = ACx * ABx + ACy * ABy;
-    float t = dot_product / AB_mag_sq;
+        // Dot Product of these two Vectors
+        float dotProduct = (pointVectorX * segmentVectorX) + (pointVectorY * segmentVectorY);
 
-    // Clamp t to the range [0, 1] to ensure the closest point is on the line segment
-    t = max(0.0f, min(1.0f, t));
+        // Length of the segment vector squared
+        float segmentLengthSquared = (segmentVectorX * segmentVectorX) + (segmentVectorY * segmentVectorY);
 
-    // Find the closest point on the line segment
-    float closestX = x1 + t * ABx;
-    float closestY = y1 + t * ABy;
+        // Calculate the parameter t (the position on the line segment) at which the closest point on the line occurs
+        float t = dotProduct / segmentLengthSquared;
 
-    // Compute the distance from the circle center to the closest point
-    float distanceX = cx - closestX;
-    float distanceY = cy - closestY;
-    float distance_sq = distanceX * distanceX + distanceY * distanceY;
+        // Clamp t to bounds of line segment
+        t = max(0.0f, min(1.0f, t));
 
-    // Check if the line is not vertical or horizontal
-    if (x1 != x2 && y1 != y2) {
-        // Check if the distance is less than or equal to the radius plus half of the line thickness
-        return distance_sq <= (radius + (thickness / 2)) * (radius + (thickness / 2));
-    } else {
-        // For vertical or horizontal lines, extend the collision detection region to cover both sides of the line
-        float halfThickness = thickness / 2.0f;
-        // Check if the closest point is within the line segment and within the thickness
-        return t >= -halfThickness && t <= 1 + halfThickness && distance_sq <= radius * radius;
+        // Coords of closest point on the line
+        float closestX = x1 + t * segmentVectorX;
+        float closestY = y1 + t * segmentVectorY;
+
+        // Distance between (BallX,BallY) and (closestX,closestY)
+        float distance = sqrt((x - closestX) * (x - closestX) + (y - closestY) * (y - closestY));
+
+        // Check if the distance is less than the sum of the ball's radius and the Plank's thickness
+        return distance < radius + (thickness / 2);
     }
-}
 
 
 private:

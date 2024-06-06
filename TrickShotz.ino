@@ -21,11 +21,17 @@ Arduboy2 a;
 #include "src/Font3x5.h"
 Font3x5 font3x5 = Font3x5();
 
+// HEADER FILES
+#include "Ball.h";
+
+// DEFINITIONS
+#define FRAME_RATE 60
+
 
 // MAIN SETUP
 void setup() {
     a.begin();
-    a.setFrameRate(60);
+    a.setFrameRate(FRAME_RATE);
     a.initRandomSeed();
     a.clear();
 }
@@ -50,6 +56,8 @@ void loop() {
 
     font3x5.setCursor(0,0);
     font3x5.print(F("TRICKSHOTZ PROTOTYPE"));
+
+    playerBall.draw();
 
     a.display();
 }

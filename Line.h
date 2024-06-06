@@ -29,6 +29,7 @@ public:
     int getY1() const { return y1; }
     int getX2() const { return x2; }
     int getY2() const { return y2; }
+    int getThick() const { return thickness; }
 
 private:
     int x1;

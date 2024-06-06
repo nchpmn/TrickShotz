@@ -6,7 +6,7 @@
 //
 // 01 Nov 2023 - Development Started
 // 04 December 2023 - First Demo Released
-// 06 June 2024 - Prototyping Branch Started
+// 06 June 2024 - Prototype-Collide Branch Started
 // 
 // PROTOTYPE GOALS:
 //   1. Refactor collision detection

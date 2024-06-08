@@ -85,5 +85,15 @@ void loadLineData(const LineData *lineData, Line &line) {
     line.setPoints(lineData->x1, lineData->y1, lineData->x2, lineData->y2);
 }
 
+void loadLevelData(const LevelData *levelData, Ball &ball, Goal &goal, Line lines[], uint8_t &numLines) {
+    loadBallData(&levelData->ball, ball);
+    loadGoalData(&levelData->goal, goal);
+    numLines = levelData->numLines;
+    for (uint8_t i = 0; i < numLines; ++i) {
+        loadLineData(&levelData->lines[i], lines[i]);
+    }
+}
+
+
 
 #endif // LEVELS_H

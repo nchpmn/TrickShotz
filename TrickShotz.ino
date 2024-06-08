@@ -36,15 +36,11 @@ Font3x5 font3x5 = Font3x5();
 #define MOVE_SPEED 1
 
 
-// CLASS OBJECTS
-Ball playerBall(10, 10, 3);
-Line lines[] = {
-    Line(20, 20, 50, 50),
-    Line(120, 50, 35, 64),
-    Line(110, 10, 110, 50),
-    Line(30, 15, 95, 15)
-};
-Goal levelGoal(64, 32, 6);
+// PLACEHOLDER OBJECTS
+Ball playerBall(0, 0, 0);
+Goal levelGoal(0, 0, 0);
+Line levelLines[MAX_LINES];
+uint8_t numLines;
 
 
 // MAIN SETUP
@@ -53,6 +49,9 @@ void setup() {
     a.setFrameRate(FRAME_RATE);
     a.initRandomSeed();
     a.clear();
+
+    loadLevelData(&levels[0], playerBall, levelGoal, levelLines, numLines); // Load the first level
+
 }
 
 
@@ -98,7 +97,7 @@ void loop() {
     playerBall.draw();
 
     // Draw lines and detect collision
-    for (const auto &l : lines) {
+    for (const auto &l : levelLines) {
         l.draw();
         if (playerBall.collideLine(l.getX1(), l.getY1(), l.getX2(), l.getY2(), l.getThick())) {
             font3x5.setCursor(0,25);

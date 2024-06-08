@@ -39,8 +39,7 @@ const LevelData level01 PROGMEM = {
     {
         { 20, 20, 50, 60 },  // Lines: x1, y1, x2, y2
         { 110, 10, 110, 50 },
-        { 30, 15, 95, 15 }
-        // Add more lines as needed, up to MAX_LINES
+        { 30, 15, 95, 15 },
     }
 };
 
@@ -93,7 +92,5 @@ void loadLevelData(const LevelData *levelData, Ball &ball, Goal &goal, Line line
         loadLineData(&levelData->lines[i], lines[i]);
     }
 }
-
-
 
 #endif // LEVELS_H

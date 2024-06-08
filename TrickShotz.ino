@@ -53,6 +53,7 @@ void setup() {
     Serial.begin(9600); // Initialize Serial communication at 9600 baud rate
     while (!Serial); // Wait for the Serial port to connect
 
+    printAllLevels();
 
     loadLevelData(&levels[0], playerBall, levelGoal, levelLines, numLines); // Load the first level
 
@@ -85,7 +86,8 @@ void setup() {
         Serial.print(") -> (");
         Serial.print(levelLines[i].getX2());
         Serial.print(", ");
-        Serial.println(levelLines[i].getY2());
+        Serial.print(levelLines[i].getY2());
+        Serial.println(")");
     }
 
 }

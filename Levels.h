@@ -1,6 +1,7 @@
 #ifndef LEVELS_H
 #define LEVELS_H
 
+
 // OBJECT DATA SCTRUCTURES
 struct BallData {
     uint8_t x;
@@ -70,27 +71,21 @@ const uint8_t NUM_LEVELS = sizeof(levels) / sizeof(LevelData);
 
 
 // FUNCTIONS
-void loadBallData(const BallData* ballData, Ball& ball) {
-    ball.setPosition(ballData->x, ballData->y);
-    ball.setRadius(ballData->radius);
-}
+void loadLevelData(const LevelData *level, Ball &ball, Goal &goal, Line *lines, uint8_t &numLines) {
+    // Load ball data
+    ball.setPosition(level->ball.x, level->ball.y);
+    ball.setRadius(level->ball.radius);
 
-void loadGoalData(const GoalData *goalData, Goal &goal) {
-    goal.setPosition(goalData->x, goalData->y);
-    goal.setRadius(goalData->radius);
-}
+    // Load goal data
+    goal.setPosition(level->goal.x, level->goal.y);
+    goal.setRadius(level->goal.radius);
 
-void loadLineData(const LineData *lineData, Line &line) {
-    line.setPoints(lineData->x1, lineData->y1, lineData->x2, lineData->y2);
-}
-
-void loadLevelData(const LevelData *levelData, Ball &ball, Goal &goal, Line lines[], uint8_t &numLines) {
-    loadBallData(&levelData->ball, ball);
-    loadGoalData(&levelData->goal, goal);
-    numLines = levelData->numLines;
+    // Load line data
+    numLines = level->numLines;
     for (uint8_t i = 0; i < numLines; ++i) {
-        loadLineData(&levelData->lines[i], lines[i]);
+        lines[i] = Line(level->lines[i].x1, level->lines[i].y1, level->lines[i].x2, level->lines[i].y2);
     }
 }
+
 
 #endif // LEVELS_H

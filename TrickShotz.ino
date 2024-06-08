@@ -97,15 +97,15 @@ void loop() {
     playerBall.draw();
 
     // Draw lines and detect collision
-    for (const auto &l : levelLines) {
-        l.draw();
-        if (playerBall.collideLine(l.getX1(), l.getY1(), l.getX2(), l.getY2(), l.getThick())) {
+    for (uint8_t i = 0; i < numLines; ++i) {
+        levelLines[i].draw();
+        if (playerBall.collideLine(levelLines[i].getX1(), levelLines[i].getY1(), levelLines[i].getX2(), levelLines[i].getY2(), levelLines[i].getThick())) {
             font3x5.setCursor(0,25);
             font3x5.print("Collide!");
         }
     }
 
-    // Draw Goal
+    // Draw Goal and detect collision
     levelGoal.draw();
     if (playerBall.collideGoal(levelGoal.getX(), levelGoal.getY(), levelGoal.getRadius())) {
         font3x5.setCursor(70,25);

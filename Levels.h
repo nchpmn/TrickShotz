@@ -127,46 +127,14 @@ void printAllLevels() {
 
 // FUNCTIONS
 void loadLevelData(const LevelData *level, Ball &ball, Goal &goal, Line *lines, uint8_t &numLines) {
-    // Print level data before loading
-    Serial.println("Level Data Stored in LevelData Object:");
-    Serial.print("Ball: x = ");
-    Serial.print(level->ball.x);
-    Serial.print(", y = ");
-    Serial.print(level->ball.y);
-    Serial.print(", radius = ");
-    Serial.println(level->ball.radius);
-
-    Serial.print("Goal: x = ");
-    Serial.print(level->goal.x);
-    Serial.print(", y = ");
-    Serial.print(level->goal.y);
-    Serial.print(", radius = ");
-    Serial.println(level->goal.radius);
-
     // Load number of lines
     numLines = pgm_read_byte(&(level->numLines));
-
-    Serial.print("Number of Lines: ");
-    Serial.println(numLines);
 
     // Load line data
     for (uint8_t i = 0; i < numLines; ++i) {
         LineData lineData;
         memcpy_P(&lineData, &(level->lines[i]), sizeof(LineData));
         lines[i] = Line(lineData.x1, lineData.y1, lineData.x2, lineData.y2);
-        
-        // Debugging output to verify correct loading of line data
-        Serial.print("Line ");
-        Serial.print(i);
-        Serial.print(": (");
-        Serial.print(lineData.x1);
-        Serial.print(", ");
-        Serial.print(lineData.y1);
-        Serial.print(") -> (");
-        Serial.print(lineData.x2);
-        Serial.print(", ");
-        Serial.print(lineData.y2);
-        Serial.println(")");
     }
     
     // Load ball data

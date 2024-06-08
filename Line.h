@@ -30,6 +30,12 @@ public:
     int getX2() const { return x2; }
     int getY2() const { return y2; }
     int getThick() const { return thickness; }
+    void setPoints(uint8_t newX1, uint8_t newY1, uint8_t newX2, uint8_t newY2) {
+        x1 = newX1;
+        y1 = newY1;
+        x2 = newX2;
+        y2 = newY2;
+    }
 
 private:
     int x1;

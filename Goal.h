@@ -32,6 +32,12 @@ public:
     int getX() const { return x; }
     int getY() const { return y; }
     int getRadius() const { return radius; }
+    void setPosition(uint8_t newX, uint8_t newY) {
+        x = newX;
+        y = newY;
+    }
+    void setRadius(uint8_t newRadius) { radius = newRadius; }
+
 
 private:
     int x;

@@ -50,7 +50,43 @@ void setup() {
     a.initRandomSeed();
     a.clear();
 
+    Serial.begin(9600); // Initialize Serial communication at 9600 baud rate
+    while (!Serial); // Wait for the Serial port to connect
+
+
     loadLevelData(&levels[0], playerBall, levelGoal, levelLines, numLines); // Load the first level
+
+    // Debugging: Print loaded level data
+    Serial.println("Level Data Loaded:");
+    Serial.print("Ball: x = ");
+    Serial.print(playerBall.getX());
+    Serial.print(", y = ");
+    Serial.print(playerBall.getY());
+    Serial.print(", radius = ");
+    Serial.println(playerBall.getRadius());
+
+    Serial.print("Goal: x = ");
+    Serial.print(levelGoal.getX());
+    Serial.print(", y = ");
+    Serial.print(levelGoal.getY());
+    Serial.print(", radius = ");
+    Serial.println(levelGoal.getRadius());
+
+    Serial.print("Number of Lines: ");
+    Serial.println(numLines);
+
+    for (uint8_t i = 0; i < numLines; ++i) {
+        Serial.print("Line ");
+        Serial.print(i);
+        Serial.print(": (");
+        Serial.print(levelLines[i].getX1());
+        Serial.print(", ");
+        Serial.print(levelLines[i].getY1());
+        Serial.print(") -> (");
+        Serial.print(levelLines[i].getX2());
+        Serial.print(", ");
+        Serial.println(levelLines[i].getY2());
+    }
 
 }
 

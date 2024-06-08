@@ -6,33 +6,38 @@ public:
     Goal(int x, int y, int radius) : x(x), y(y), radius(radius) {}
 
     void draw() {
-        float circumference = 2 * PI * radius;
-        float segmentLength = dashLength + dashGap;
-        int numberOfDashes = circumference / segmentLength;
-        
-        for (int i = 0; i < numberOfDashes; ++i) {
-            // Calculate start angle of the dash
-            float startAngle = (i * segmentLength) / radius;
-            // Calculate end angle of the dash
-            float endAngle = ((i * segmentLength) + dashLength) / radius;
-            
-            // Convert start and end angles to x and y coordinates
-            int startX = x + radius * cos(startAngle);
-            int startY = y + radius * sin(startAngle);
-            int endX = x + radius * cos(endAngle);
-            int endY = y + radius * sin(endAngle);
-            
-            // Draw the dash
-            a.drawLine(startX, startY, endX, endY, WHITE);
+        static float rotationAngle = 0.0;
+        float dashLength = (2 * PI * radius) / dashNumber;
+
+        for (int i = 0; i < dashNumber; i += 3) {
+            float angle1 = TWO_PI / dashNumber * i + rotationAngle;
+            float angle2 = TWO_PI / dashNumber * (i + 1) + rotationAngle;
+
+            int x1 = x + radius * cos(angle1);
+            int y1 = y + radius * sin(angle1);
+            int x2 = x + radius * cos(angle2);
+            int y2 = y + radius * sin(angle2);
+
+            // Draw each dash as a line segment
+            a.drawLine(x1, y1, x2, y2, WHITE);
+        }
+
+        // Update rotation angle for the next frame
+        rotationAngle += 0.0043625;  // 0.5 degree in radians
+        if (rotationAngle >= TWO_PI) {
+            rotationAngle -= TWO_PI;
         }
     }
+
+    int getX() const { return x; }
+    int getY() const { return y; }
+    int getRadius() const { return radius; }
 
 private:
     int x;
     int y;
     int radius;
-    int dashLength = 1;
-    int dashGap = 3;
+    int dashNumber = 17;
 
 };
 

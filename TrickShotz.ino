@@ -107,6 +107,10 @@ void loop() {
 
     // Draw Goal
     levelGoal.draw();
+    if (playerBall.collideGoal(levelGoal.getX(), levelGoal.getY(), levelGoal.getRadius())) {
+        font3x5.setCursor(70,25);
+        font3x5.print("GOAL!");
+    }
 
     a.display();
 }

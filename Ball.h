@@ -23,6 +23,16 @@ public:
         return distance < radius + (thickness / 2);
     }
 
+    bool collideGoal(int goalX, int goalY, int goalRadius) const {
+        // Calculate the distance between the centers of the ball and the goal
+        int deltaX = x - goalX;
+        int deltaY = y - goalY;
+        float distance = sqrt(deltaX * deltaX + deltaY * deltaY);
+
+        // Check if the ball is wholly inside the goal
+        return (distance + radius <= goalRadius);
+    }
+
 
 private:
     uint8_t x;

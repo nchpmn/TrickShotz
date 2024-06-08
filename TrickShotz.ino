@@ -27,6 +27,7 @@ Font3x5 font3x5 = Font3x5();
 // HEADER FILES
 #include "Ball.h";
 #include "Line.h";
+#include "Goal.h";
 
 
 // GLOBAL DEFINITIONS
@@ -42,6 +43,7 @@ Line lines[] = {
     Line(110, 10, 110, 50),
     Line(30, 15, 95, 15)
 };
+Goal levelGoal(64, 32, 6);
 
 
 // MAIN SETUP
@@ -102,6 +104,9 @@ void loop() {
             font3x5.print("Collide!");
         }
     }
+
+    // Draw Goal
+    levelGoal.draw();
 
     a.display();
 }

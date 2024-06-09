@@ -20,25 +20,27 @@ As a hobby project, there is no ETA for final publishing of the completed game.
 ### Program Outline
 
 ```mermaid
-flowchart TD
-    %% Game States
-    Title -->|Proceed| Instructions
-    Instructions -->|Back| Title
-    Title -->|Start| PlayGame
-    PlayGame -->|Complete| EndGame
-    EndGame -->|Restart| Title
+stateDiagram
+direction LR
 
-    %% PlayGame States
-    subgraph PlayGame
+    [*] --> Title
+    Title --> Instructions
+    Instructions --> Title
+    Title --> PlayGame
+    PlayGame --> EndGame: Complete All Levels
+    PlayGame --> Load
+
+    state PlayGame {
+        [*] --> Load
         Load --> Aim
-        Aim --> Launch
-        Aim -->|Reset| ResetLevel
+        Aim --> ResetLevel: Player Resets Level
         ResetLevel --> Aim
+        Aim --> Launch
         Launch --> LevelWin
         Launch --> LevelLose
-        LevelWin --> Load
+        LevelWin --> Load: Next Level
         LevelLose --> ResetLevel
-    end
+    }
 ```
 
 ---

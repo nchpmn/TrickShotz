@@ -23,15 +23,11 @@ Font3x5 font3x5 = Font3x5();
 
 
 // HEADER FILES
+#include "Globals.h";
 #include "Ball.h";
 #include "Line.h";
 #include "Goal.h";
 #include "Levels.h";
-
-
-// GLOBAL DEFINITIONS
-#define FRAME_RATE 60
-#define MOVE_SPEED 1
 
 
 // PLACEHOLDER OBJECTS
@@ -39,6 +35,42 @@ Ball playerBall(0, 0, 0);
 Goal levelGoal(0, 0, 0);
 Line levelLines[MAX_LINES];
 uint8_t numLines;
+
+
+// PROGRAM FLOWCHART
+// Game States:
+//     Title <-----> Instructions
+//       |
+//       v
+//     PlayGame
+//       |
+//       v
+//     EndGame
+//       |
+//       v
+//     Title
+
+// PlayGame States:
+//     Load
+//       |
+//       v
+//     Aim
+//       |
+//       +---> ResetLevel
+//       |
+//       v
+//     Launch -----+
+//       |         |
+//       v         |
+//     LevelWin   LevelLose
+//       |            |
+//       v            v
+//     Load       ResetLevel
+
+
+
+
+
 
 // FUNCTIONS - LEVEL STATE
 // LevelState::Load
@@ -200,6 +232,7 @@ void loop() {
     if (playerBall.collideGoal(levelGoal.getX(), levelGoal.getY(), levelGoal.getRadius())) {
         font3x5.setCursor(70,25);
         font3x5.print("GOAL!");
+    }
 
 
     switch(gameState) {

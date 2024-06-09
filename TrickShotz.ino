@@ -123,7 +123,7 @@ void drawInstructionsVersion() {
 void playGame() {
     switch(levelState) {
         case LevelState::Load:
-            loadLevelData(&levels[currentLevel], playerBall, levelGoal, levelLines, numLines);
+            updateLevelLoad(&levels[currentLevel], playerBall, levelGoal, levelLines, numLines);
             levelState = LevelState::Aim;
             break;
         case LevelState::ResetLevel:
@@ -157,7 +157,7 @@ void drawEndScreen() {
 
 // FUNCTIONS - LEVEL STATE
 // LevelState::Load
-void loadLevelData(const LevelData *level, Ball &ball, Goal &goal, Line *lines, uint8_t &numLines) {
+void updateLevelLoad(const LevelData *level, Ball &ball, Goal &goal, Line *lines, uint8_t &numLines) {
     // Load number of lines
     numLines = pgm_read_byte(&(level->numLines));
 
@@ -244,6 +244,7 @@ void drawLaunch() {
 
 // LevelState::Win
 void updateWinLevel() {
+    currentLevel++;
 
 }
 void drawWinLevel() {

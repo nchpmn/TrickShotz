@@ -59,8 +59,8 @@ const LevelData level03 PROGMEM = {
     { 80, 40, 8 },  // Goal: x, y, radius
     3,  // Number of lines
     {
-        { 15, 15, 25, 25 },  // Lines: x1, y1, x2, y2
-        { 35, 35, 45, 45 },
+        { 15, 15, 95, 45 },  // Lines: x1, y1, x2, y2
+        { 35, 0, 0, 45 },
         { 55, 55, 65, 65 },
     }
 };

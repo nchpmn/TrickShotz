@@ -9,6 +9,8 @@
 
 #define VERSION "v231204 DEV"
 
+// Prepare to merge
+
 // LIBRARIES
 #include <Arduboy2.h>
 Arduboy2 a;

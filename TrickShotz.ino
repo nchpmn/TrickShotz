@@ -6,11 +6,13 @@
 //
 // 01 Nov 2023 - Development Started
 // 04 December 2023 - First Demo Released
+// 18 Dec 2023 - Major Refactor Begun
 // 06 June 2024 - Prototype-Collide Branch Started
 // 07 June 2024 - Prototype-LoadLevels Branch Started
 // 09 June 2024 - Merge into main
+// PROTOTYPE ONLY
 
-#define VERSION "v240609 MAIN"
+#define VERSION "v240609 DEV"
 
 // LIBRARIES
 #include <Arduboy2.h>
@@ -38,6 +40,109 @@ Goal levelGoal(0, 0, 0);
 Line levelLines[MAX_LINES];
 uint8_t numLines;
 
+// FUNCTIONS - LEVEL STATE
+// LevelState::Load
+void loadLevelData(uint8_t n) {
+}
+void updateLoadLevel() {
+    loadLevelData(1);
+
+}
+
+void drawLevel() {
+
+}
+
+void drawLevelUI() {
+
+}
+
+// LevelState::Reset
+void updateResetLevel() {
+
+}
+
+// LevelState::Aim
+void updateAim() {
+
+}
+void drawAim() {
+}
+
+// LevelState::Launch
+void updateLaunch() {
+
+}
+void drawLaunch() {
+}
+
+// LevelState::Win
+void updateWinLevel() {
+
+}
+void drawWinLevel() {
+}
+
+// LevelState::Lose
+void updateLoseLevel() {
+
+}
+void drawLoseLevel() {
+}
+
+
+// FUNCTIONS - GAME STATE
+// GameState::Title
+void updateTitle() {
+    if (a.justPressed(A_BUTTON)) {
+        gameState = GameState::PlayGame;
+    }
+    if (a.justPressed(B_BUTTON)) {
+        gameState = GameState::Instructions;
+    }
+}
+void drawTitle() {
+
+}
+
+// GameState::Instructions
+void updateInstructions() {
+}
+void drawInstructions() {
+}
+
+// GameState::PlayGame
+void playGame() {
+    switch(levelState) {
+        case LevelState::Load:
+            updateLoadLevel();
+            break;
+        case LevelState::ResetLevel:
+            updateResetLevel();
+            break;
+        case LevelState::Aim:
+            updateAim();
+            drawAim();
+            break;
+        case LevelState::Launch:
+            updateLaunch();
+            drawLaunch();
+            break;
+        case LevelState::LevelWin:
+            updateWinLevel();
+            drawWinLevel();
+            break;
+        case LevelState::LevelLose:
+            updateLoseLevel();
+            drawLoseLevel();
+            break;
+    }
+}
+
+// GameState::EndGame
+void drawEndScreen() {
+}
+
 
 // MAIN SETUP
 void setup() {
@@ -57,16 +162,6 @@ void loop() {
     }
     a.pollButtons();
     a.clear();
-
-    // Toggle showing version number
-    static bool showVersion = false;
-    if (showVersion) {
-        font3x5.setCursor(0,50);
-        font3x5.print(VERSION);
-    }
-    if (a.justPressed(B_BUTTON)) {
-        showVersion = !showVersion;
-    }
 
     // Title
     font3x5.setCursor(0,0);
@@ -105,6 +200,23 @@ void loop() {
     if (playerBall.collideGoal(levelGoal.getX(), levelGoal.getY(), levelGoal.getRadius())) {
         font3x5.setCursor(70,25);
         font3x5.print("GOAL!");
+
+
+    switch(gameState) {
+        case GameState::Title:
+            updateTitle();
+            drawTitle();
+            break;
+        case GameState::Instructions:
+            updateInstructions();
+            drawInstructions();
+            break;
+        case GameState::PlayGame:
+            playGame();
+            break;
+        case GameState::EndGame:
+            drawEndScreen();
+            break;
     }
 
     a.display();

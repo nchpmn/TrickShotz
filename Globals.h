@@ -2,7 +2,7 @@
 
 // GLOBAL DEFINITIONS
 #define FRAME_RATE 60
-#define MOVE_SPEED 1
+#define MOVE_SPEED 1 // not needed after prototype
 
 
 // GAME STATE

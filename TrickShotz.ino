@@ -8,11 +8,9 @@
 // 04 December 2023 - First Demo Released
 // 06 June 2024 - Prototype-Collide Branch Started
 // 07 June 2024 - Prototype-LoadLevels Branch Started
+// 09 June 2024 - Merge into main
 
-#define VERSION "v240607 PROTO-LOADLEVELS"
-
-
-// Prepare to merge
+#define VERSION "v240609 MAIN"
 
 // LIBRARIES
 #include <Arduboy2.h>

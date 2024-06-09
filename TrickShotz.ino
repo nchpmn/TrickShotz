@@ -61,7 +61,7 @@ uint8_t numLines;
 //       |
 //       v
 //     Title
-
+// 
 // PlayGame States:
 //     Load
 //       |
@@ -81,20 +81,14 @@ uint8_t numLines;
 
 
 
-
-
-
 // FUNCTIONS - LEVEL STATE
 // LevelState::Load
-void loadLevelData(uint8_t n) {
-}
-void updateLoadLevel() {
-    loadLevelData(1);
-
-}
-
 void drawLevel() {
-
+    playerBall.draw();
+    levelGoal.draw();
+    for (uint8_t i = 0; i < numLines; ++i) {
+        levelLines[i].draw();
+    }
 }
 
 void drawLevelUI() {
@@ -108,9 +102,43 @@ void updateResetLevel() {
 
 // LevelState::Aim
 void updateAim() {
+    // Move playerBall (prototype only)
+    static bool moveFast = true;
+    if (a.justPressed(A_BUTTON)) {
+        moveFast = !moveFast;
+    }
+    if (moveFast) {
+        if (a.pressed(LEFT_BUTTON)) { playerBall.move(MOVE_SPEED * -1, 0); };
+        if (a.pressed(RIGHT_BUTTON)) { playerBall.move(MOVE_SPEED, 0); };
+        if (a.pressed(UP_BUTTON)) { playerBall.move(0, MOVE_SPEED * -1); };
+        if (a.pressed(DOWN_BUTTON)) { playerBall.move(0, MOVE_SPEED); };
+    } else {
+        if (a.justPressed(LEFT_BUTTON)) { playerBall.move(MOVE_SPEED * -1, 0); };
+        if (a.justPressed(RIGHT_BUTTON)) { playerBall.move(MOVE_SPEED, 0); };
+        if (a.justPressed(UP_BUTTON)) { playerBall.move(0, MOVE_SPEED * -1); };
+        if (a.justPressed(DOWN_BUTTON)) { playerBall.move(0, MOVE_SPEED); };
+    }
 
+    // Detect collision ball-goal
+    // To be moved to LevelState::Launch after prototype
+    if (playerBall.collideGoal(levelGoal.getX(), levelGoal.getY(), levelGoal.getRadius())) {
+        font3x5.setCursor(70,25);
+        font3x5.print("GOAL!");
+    }
+
+    // Detect collision ball-lines
+    // To be moved to LevelState::Launch after prototype
+    for (uint8_t i = 0; i < numLines; ++i) {
+        if (playerBall.collideLine(levelLines[i].getX1(), levelLines[i].getY1(), levelLines[i].getX2(), levelLines[i].getY2(), levelLines[i].getThick())) {
+            font3x5.setCursor(0,25);
+            font3x5.print("Collide!");
+        }
+    }
 }
 void drawAim() {
+    drawLevel();
+    drawLevelUI();
+    // playerBall.drawAim();
 }
 
 // LevelState::Launch
@@ -146,7 +174,10 @@ void updateTitle() {
     }
 }
 void drawTitle() {
-
+    font3x5.setCursor(60, 32);
+    font3x5.print("TITLE");
+    font3x5.setCursor(0,0);
+    font3x5.print(F("TRICKSHOTZ!"));
 }
 
 // GameState::Instructions
@@ -159,7 +190,8 @@ void drawInstructions() {
 void playGame() {
     switch(levelState) {
         case LevelState::Load:
-            updateLoadLevel();
+            loadLevelData(&levels[0], playerBall, levelGoal, levelLines, numLines);
+            levelState = LevelState::Aim;
             break;
         case LevelState::ResetLevel:
             updateResetLevel();
@@ -191,11 +223,12 @@ void drawEndScreen() {
 // MAIN SETUP
 void setup() {
     a.begin();
+    #if DEBUG
+    Serial.begin(9600); // Initialize Serial communication at 9600 baud rate
+    #endif
     a.setFrameRate(FRAME_RATE);
     a.initRandomSeed();
     a.clear();
-
-    loadLevelData(&levels[0], playerBall, levelGoal, levelLines, numLines);
 }
 
 
@@ -206,46 +239,6 @@ void loop() {
     }
     a.pollButtons();
     a.clear();
-
-    // Title
-    font3x5.setCursor(0,0);
-    font3x5.print(F("TRICKSHOTZ PROTOTYPE"));
-
-    // Move and draw playerBall
-    static bool moveFast = true;
-    if (a.justPressed(A_BUTTON)) {
-        moveFast = !moveFast;
-    }
-    if (moveFast) {
-        if (a.pressed(LEFT_BUTTON)) { playerBall.move(MOVE_SPEED * -1, 0); };
-        if (a.pressed(RIGHT_BUTTON)) { playerBall.move(MOVE_SPEED, 0); };
-        if (a.pressed(UP_BUTTON)) { playerBall.move(0, MOVE_SPEED * -1); };
-        if (a.pressed(DOWN_BUTTON)) { playerBall.move(0, MOVE_SPEED); };
-    } else {
-        if (a.justPressed(LEFT_BUTTON)) { playerBall.move(MOVE_SPEED * -1, 0); };
-        if (a.justPressed(RIGHT_BUTTON)) { playerBall.move(MOVE_SPEED, 0); };
-        if (a.justPressed(UP_BUTTON)) { playerBall.move(0, MOVE_SPEED * -1); };
-        if (a.justPressed(DOWN_BUTTON)) { playerBall.move(0, MOVE_SPEED); };
-
-    }
-    playerBall.draw();
-
-    // Draw lines and detect collision
-    for (uint8_t i = 0; i < numLines; ++i) {
-        levelLines[i].draw();
-        if (playerBall.collideLine(levelLines[i].getX1(), levelLines[i].getY1(), levelLines[i].getX2(), levelLines[i].getY2(), levelLines[i].getThick())) {
-            font3x5.setCursor(0,25);
-            font3x5.print("Collide!");
-        }
-    }
-
-    // Draw Goal and detect collision
-    levelGoal.draw();
-    if (playerBall.collideGoal(levelGoal.getX(), levelGoal.getY(), levelGoal.getRadius())) {
-        font3x5.setCursor(70,25);
-        font3x5.print("GOAL!");
-    }
-
 
     switch(gameState) {
         case GameState::Title:

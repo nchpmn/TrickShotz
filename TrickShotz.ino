@@ -40,6 +40,7 @@ Font3x5 font3x5 = Font3x5();
 #include "Line.h";
 #include "Goal.h";
 #include "Levels.h";
+#include "Graphics.h";
 
 
 // PLACEHOLDER OBJECTS
@@ -79,6 +80,76 @@ uint8_t numLines;
 //       v            v
 //     Load       ResetLevel
 
+// FUNCTIONS - GAME STATE
+// GameState::Title
+void updateTitle() {
+    if (a.justPressed(A_BUTTON)) {
+        gameState = GameState::PlayGame;
+    }
+    if (a.justPressed(B_BUTTON)) {
+        gameState = GameState::Instructions;
+    }
+}
+void drawTitle() {
+    Sprites::drawOverwrite(0, 0, title, 0);
+    font3x5.setCursor(2,5);
+    font3x5.print(F("Press B for Instructions"));
+}
+
+// GameState::Instructions
+void updateInstructions() {
+    if (a.justPressed(A_BUTTON) || a.justPressed(B_BUTTON)) {
+        gameState = GameState::Title;
+    }
+    static bool showVersion = false;
+    if (a.justPressed(DOWN_BUTTON)) {
+        showVersion = !showVersion;
+    }
+    if (showVersion) {
+        drawInstructionsVersion();
+    }
+}
+void drawInstructions() {
+    font3x5.setCursor(5,5);
+    font3x5.print(F("INSTRUCTIONS\nL+R: Set Angle\nU/D: Set Power\nA: Launch!\nB (HOLD): Reset Level"));
+}
+void drawInstructionsVersion() {
+    font3x5.setCursor(0,50);
+    font3x5.print(F(VERSION));
+}
+
+// GameState::PlayGame
+void playGame() {
+    switch(levelState) {
+        case LevelState::Load:
+            loadLevelData(&levels[0], playerBall, levelGoal, levelLines, numLines);
+            levelState = LevelState::Aim;
+            break;
+        case LevelState::ResetLevel:
+            updateResetLevel();
+            break;
+        case LevelState::Aim:
+            updateAim();
+            drawAim();
+            break;
+        case LevelState::Launch:
+            updateLaunch();
+            drawLaunch();
+            break;
+        case LevelState::LevelWin:
+            updateWinLevel();
+            drawWinLevel();
+            break;
+        case LevelState::LevelLose:
+            updateLoseLevel();
+            drawLoseLevel();
+            break;
+    }
+}
+
+// GameState::EndGame
+void drawEndScreen() {
+}
 
 
 // FUNCTIONS - LEVEL STATE
@@ -160,63 +231,6 @@ void updateLoseLevel() {
 
 }
 void drawLoseLevel() {
-}
-
-
-// FUNCTIONS - GAME STATE
-// GameState::Title
-void updateTitle() {
-    if (a.justPressed(A_BUTTON)) {
-        gameState = GameState::PlayGame;
-    }
-    if (a.justPressed(B_BUTTON)) {
-        gameState = GameState::Instructions;
-    }
-}
-void drawTitle() {
-    font3x5.setCursor(60, 32);
-    font3x5.print("TITLE");
-    font3x5.setCursor(0,0);
-    font3x5.print(F("TRICKSHOTZ!"));
-}
-
-// GameState::Instructions
-void updateInstructions() {
-}
-void drawInstructions() {
-}
-
-// GameState::PlayGame
-void playGame() {
-    switch(levelState) {
-        case LevelState::Load:
-            loadLevelData(&levels[0], playerBall, levelGoal, levelLines, numLines);
-            levelState = LevelState::Aim;
-            break;
-        case LevelState::ResetLevel:
-            updateResetLevel();
-            break;
-        case LevelState::Aim:
-            updateAim();
-            drawAim();
-            break;
-        case LevelState::Launch:
-            updateLaunch();
-            drawLaunch();
-            break;
-        case LevelState::LevelWin:
-            updateWinLevel();
-            drawWinLevel();
-            break;
-        case LevelState::LevelLose:
-            updateLoseLevel();
-            drawLoseLevel();
-            break;
-    }
-}
-
-// GameState::EndGame
-void drawEndScreen() {
 }
 
 

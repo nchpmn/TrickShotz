@@ -14,6 +14,18 @@
 
 #define VERSION "v240609 DEV"
 
+// DEBUGGING TOGGLE
+#define DEBUG true
+#if DEBUG
+#define DEBUG_PRINT(x) Serial.print(x)
+#define DEBUG_PRINTLN(x) Serial.println(x)
+#else
+#define DEBUG_PRINT(x)
+#define DEBUG_PRINTLN(x)
+#endif
+
+
+
 // LIBRARIES
 #include <Arduboy2.h>
 Arduboy2 a;

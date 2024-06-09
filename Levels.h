@@ -112,8 +112,6 @@ void printLevelData(const LevelData *level) {
         Serial.print(")");
     }
 }
-
-
 void printAllLevels() {
     for (uint8_t i = 0; i < NUM_LEVELS; ++i) {
         Serial.print("Level ");

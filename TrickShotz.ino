@@ -149,6 +149,8 @@ void playGame() {
 
 // GameState::EndGame
 void drawEndScreen() {
+    font3x5.setCursor(60,32);
+    font3x5.print("END OF THE GAME\nYOU WIN!");
 }
 
 

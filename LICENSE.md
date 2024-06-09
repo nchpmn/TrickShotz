@@ -2,7 +2,7 @@
 
 Code and Assets created by myself are licenced as Open Source under GNU GPL 3.0
 
-Some code from other libraries and repositories are licenced under different terms.
+Some code from other libraries and repositories are licenced under different terms - see README for details.
 
 ---
 

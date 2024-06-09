@@ -17,6 +17,32 @@ As a hobby project, there is no ETA for final publishing of the completed game.
 
 ---
 
+### Program Outline
+
+```mermaid
+flowchart TD
+    %% Game States
+    Title -->|Proceed| Instructions
+    Instructions -->|Back| Title
+    Title -->|Start| PlayGame
+    PlayGame -->|Complete| EndGame
+    EndGame -->|Restart| Title
+
+    %% PlayGame States
+    subgraph PlayGame
+        Load --> Aim
+        Aim --> Launch
+        Aim -->|Reset| ResetLevel
+        ResetLevel --> Aim
+        Launch --> LevelWin
+        Launch --> LevelLose
+        LevelWin --> Load
+        LevelLose --> ResetLevel
+    end
+```
+
+---
+
 All Code and Assets Copyright Nathan Chapman / @nchpmn
 
 Licenced as Open Source under GNU GPL 3.0, except as specified below:

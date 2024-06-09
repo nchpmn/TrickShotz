@@ -48,6 +48,7 @@ Ball playerBall(0, 0, 0);
 Goal levelGoal(0, 0, 0);
 Line levelLines[MAX_LINES];
 uint8_t numLines;
+uint8_t currentLevel;
 
 
 // PROGRAM FLOWCHART
@@ -122,7 +123,7 @@ void drawInstructionsVersion() {
 void playGame() {
     switch(levelState) {
         case LevelState::Load:
-            loadLevelData(&levels[0], playerBall, levelGoal, levelLines, numLines);
+            loadLevelData(&levels[currentLevel], playerBall, levelGoal, levelLines, numLines);
             levelState = LevelState::Aim;
             break;
         case LevelState::ResetLevel:
@@ -156,6 +157,26 @@ void drawEndScreen() {
 
 // FUNCTIONS - LEVEL STATE
 // LevelState::Load
+void loadLevelData(const LevelData *level, Ball &ball, Goal &goal, Line *lines, uint8_t &numLines) {
+    // Load number of lines
+    numLines = pgm_read_byte(&(level->numLines));
+
+    // Load line data
+    for (uint8_t i = 0; i < numLines; ++i) {
+        LineData lineData;
+        memcpy_P(&lineData, &(level->lines[i]), sizeof(LineData));
+        lines[i] = Line(lineData.x1, lineData.y1, lineData.x2, lineData.y2);
+    }
+    
+    // Load ball data
+    ball.setPosition(level->ball.x, level->ball.y);
+    ball.setRadius(level->ball.radius);
+
+    // Load goal data
+    goal.setPosition(level->goal.x, level->goal.y);
+    goal.setRadius(level->goal.radius);
+}
+
 void drawLevel() {
     playerBall.draw();
     levelGoal.draw();

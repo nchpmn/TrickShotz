@@ -124,25 +124,6 @@ void printAllLevels() {
 
 
 // FUNCTIONS
-void loadLevelData(const LevelData *level, Ball &ball, Goal &goal, Line *lines, uint8_t &numLines) {
-    // Load number of lines
-    numLines = pgm_read_byte(&(level->numLines));
-
-    // Load line data
-    for (uint8_t i = 0; i < numLines; ++i) {
-        LineData lineData;
-        memcpy_P(&lineData, &(level->lines[i]), sizeof(LineData));
-        lines[i] = Line(lineData.x1, lineData.y1, lineData.x2, lineData.y2);
-    }
-    
-    // Load ball data
-    ball.setPosition(level->ball.x, level->ball.y);
-    ball.setRadius(level->ball.radius);
-
-    // Load goal data
-    goal.setPosition(level->goal.x, level->goal.y);
-    goal.setRadius(level->goal.radius);
-}
 
 
 #endif // LEVELS_H

@@ -1,4 +1,8 @@
-#pragma once
+#ifndef GLOBALS_H
+#define GLOBALS_H
+
+// IMPORT HEADERS
+#include "Pos.h";
 
 // GLOBAL DEFINITIONS
 #define FRAME_RATE 60
@@ -25,3 +29,5 @@ enum class LevelState {
     LevelLose
 };
 LevelState levelState;
+
+#endif // GLOBALS_H

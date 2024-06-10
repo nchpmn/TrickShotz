@@ -1,23 +1,49 @@
-#pragma once
+#ifndef POS_H
+#define POS_H
 
-// Uses templates to work for various int/float types
-template <typename T>
 class Pos {
-    public:
-        T x;
-        T y;
-        Pos(T x, T y) : x(x), y(y) {}
+public:
+    int x;
+    int y;
 
-        // Define operator+= for adding a Vector to Pos
-        Pos<T>& operator+=(const Vector& vector) {
-            x += vector.dx;
-            y += vector.dy;
-            return *this;
-        }
+    // Constructors
+    Pos() : x(0), y(0) {}
+    Pos(int x, int y) : x(x), y(y) {}
 
-        // Define operator - for subtracting two Pos of any type (i.e. float and uint8_t)
-        template <typename U>
-        Pos<T> operator-(const Pos<U>& other) const {
-            return Pos<T>(x - static_cast<T>(other.x), y - static_cast<T>(other.y));
-        }
+    // Setters
+    void set(int x, int y) {
+        this->x = x;
+        this->y = y;
+    }
+
+    // Arithmetic operations
+    Pos operator+(const Pos& other) const {
+        return Pos(x + other.x, y + other.y);
+    }
+
+    Pos operator-(const Pos& other) const {
+        return Pos(x - other.x, y - other.y);
+    }
+
+    Pos& operator+=(const Pos& other) {
+        x += other.x;
+        y += other.y;
+        return *this;
+    }
+
+    Pos& operator-=(const Pos& other) {
+        x -= other.x;
+        y -= other.y;
+        return *this;
+    }
+
+    bool operator==(const Pos& other) const {
+        return x == other.x && y == other.y;
+    }
+
+    bool operator!=(const Pos& other) const {
+        return !(*this == other);
+    }
 };
+
+#endif // POS_H

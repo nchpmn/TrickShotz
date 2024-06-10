@@ -123,7 +123,7 @@ void drawInstructionsVersion() {
 void playGame() {
     switch(levelState) {
         case LevelState::Load:
-            updateLevelLoad(&levels[currentLevel+1], playerBall, levelGoal, levelLines, numLines);
+            updateLevelLoad(&levels[currentLevel], playerBall, levelGoal, levelLines, numLines);
             levelState = LevelState::Aim;
             break;
         case LevelState::ResetLevel:
@@ -228,6 +228,7 @@ void updateAim() {
     if (playerBall.collideGoal(levelGoal.getX(), levelGoal.getY(), levelGoal.getRadius())) {
         font3x5.setCursor(70,25);
         font3x5.print("GOAL!");
+        levelState = LevelState::LevelWin;
     }
 
     // Detect collision ball-lines
@@ -254,10 +255,16 @@ void drawLaunch() {
 
 // LevelState::Win
 void updateWinLevel() {
-    currentLevel++;
-
+    if (a.justPressed(A_BUTTON)) {
+        currentLevel++;
+        levelState = LevelState::Load;
+    }
 }
 void drawWinLevel() {
+    drawLevel();
+    drawLevelUI();
+    font3x5.setCursor(60,0);
+    font3x5.print("WIN!");
 }
 
 // LevelState::Lose

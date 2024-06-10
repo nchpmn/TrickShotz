@@ -13,10 +13,10 @@ public:
             float angle1 = TWO_PI / dashNumber * i + rotationAngle;
             float angle2 = TWO_PI / dashNumber * (i + 1) + rotationAngle;
 
-            int x1 = getX() + radius * cos(angle1);
-            int y1 = getY() + radius * sin(angle1);
-            int x2 = getX() + radius * cos(angle2);
-            int y2 = getY() + radius * sin(angle2);
+            int x1 = position.x + radius * cos(angle1);
+            int y1 = position.y + radius * sin(angle1);
+            int x2 = position.x + radius * cos(angle2);
+            int y2 = position.y + radius * sin(angle2);
 
             // Draw each dash as a line segment
             a.drawLine(x1, y1, x2, y2, WHITE);

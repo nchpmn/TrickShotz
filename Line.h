@@ -3,47 +3,43 @@
 
 class Line {
 public:
-    Line() : x1(0), y1(0), x2(0), y2(0) {} // Default constructor
+    Line() : position1(0, 0), position2(0, 0) {} // Default constructor
 
-    Line(int x1, int y1, int x2, int y2) : x1(x1), y1(y1), x2(x2), y2(y2) {}
+    Line(int x1, int y1, int x2, int y2) : position1(x1, y1), position2(x2, y2) {}
     
     void draw() {
-        if (x1 == x2) {
+        if (getX1() == getX2()) {
             // Case where line is vertical
-            a.fillRect(x1, y1, thickness, y2-y1, WHITE);
-        } else if (y1 == y2) {
+            a.fillRect(getX1(), getY1(), thickness, getY2()-getY1(), WHITE);
+        } else if (getY1() == getY2()) {
             // Case where line is horizontal
-            a.fillRect(x1, y1, x2-x1, thickness, WHITE);
+            a.fillRect(getX1(), getY1(), getX2()-getX1(), thickness, WHITE);
         } else {
             // Case where line is diagonal
             if (thickness % 2 == 0) {
                 uint8_t halfThick = thickness / 2;
-                a.fillTriangle(x1, y1-halfThick, x2, y2-halfThick, x1, y1+halfThick, WHITE);
-                a.fillTriangle(x2, y2-halfThick, x2, y2+halfThick, x1, y1+halfThick, WHITE);
+                a.fillTriangle(getX1(), getY1()-halfThick, getX2(), getY2()-halfThick, getX1(), getY1()+halfThick, WHITE);
+                a.fillTriangle(getX2(), getY2()-halfThick, getX2(), getY2()+halfThick, getX1(), getY1()+halfThick, WHITE);
             } else {
-                a.fillTriangle(x1, y1, x2, y2, x1, y1+thickness, WHITE);
-                a.fillTriangle(x2, y2, x2, y2+thickness, x1, y1+thickness, WHITE);
+                a.fillTriangle(getX1(), getY1(), getX2(), getY2(), getX1(), getY1()+thickness, WHITE);
+                a.fillTriangle(getX2(), getY2(), getX2(), getY2()+thickness, getX1(), getY1()+thickness, WHITE);
             }
         }
     }
 
-    int getX1() const { return x1; }
-    int getY1() const { return y1; }
-    int getX2() const { return x2; }
-    int getY2() const { return y2; }
+    int getX1() const { return position1.x; }
+    int getY1() const { return position1.y; }
+    int getX2() const { return position2.x; }
+    int getY2() const { return position2.y; }
     int getThick() const { return thickness; }
     void setPoints(uint8_t newX1, uint8_t newY1, uint8_t newX2, uint8_t newY2) {
-        x1 = newX1;
-        y1 = newY1;
-        x2 = newX2;
-        y2 = newY2;
+        position1.set(newX1, newY1);
+        position2.set(newX2, newY2);
     }
 
 private:
-    int x1;
-    int y1;
-    int x2;
-    int y2;
+    Pos position1;
+    Pos position2;
     static const int thickness = 2;
 
 };

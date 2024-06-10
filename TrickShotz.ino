@@ -155,7 +155,7 @@ void playGame() {
 // GameState::EndGame
 void updateEndScreen() {
     if (a.justPressed(A_BUTTON)) {
-        currentLevel = 1;
+        currentLevel = 0;
         gameState = GameState::Title;
     }
 }

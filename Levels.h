@@ -72,52 +72,52 @@ void printLevelData(const LevelData *level) {
     // Read ball data
     BallData ball;
     memcpy_P(&ball, &(level->ball), sizeof(BallData));
-    Serial.print("Ball: x = ");
-    Serial.print(ball.x);
-    Serial.print(", y = ");
-    Serial.print(ball.y);
-    Serial.print(", radius = ");
-    Serial.println(ball.radius);
+    DEBUG_PRINT("Ball: x = ");
+    DEBUG_PRINT(ball.x);
+    DEBUG_PRINT(", y = ");
+    DEBUG_PRINT(ball.y);
+    DEBUG_PRINT(", radius = ");
+    DEBUG_PRINTLN(ball.radius);
 
     // Read goal data
     GoalData goal;
     memcpy_P(&goal, &(level->goal), sizeof(GoalData));
-    Serial.print("Goal: x = ");
-    Serial.print(goal.x);
-    Serial.print(", y = ");
-    Serial.print(goal.y);
-    Serial.print(", radius = ");
-    Serial.println(goal.radius);
+    DEBUG_PRINT("Goal: x = ");
+    DEBUG_PRINT(goal.x);
+    DEBUG_PRINT(", y = ");
+    DEBUG_PRINT(goal.y);
+    DEBUG_PRINT(", radius = ");
+    DEBUG_PRINTLN(goal.radius);
 
     // Read number of lines
     uint8_t numLines;
     numLines = pgm_read_byte(&(level->numLines));
-    Serial.print("Number of Lines: ");
-    Serial.println(numLines);
+    DEBUG_PRINT("Number of Lines: ");
+    DEBUG_PRINTLN(numLines);
 
     // Read line data
     for (uint8_t i = 0; i < numLines; ++i) {
         LineData line;
         memcpy_P(&line, &(level->lines[i]), sizeof(LineData));
-        Serial.print("Line ");
-        Serial.print(i);
-        Serial.print(": (");
-        Serial.print(line.x1);
-        Serial.print(", ");
-        Serial.print(line.y1);
-        Serial.print(") -> (");
-        Serial.print(line.x2);
-        Serial.print(", ");
-        Serial.print(line.y2);
-        Serial.print(")");
+        DEBUG_PRINT("Line ");
+        DEBUG_PRINT(i);
+        DEBUG_PRINT(": (");
+        DEBUG_PRINT(line.x1);
+        DEBUG_PRINT(", ");
+        DEBUG_PRINT(line.y1);
+        DEBUG_PRINT(") -> (");
+        DEBUG_PRINT(line.x2);
+        DEBUG_PRINT(", ");
+        DEBUG_PRINT(line.y2);
+        DEBUG_PRINTLN(")");
     }
 }
 void printAllLevels() {
     for (uint8_t i = 0; i < NUM_LEVELS; ++i) {
-        Serial.print("Level ");
-        Serial.println(i);
+        DEBUG_PRINT("Level ");
+        DEBUG_PRINTLN(i);
         printLevelData(&levels[i]);
-        Serial.println();
+        DEBUG_PRINTLN();
     }
 }
 

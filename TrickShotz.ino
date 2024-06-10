@@ -123,7 +123,7 @@ void drawInstructionsVersion() {
 void playGame() {
     switch(levelState) {
         case LevelState::Load:
-            updateLevelLoad(&levels[currentLevel], playerBall, levelGoal, levelLines, numLines);
+            updateLevelLoad(&levels[currentLevel+1], playerBall, levelGoal, levelLines, numLines);
             levelState = LevelState::Aim;
             break;
         case LevelState::ResetLevel:
@@ -158,6 +158,7 @@ void drawEndScreen() {
 // FUNCTIONS - LEVEL STATE
 // LevelState::Load
 void updateLevelLoad(const LevelData *level, Ball &ball, Goal &goal, Line *lines, uint8_t &numLines) {
+    DEBUG_PRINTLN("BEGIN updateLevelLoad()");
     // Load number of lines
     numLines = pgm_read_byte(&(level->numLines));
 
@@ -169,12 +170,21 @@ void updateLevelLoad(const LevelData *level, Ball &ball, Goal &goal, Line *lines
     }
     
     // Load ball data
-    ball.setPosition(level->ball.x, level->ball.y);
-    ball.setRadius(level->ball.radius);
+    BallData ballData;
+    memcpy_P(&ballData, &(level->ball), sizeof(BallData));
+    ball.setPosition(ballData.x, ballData.y);
+    ball.setRadius(ballData.radius);
+    DEBUG_PRINTLN(ball.getX());
+    DEBUG_PRINTLN(ball.getY());
+    DEBUG_PRINTLN(ball.getRadius());
 
     // Load goal data
-    goal.setPosition(level->goal.x, level->goal.y);
-    goal.setRadius(level->goal.radius);
+    GoalData goalData;
+    memcpy_P(&goalData, &(level->goal), sizeof(GoalData));
+    goal.setPosition(goalData.x, goalData.y);
+    goal.setRadius(goalData.radius);
+
+    DEBUG_PRINTLN("END updateLevelLoad()");
 }
 
 void drawLevel() {

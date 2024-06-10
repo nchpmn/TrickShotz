@@ -123,8 +123,12 @@ void drawInstructionsVersion() {
 void playGame() {
     switch(levelState) {
         case LevelState::Load:
-            updateLevelLoad(&levels[currentLevel], playerBall, levelGoal, levelLines, numLines);
-            levelState = LevelState::Aim;
+            if (currentLevel >= NUM_LEVELS) {
+                gameState = GameState::EndGame; // If all levels are completed, move to EndGame
+            } else {
+                updateLevelLoad(&levels[currentLevel], playerBall, levelGoal, levelLines, numLines);
+                levelState = LevelState::Aim;
+            }
             break;
         case LevelState::ResetLevel:
             updateResetLevel();
@@ -149,6 +153,12 @@ void playGame() {
 }
 
 // GameState::EndGame
+void updateEndScreen() {
+    if (a.justPressed(A_BUTTON)) {
+        currentLevel = 1;
+        gameState = GameState::Title;
+    }
+}
 void drawEndScreen() {
     font3x5.setCursor(60,32);
     font3x5.print("END OF THE GAME\nYOU WIN!");
@@ -158,7 +168,10 @@ void drawEndScreen() {
 // FUNCTIONS - LEVEL STATE
 // LevelState::Load
 void updateLevelLoad(const LevelData *level, Ball &ball, Goal &goal, Line *lines, uint8_t &numLines) {
-    DEBUG_PRINTLN("BEGIN updateLevelLoad()");
+    DEBUG_PRINTLN("\nBEGIN updateLevelLoad()");
+    #if DEBUG
+    printLevelData(level);
+    #endif
     // Load number of lines
     numLines = pgm_read_byte(&(level->numLines));
 
@@ -174,8 +187,11 @@ void updateLevelLoad(const LevelData *level, Ball &ball, Goal &goal, Line *lines
     memcpy_P(&ballData, &(level->ball), sizeof(BallData));
     ball.setPosition(ballData.x, ballData.y);
     ball.setRadius(ballData.radius);
-    DEBUG_PRINTLN(ball.getX());
-    DEBUG_PRINTLN(ball.getY());
+    DEBUG_PRINT("\nData as loaded:\nBall:");
+    DEBUG_PRINT(ball.getX());
+    DEBUG_PRINT(", ");
+    DEBUG_PRINT(ball.getY());
+    DEBUG_PRINT(", ");
     DEBUG_PRINTLN(ball.getRadius());
 
     // Load goal data
@@ -308,6 +324,7 @@ void loop() {
             playGame();
             break;
         case GameState::EndGame:
+            updateEndScreen();
             drawEndScreen();
             break;
     }

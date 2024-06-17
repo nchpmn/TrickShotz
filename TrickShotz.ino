@@ -12,18 +12,7 @@
 // 09 June 2024 - Merge into main
 // PROTOTYPE ONLY
 
-#define VERSION "v240609 DEV"
-
-// DEBUGGING TOGGLE
-#define DEBUG true
-#if DEBUG
-#define DEBUG_PRINT(x) Serial.print(x)
-#define DEBUG_PRINTLN(x) Serial.println(x)
-#else
-#define DEBUG_PRINT(x)
-#define DEBUG_PRINTLN(x)
-#endif
-
+#define VERSION "v240617 DEV"
 
 
 // LIBRARIES
@@ -228,16 +217,26 @@ void updateAim() {
         moveFast = !moveFast;
     }
     if (moveFast) {
-        if (a.pressed(LEFT_BUTTON)) { playerBall.move(MOVE_SPEED * -1, 0); };
-        if (a.pressed(RIGHT_BUTTON)) { playerBall.move(MOVE_SPEED, 0); };
-        if (a.pressed(UP_BUTTON)) { playerBall.move(0, MOVE_SPEED * -1); };
-        if (a.pressed(DOWN_BUTTON)) { playerBall.move(0, MOVE_SPEED); };
+        if (a.pressed(LEFT_BUTTON)) { playerBall.move(Vector(MOVE_SPEED * -1, 0)); };
+        if (a.pressed(RIGHT_BUTTON)) { playerBall.move(Vector(MOVE_SPEED, 0)); };
+        if (a.pressed(UP_BUTTON)) { playerBall.move(Vector(0, MOVE_SPEED * -1)); };
+        if (a.pressed(DOWN_BUTTON)) { playerBall.move(Vector(0, MOVE_SPEED)); };
     } else {
-        if (a.justPressed(LEFT_BUTTON)) { playerBall.move(MOVE_SPEED * -1, 0); };
-        if (a.justPressed(RIGHT_BUTTON)) { playerBall.move(MOVE_SPEED, 0); };
-        if (a.justPressed(UP_BUTTON)) { playerBall.move(0, MOVE_SPEED * -1); };
-        if (a.justPressed(DOWN_BUTTON)) { playerBall.move(0, MOVE_SPEED); };
+        if (a.justPressed(LEFT_BUTTON)) { playerBall.move(Vector(MOVE_SPEED * -1, 0)); };
+        if (a.justPressed(RIGHT_BUTTON)) { playerBall.move(Vector(MOVE_SPEED, 0)); };
+        if (a.justPressed(UP_BUTTON)) { playerBall.move(Vector(0, MOVE_SPEED * -1)); };
+        if (a.justPressed(DOWN_BUTTON)) { playerBall.move(Vector(0, MOVE_SPEED)); };
     }
+
+    // Move playerBall (prototype only)
+    static bool gravityEnabled = false;
+    if (a.justPressed(B_BUTTON)) {
+        gravityEnabled = !gravityEnabled;
+    }
+    if (gravityEnabled) {
+        playerBall.move(Vector(0,GRAVITY_SPEED));
+    }
+
 
     // Detect collision ball-goal
     // To be moved to LevelState::Launch after prototype

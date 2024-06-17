@@ -5,9 +5,9 @@ class Ball {
 public:
     Ball(int x, int y, int radius) : position(x, y), radius(radius) {}
 
-    void move(int dx, int dy) {
-        position.x += dx;
-        position.y += dy;
+    void move(const Vector& velocity) {
+        position.x += velocity.dx;
+        position.y += velocity.dy;
     }
 
     void draw() {

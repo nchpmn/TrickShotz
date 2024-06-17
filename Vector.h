@@ -1,42 +1,92 @@
-#pragma once
+#ifndef VECTOR_H
+#define VECTOR_H
 
 class Vector {
-    public:
-        float dx;
-        float dy;
+public:
+    float dx;
+    float dy;
 
-        // Default constructor with initialization
-        Vector() : dx(0), dy(0) {}
+    // Constructors
+    Vector() : dx(0), dy(0) {}
+    Vector(float dx, float dy) : dx(dx), dy(dy) {}
 
-        Vector(float dxComponent, float dyComponent) : dx(dxComponent), dy(dyComponent) {}
+    // Setter
+    void set(float newDx, float newDy) {
+        this->dx = newDx;
+        this->dy = newDy;
+    }
 
-        // Dot product method
-        float dot(const Vector& otherVector) const {
-            return (dx * otherVector.dx) + (dy * otherVector.dy);
+    // Calculate the magnitude of the vector
+    float magnitude() const {
+        return sqrt(dx * dx + dy * dy);
+    }
+
+    // Normalize the vector
+    Vector normalize() const {
+        float mag = magnitude();
+        return Vector(dx / mag, dy / mag);
+    }
+    
+
+    // Assignment operator
+    Vector& operator=(const Vector& other) {
+        if (this != &other) {
+            dx = other.dx;
+            dy = other.dy;
         }
+        return *this;
+    }
 
-        // Scalar multiplication
-        Vector operator*(float scalar) const {
-            return Vector(dx * scalar, dy * scalar);
-        }
+    // Arithmetic operations
+    Vector operator+(const Vector& other) const {
+        return Vector(dx + other.dx, dy + other.dy);
+    }
 
-        // In-place scalar multiplication
-        Vector& operator*=(float scalar) {
-            dx *= scalar;
-            dy *= scalar;
-            return *this;
-        }
+    Vector operator-(const Vector& other) const {
+        return Vector(dx - other.dx, dy - other.dy);
+    }
 
-        // Vector subtraction
-        Vector operator-(const Vector& other) const {
-            return Vector(dx - other.dx, dy - other.dy);
-        }
+    Vector operator*(float scalar) const {
+        return Vector(dx * scalar, dy * scalar);
+    }
 
-        // In-place vector subtraction
-        Vector& operator-=(const Vector& other) {
-            dx -= other.dx;
-            dy -= other.dy;
-            return *this;
-        }
+    Vector operator/(float scalar) const {
+        return Vector(dx / scalar, dy / scalar);
+    }
 
+    // Compound assignment operators
+    Vector& operator+=(const Vector& other) {
+        dx += other.dx;
+        dy += other.dy;
+        return *this;
+    }
+
+    Vector& operator-=(const Vector& other) {
+        dx -= other.dx;
+        dy -= other.dy;
+        return *this;
+    }
+
+    Vector& operator*=(float scalar) {
+        dx *= scalar;
+        dy *= scalar;
+        return *this;
+    }
+
+    Vector& operator/=(float scalar) {
+        dx /= scalar;
+        dy /= scalar;
+        return *this;
+    }
+
+    // Equality operators
+    bool operator==(const Vector& other) const {
+        return (dx == other.dx && dy == other.dy);
+    }
+
+    bool operator!=(const Vector& other) const {
+        return !(*this == other);
+    }
 };
+
+#endif // VECTOR_H

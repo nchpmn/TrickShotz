@@ -69,7 +69,7 @@ private:
         Pos closestPoint(segmentStart.x + t * segmentVector.dx, segmentStart.y + t * segmentVector.dy);
 
         // Create a vector from the closest point to the given point
-        Vector distanceVector(point.x - closestPoint.x, point.y - closestPoint.y);
+        Vector distanceVector(point - closestPoint);
 
         // Return the magnitude of the distance vector, which is the shortest distance from the point to the segment
         return distanceVector.magnitude();

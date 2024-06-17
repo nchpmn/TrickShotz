@@ -9,6 +9,7 @@ public:
     // Constructors
     Vector() : dx(0), dy(0) {}
     Vector(float dx, float dy) : dx(dx), dy(dy) {}
+    Vector(Pos pos) : dx(pos.x), dy(pos.y) {}
 
     // Setter
     void set(float newDx, float newDy) {

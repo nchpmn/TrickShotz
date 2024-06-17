@@ -4,12 +4,6 @@
 // Licenced under GNU GPL 3.0
 // Other Code & Libraries used as noted
 //
-// 01 Nov 2023 - Development Started
-// 04 December 2023 - First Demo Released
-// 18 Dec 2023 - Major Refactor Begun
-// 06 June 2024 - Prototype-Collide Branch Started
-// 07 June 2024 - Prototype-LoadLevels Branch Started
-// 09 June 2024 - Merge into main
 // PROTOTYPE ONLY
 
 #define VERSION "v240617 DEV"

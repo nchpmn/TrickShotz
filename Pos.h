@@ -10,11 +10,12 @@ public:
     Pos() : x(0), y(0) {}
     Pos(int x, int y) : x(x), y(y) {}
 
-    // Setters
-    void set(int x, int y) {
-        this->x = x;
-        this->y = y;
+    // Setter
+    void set(int newX, int newY) {
+        this->x = newX;
+        this->y = newY;
     }
+
 
     // Arithmetic operations
     Pos operator+(const Pos& other) const {
@@ -25,6 +26,7 @@ public:
         return Pos(x - other.x, y - other.y);
     }
 
+    // Compound assignment operators
     Pos& operator+=(const Pos& other) {
         x += other.x;
         y += other.y;
@@ -37,6 +39,7 @@ public:
         return *this;
     }
 
+    // Equiality operators
     bool operator==(const Pos& other) const {
         return x == other.x && y == other.y;
     }

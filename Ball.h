@@ -35,6 +35,7 @@ public:
     }
 
 
+    Pos getPos() const { return position; };
     int getX() const { return position.x; }
     int getY() const { return position.y; }
     int getRadius() const { return radius; }

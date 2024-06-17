@@ -250,26 +250,16 @@ void updateResetLevel() {
 
 // LevelState::Aim
 void updateAim() {
-    // Move playerBall (prototype only)
-    static bool moveFast = true;
-    if (a.justPressed(A_BUTTON)) { moveFast = !moveFast; }
-    if (moveFast) {
-        if (a.pressed(LEFT_BUTTON)) { playerBall.move(Vector(MOVE_SPEED * -1, 0)); };
-        if (a.pressed(RIGHT_BUTTON)) { playerBall.move(Vector(MOVE_SPEED, 0)); };
-        if (a.pressed(UP_BUTTON)) { playerBall.move(Vector(0, MOVE_SPEED * -1)); };
-        if (a.pressed(DOWN_BUTTON)) { playerBall.move(Vector(0, MOVE_SPEED)); };
-    } else {
-        if (a.justPressed(LEFT_BUTTON)) { playerBall.move(Vector(MOVE_SPEED * -1, 0)); };
-        if (a.justPressed(RIGHT_BUTTON)) { playerBall.move(Vector(MOVE_SPEED, 0)); };
-        if (a.justPressed(UP_BUTTON)) { playerBall.move(Vector(0, MOVE_SPEED * -1)); };
-        if (a.justPressed(DOWN_BUTTON)) { playerBall.move(Vector(0, MOVE_SPEED)); };
-    }
-    static bool gravityEnabled = false;
-    if (a.justPressed(B_BUTTON)) { gravityEnabled = !gravityEnabled; }
-    if (gravityEnabled) {
-        playerBall.move(Vector(0,GRAVITY_SPEED));
-    }
 
+}
+void drawAim() {
+    drawLevel();
+    drawLevelUI();
+    // playerBall.drawAim();
+}
+
+// LevelState::Launch
+void updateLaunch() {
     // Detect collision ball-goal
     // To be moved to LevelState::Launch after prototype
     if (playerBall.collideGoal(levelGoal.getPos(), levelGoal.getRadius())) {
@@ -286,16 +276,6 @@ void updateAim() {
             font3x5.print("Collide!");
         }
     }
-}
-void drawAim() {
-    drawLevel();
-    drawLevelUI();
-    // playerBall.drawAim();
-}
-
-// LevelState::Launch
-void updateLaunch() {
-
 }
 void drawLaunch() {
 }

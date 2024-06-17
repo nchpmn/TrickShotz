@@ -18,19 +18,16 @@ public:
         // NOTE: there is a known bug in this algorithm where the "underside" of horizontal and vertical lines only registers a collision 1px later than it should.
         // 1. Calculate the distance between the ball's center and the line segment
         float distance = calculateDistanceToSegment(position, startPos, endPos);
-
         // 2. Check if the distance is less than the sum of the ball's radius and the Line's thickness
         return distance < radius + (thickness / 2);
     }
 
-    bool collideGoal(int goalX, int goalY, int goalRadius) const {
-        // Define a Vector for the difference in positions
-        Vector delta(position.x - goalX, position.y - goalY);
-
-        // Calculate the distance using the magnitude of the Vector
+    bool collideGoal(Pos goalPos, int goalRadius) const {
+        // 1. Define a Vector for the difference in positions
+        Vector delta(position - goalPos);
+        // 2. Calculate the distance using the magnitude of the Vector
         float distance = delta.magnitude();
-
-        // Check if the ball is wholly inside the goal
+        // 3. Check if the ball is wholly inside the goal
         return (distance + radius <= goalRadius);
     }
 
@@ -53,8 +50,8 @@ private:
         // Honestly I don't understand the mathematics in this algorithm
         // So really these comments are just for future maintenance
         // Create a vector from start/end of segment and segmentStart to point
-        Vector segmentVector(segmentEnd.x - segmentStart.x, segmentEnd.y - segmentStart.y);
-        Vector pointVector(point.x - segmentStart.x, point.y - segmentStart.y);
+        Vector segmentVector(segmentEnd - segmentStart);
+        Vector pointVector(point - segmentStart);
 
         // Compute the dot product of the point vector and the segment vector
         float dotProduct = pointVector.dx * segmentVector.dx + pointVector.dy * segmentVector.dy;

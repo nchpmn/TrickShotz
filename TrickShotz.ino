@@ -225,8 +225,6 @@ void updateAim() {
         if (a.justPressed(UP_BUTTON)) { playerBall.move(Vector(0, MOVE_SPEED * -1)); };
         if (a.justPressed(DOWN_BUTTON)) { playerBall.move(Vector(0, MOVE_SPEED)); };
     }
-
-    // Move playerBall (prototype only)
     static bool gravityEnabled = false;
     if (a.justPressed(B_BUTTON)) { gravityEnabled = !gravityEnabled; }
     if (gravityEnabled) {
@@ -235,7 +233,7 @@ void updateAim() {
 
     // Detect collision ball-goal
     // To be moved to LevelState::Launch after prototype
-    if (playerBall.collideGoal(levelGoal.getX(), levelGoal.getY(), levelGoal.getRadius())) {
+    if (playerBall.collideGoal(levelGoal.getPos(), levelGoal.getRadius())) {
         font3x5.setCursor(70,25);
         font3x5.print("GOAL!");
         levelState = LevelState::LevelWin;

@@ -213,9 +213,7 @@ void updateResetLevel() {
 void updateAim() {
     // Move playerBall (prototype only)
     static bool moveFast = true;
-    if (a.justPressed(A_BUTTON)) {
-        moveFast = !moveFast;
-    }
+    if (a.justPressed(A_BUTTON)) { moveFast = !moveFast; }
     if (moveFast) {
         if (a.pressed(LEFT_BUTTON)) { playerBall.move(Vector(MOVE_SPEED * -1, 0)); };
         if (a.pressed(RIGHT_BUTTON)) { playerBall.move(Vector(MOVE_SPEED, 0)); };
@@ -230,13 +228,10 @@ void updateAim() {
 
     // Move playerBall (prototype only)
     static bool gravityEnabled = false;
-    if (a.justPressed(B_BUTTON)) {
-        gravityEnabled = !gravityEnabled;
-    }
+    if (a.justPressed(B_BUTTON)) { gravityEnabled = !gravityEnabled; }
     if (gravityEnabled) {
         playerBall.move(Vector(0,GRAVITY_SPEED));
     }
-
 
     // Detect collision ball-goal
     // To be moved to LevelState::Launch after prototype

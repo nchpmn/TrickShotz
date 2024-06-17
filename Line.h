@@ -27,6 +27,8 @@ public:
         }
     }
 
+    Pos getStartPos() const { return startPos; }
+    Pos getEndPos() const { return endPos; }
     int getX1() const { return startPos.x; }
     int getY1() const { return startPos.y; }
     int getX2() const { return endPos.x; }

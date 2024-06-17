@@ -7,6 +7,15 @@
 // GLOBAL DEFINITIONS
 #define FRAME_RATE 60
 #define MOVE_SPEED 1 // not needed after prototype
+// DEBUGGING TOGGLE
+#define DEBUG true
+#if DEBUG
+#define DEBUG_PRINT(x) Serial.print(x)
+#define DEBUG_PRINTLN(x) Serial.println(x)
+#else
+#define DEBUG_PRINT(x)
+#define DEBUG_PRINTLN(x)
+#endif
 
 
 // GAME STATE

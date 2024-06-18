@@ -1,21 +1,21 @@
 #ifndef POS_H
 #define POS_H
 
+template <typename T>
 class Pos {
 public:
-    int x;
-    int y;
+    T x;
+    T y;
 
     // Constructors
     Pos() : x(0), y(0) {}
-    Pos(int x, int y) : x(x), y(y) {}
+    Pos(T x, T y) : x(x), y(y) {}
 
     // Setter
-    void set(int newX, int newY) {
+    void set(T newX, T newY) {
         this->x = newX;
         this->y = newY;
     }
-
 
     // Arithmetic operations
     Pos operator+(const Pos& other) const {
@@ -39,7 +39,7 @@ public:
         return *this;
     }
 
-    // Equiality operators
+    // Equality operators
     bool operator==(const Pos& other) const {
         return x == other.x && y == other.y;
     }

@@ -3,7 +3,7 @@
 
 class Goal {
 public:
-    Goal(int x, int y, int radius) : position(x, y), radius(radius) {}
+    Goal(uint8_t x, uint8_t y, uint8_t radius) : position(x, y), radius(radius) {}
 
     void draw() {
         static float rotationAngle = 0.0;
@@ -30,9 +30,9 @@ public:
     }
 
     Pos<uint8_t> getPos() const { return position; }
-    int getX() const { return position.x; }
-    int getY() const { return position.y; }
-    int getRadius() const { return radius; }
+    uint8_t getX() const { return position.x; }
+    uint8_t getY() const { return position.y; }
+    uint8_t getRadius() const { return radius; }
     void setPosition(uint8_t newX, uint8_t newY) {
         position.set(newX,newY);
     }

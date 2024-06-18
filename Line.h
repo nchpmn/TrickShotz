@@ -5,7 +5,7 @@ class Line {
 public:
     Line() : startPos(0, 0), endPos(0, 0) {} // Default constructor
 
-    Line(int x1, int y1, int x2, int y2) : startPos(x1, y1), endPos(x2, y2) {}
+    Line(uint8_t x1, uint8_t y1, uint8_t x2, uint8_t y2) : startPos(x1, y1), endPos(x2, y2) {}
     
     void draw() {
         if (startPos.x == endPos.x) {
@@ -29,11 +29,11 @@ public:
 
     Pos<uint8_t> getStartPos() const { return startPos; }
     Pos<uint8_t> getEndPos() const { return endPos; }
-    int getX1() const { return startPos.x; }
-    int getY1() const { return startPos.y; }
-    int getX2() const { return endPos.x; }
-    int getY2() const { return endPos.y; }
-    int getThick() const { return thickness; }
+    uint8_t getX1() const { return startPos.x; }
+    uint8_t getY1() const { return startPos.y; }
+    uint8_t getX2() const { return endPos.x; }
+    uint8_t getY2() const { return endPos.y; }
+    uint8_t getThick() const { return thickness; }
     void setPoints(uint8_t newX1, uint8_t newY1, uint8_t newX2, uint8_t newY2) {
         startPos.set(newX1, newY1);
         endPos.set(newX2, newY2);

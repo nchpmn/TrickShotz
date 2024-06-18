@@ -218,24 +218,24 @@ void drawLevelUI() {
         // Draw Angle
         font3x5.setCursor(uiAngleX, 57);
         font3x5.print(F("ANGLE:"));
-        // font3x5.print(playerBall.launchAngle);
-        // if (playerBall.launchAngle >= 100) {
-        //     // 3 digits = 9 Characters
-        //     a.drawRect(uiAngleX + (9 * 4), 58, 3, 3, WHITE);
-        // } else if (currentBall.launchAngle >= 10) {
-        //     // 2 digits = 8 Characters
-        //     a.drawRect(uiAngleX + (8 * 4), 58, 3, 3, WHITE);
-        // } else {
-        //     // 1 digit = 7 Characters
-        //     a.drawRect(uiAngleX + (7 * 4), 58, 3, 3, WHITE);
-        // }
+        font3x5.print(playerBall.getLaunchAngle());
+        if (playerBall.getLaunchAngle() >= 100) {
+            // 3 digits = 9 Characters
+            a.drawRect(uiAngleX + (9 * 4), 58, 3, 3, WHITE);
+        } else if (playerBall.getLaunchAngle() >= 10) {
+            // 2 digits = 8 Characters
+            a.drawRect(uiAngleX + (8 * 4), 58, 3, 3, WHITE);
+        } else {
+            // 1 digit = 7 Characters
+            a.drawRect(uiAngleX + (7 * 4), 58, 3, 3, WHITE);
+        }
 
         // Draw Power
         font3x5.setCursor(uiPowerX, 57);
         font3x5.print(F("POWER:"));
-        // for (int i = 0; i < currentBall.launchPower; i++) {
-        // a.fillRect((uiPowerX + 25 + i*4), (62 - i), 3, i+1);
-        // }
+        for (int i = 0; i < playerBall.getLaunchPowerIndex(); i++) {
+            a.fillRect((uiPowerX + 25 + i*4), (62 - i), 3, i+1);
+        }
     }
     if (a.justReleased(B_BUTTON)) {
         heldFrames = 0;
@@ -250,12 +250,43 @@ void updateResetLevel() {
 
 // LevelState::Aim
 void updateAim() {
+    // Update launch power
+    if (a.justPressed(UP_BUTTON)) {
+        playerBall.setLaunchPower(min(playerBall.getLaunchPowerIndex() + 1, 5));
+    }
+    if (a.justPressed(DOWN_BUTTON)) {
+        playerBall.setLaunchPower(max(playerBall.getLaunchPowerIndex() - 1, 1));
+    }
 
+    // Set launchAngle (Left/Right)
+    // NOTE: known bug where change the angle freezes every 70 deg
+    const uint8_t HELD_FRAMES_DELAY = 45;
+    const uint8_t HELD_FRAMES_FREQ = 3;
+    static uint16_t heldFramesCount = 0;
+    if (a.justPressed(RIGHT_BUTTON)) {
+        playerBall.setLaunchAngle((playerBall.getLaunchAngle() + 1) % 360);
+    } else if (a.pressed(RIGHT_BUTTON)) {
+        if (heldFramesCount > HELD_FRAMES_DELAY && heldFramesCount % HELD_FRAMES_FREQ == 0) {
+            playerBall.setLaunchAngle((playerBall.getLaunchAngle() + 1) % 360);
+        }
+        heldFramesCount++;
+    }
+    if (a.justPressed(LEFT_BUTTON)) {
+        playerBall.setLaunchAngle((playerBall.getLaunchAngle() - 1 + 360) % 360);
+    }else if (a.pressed(LEFT_BUTTON)) {
+        if (heldFramesCount > HELD_FRAMES_DELAY && heldFramesCount % HELD_FRAMES_FREQ == 0) {
+            playerBall.setLaunchAngle((playerBall.getLaunchAngle() - 1 + 360) % 360);
+        }
+        heldFramesCount++;
+    }
+    if (a.justReleased(RIGHT_BUTTON) || (a.justReleased(LEFT_BUTTON))) {
+        heldFramesCount = 0;
+    }
 }
 void drawAim() {
     drawLevel();
+    playerBall.drawAim();
     drawLevelUI();
-    // playerBall.drawAim();
 }
 
 // LevelState::Launch

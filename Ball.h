@@ -20,8 +20,8 @@ public:
 
     void launch() {
         // Caluclate velocity based on launch settings
-        velocity.dx = getLaunchPower() * cos(launchAngle * DEG_TO_RAD);
-        velocity.dy = getLaunchPower() * sin(launchAngle * DEG_TO_RAD);
+        velocity.dx = getLaunchPower() * cos(launchAngle * DEG_TO_RAD - PI / 2.0);
+        velocity.dy = getLaunchPower() * sin(launchAngle * DEG_TO_RAD - PI / 2.0);
     }
 
     void move() {

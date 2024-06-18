@@ -56,7 +56,7 @@ public:
     void setRadius(uint8_t newRadius) { radius = newRadius; }
 
     uint8_t getLaunchPowerIndex() const { return launchPowerIndex; }
-    float getLaunchPower() const { return launchPowerLevel[launchPowerIndex]; }
+    float getLaunchPower() const { return launchPowerLevel[launchPowerIndex - 1]; }
     int getLaunchAngle() const { return launchAngle; }
     void setLaunchPower(int newPower) { launchPowerIndex = newPower; }
     void setLaunchAngle(int newAngle) { launchAngle = newAngle; }

@@ -18,7 +18,20 @@ public:
 
     }
 
-    bool collideLine(Pos startPos, Pos endPos, int thickness) const {
+    void launch() {
+        // Caluclate velocity based on launch settings
+        velocity.dx = getLaunchPower() * cos(launchAngle * DEG_TO_RAD);
+        velocity.dy = getLaunchPower() * sin(launchAngle * DEG_TO_RAD);
+    }
+
+    void move() {
+        position.x += velocity.dx;
+        position.y += velocity.dy;
+
+        position.y += gravity;
+    }
+
+    bool collideLine(Pos<uint8_t> startPos, Pos<uint8_t> endPos, int thickness) const {
         // NOTE: there is a known bug in this algorithm where the "underside" of horizontal and vertical lines only registers a collision 1px later than it should.
         // 1. Calculate the distance between the ball's center and the line segment
         float distance = calculateDistanceToSegment(position, startPos, endPos);
@@ -56,6 +69,7 @@ private:
     uint8_t launchPowerIndex = 1; // Index of launchPowerLevels[] array
     float launchPowerLevel[5] = { 0.5, 1, 1.5, 2, 2.5 }; // Actual values used in calculations
     uint16_t launchAngle; // Launch angle 0 to 359
+    float gravity = 0.05;
 
     // Collision Detection: method to calculate the distance between a point and a line segment
     float calculateDistanceToSegment(const Pos& point, const Pos& segmentStart, const Pos& segmentEnd) const {

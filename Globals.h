@@ -7,9 +7,6 @@
 
 // GLOBAL DEFINITIONS
 #define FRAME_RATE 60
-#define MOVE_SPEED 1 // not needed after prototype
-#define GRAVITY_SPEED 2 // gravity pixels per frame (prototype only?)
-
 
 // DEBUGGING TOGGLE
 #define DEBUG true

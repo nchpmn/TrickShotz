@@ -259,7 +259,6 @@ void updateAim() {
     }
 
     // Set launchAngle (Left/Right)
-    // NOTE: known bug where change the angle freezes every 70 deg
     const uint8_t HELD_FRAMES_DELAY = 45;
     const uint8_t HELD_FRAMES_FREQ = 3;
     static uint16_t heldFramesCount = 0;
@@ -282,6 +281,12 @@ void updateAim() {
     if (a.justReleased(RIGHT_BUTTON) || (a.justReleased(LEFT_BUTTON))) {
         heldFramesCount = 0;
     }
+
+    if (a.justPressed(A_BUTTON)) {
+        DEBUG_PRINTLN("LAUNCHED!\nEXIT LS::AIM");
+        playerBall.launch();
+        levelState = LevelState::Launch;
+    }
 }
 void drawAim() {
     drawLevel();
@@ -291,6 +296,9 @@ void drawAim() {
 
 // LevelState::Launch
 void updateLaunch() {
+    // Move ball
+    playerBall.move();
+
     // Detect collision ball-goal
     // To be moved to LevelState::Launch after prototype
     if (playerBall.collideGoal(levelGoal.getPos(), levelGoal.getRadius())) {
@@ -309,6 +317,8 @@ void updateLaunch() {
     }
 }
 void drawLaunch() {
+    drawLevel();
+    drawLevelUI();
 }
 
 // LevelState::Win

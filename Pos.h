@@ -22,10 +22,6 @@ public:
         return Pos(x + other.x, y + other.y);
     }
 
-    Pos operator-(const Pos& other) const {
-        return Pos(x - other.x, y - other.y);
-    }
-
     template <typename U>
     Pos<T> operator-(const Pos<U>& other) const {
         return Pos<T>(x - static_cast<T>(other.x), y - static_cast<T>(other.y));

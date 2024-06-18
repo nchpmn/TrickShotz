@@ -27,8 +27,8 @@ public:
         }
     }
 
-    Pos getStartPos() const { return startPos; }
-    Pos getEndPos() const { return endPos; }
+    Pos<uint8_t> getStartPos() const { return startPos; }
+    Pos<uint8_t> getEndPos() const { return endPos; }
     int getX1() const { return startPos.x; }
     int getY1() const { return startPos.y; }
     int getX2() const { return endPos.x; }
@@ -40,8 +40,8 @@ public:
     }
 
 private:
-    Pos startPos;
-    Pos endPos;
+    Pos<uint8_t> startPos;
+    Pos<uint8_t> endPos;
     static const int thickness = 2;
 
 };

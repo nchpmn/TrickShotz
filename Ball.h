@@ -39,7 +39,7 @@ public:
         return distance < radius + (thickness / 2);
     }
 
-    bool collideGoal(Pos goalPos, int goalRadius) const {
+    bool collideGoal(Pos<uint8_t> goalPos, int goalRadius) const {
         // 1. Define a Vector for the difference in positions
         Vector delta(position - goalPos);
         // 2. Calculate the distance using the magnitude of the Vector
@@ -49,7 +49,7 @@ public:
     }
 
 
-    Pos getPos() const { return position; };
+    Pos<uint8_t> getPos() const { return position; };
     int getX() const { return position.x; }
     int getY() const { return position.y; }
     int getRadius() const { return radius; }
@@ -57,22 +57,23 @@ public:
     void setRadius(uint8_t newRadius) { radius = newRadius; }
 
     uint8_t getLaunchPowerIndex() const { return launchPowerIndex; }
-    float getLaunchPowerLevel() const { return launchPowerLevel[launchPowerIndex]; }
+    float getLaunchPower() const { return launchPowerLevel[launchPowerIndex]; }
     int getLaunchAngle() const { return launchAngle; }
     void setLaunchPower(int newPower) { launchPowerIndex = newPower; }
     void setLaunchAngle(int newAngle) { launchAngle = newAngle; }
 
 
 private:
-    Pos position;
+    Pos<uint8_t> position;
     uint8_t radius;
+    Vector velocity;
     uint8_t launchPowerIndex = 1; // Index of launchPowerLevels[] array
     float launchPowerLevel[5] = { 0.5, 1, 1.5, 2, 2.5 }; // Actual values used in calculations
     uint16_t launchAngle; // Launch angle 0 to 359
     float gravity = 0.05;
 
     // Collision Detection: method to calculate the distance between a point and a line segment
-    float calculateDistanceToSegment(const Pos& point, const Pos& segmentStart, const Pos& segmentEnd) const {
+    float calculateDistanceToSegment(const Pos<uint8_t>& point, const Pos<uint8_t>& segmentStart, const Pos<uint8_t>& segmentEnd) const {
         // Honestly I don't understand the mathematics in this algorithm
         // So really these comments are just for future maintenance
         // Create a vector from start/end of segment and segmentStart to point
@@ -92,7 +93,7 @@ private:
         t = clamp(t, 0.0f, 1.0f);
 
         // Determine the closest point on the segment using parameter t
-        Pos closestPoint(segmentStart.x + t * segmentVector.dx, segmentStart.y + t * segmentVector.dy);
+        Pos<uint8_t> closestPoint(segmentStart.x + t * segmentVector.dx, segmentStart.y + t * segmentVector.dy);
 
         // Create a vector from the closest point to the given point
         Vector distanceVector(point - closestPoint);

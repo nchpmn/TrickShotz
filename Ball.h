@@ -3,7 +3,7 @@
 
 class Ball {
 public:
-    Ball(int x, int y, int radius) : position(x, y), radius(radius) {}
+    Ball(float x, float y, int radius) : position(x, y), radius(radius) {}
 
     void move(const Vector& velocity) {
         position.x += velocity.dx;
@@ -25,10 +25,9 @@ public:
     }
 
     void move() {
+        velocity.dy += gravity;
         position.x += velocity.dx;
         position.y += velocity.dy;
-
-        position.y += gravity;
     }
 
     bool collideLine(Pos<uint8_t> startPos, Pos<uint8_t> endPos, int thickness) const {
@@ -39,7 +38,7 @@ public:
         return distance < radius + (thickness / 2);
     }
 
-    bool collideGoal(Pos<uint8_t> goalPos, int goalRadius) const {
+    bool collideGoal(Pos<uint8_t> goalPos, uint8_t goalRadius) const {
         // 1. Define a Vector for the difference in positions
         Vector delta(position - goalPos);
         // 2. Calculate the distance using the magnitude of the Vector
@@ -49,9 +48,9 @@ public:
     }
 
 
-    Pos<uint8_t> getPos() const { return position; };
-    int getX() const { return position.x; }
-    int getY() const { return position.y; }
+    Pos<float> getPos() const { return position; };
+    float getX() const { return position.x; }
+    float getY() const { return position.y; }
     int getRadius() const { return radius; }
     void setPosition(uint8_t newX, uint8_t newY) { position.set(newX, newY); }
     void setRadius(uint8_t newRadius) { radius = newRadius; }
@@ -64,7 +63,7 @@ public:
 
 
 private:
-    Pos<uint8_t> position;
+    Pos<float> position;
     uint8_t radius;
     Vector velocity;
     uint8_t launchPowerIndex = 1; // Index of launchPowerLevels[] array
@@ -73,7 +72,7 @@ private:
     float gravity = 0.05;
 
     // Collision Detection: method to calculate the distance between a point and a line segment
-    float calculateDistanceToSegment(const Pos<uint8_t>& point, const Pos<uint8_t>& segmentStart, const Pos<uint8_t>& segmentEnd) const {
+    float calculateDistanceToSegment(const Pos<float>& point, const Pos<uint8_t>& segmentStart, const Pos<uint8_t>& segmentEnd) const {
         // Honestly I don't understand the mathematics in this algorithm
         // So really these comments are just for future maintenance
         // Create a vector from start/end of segment and segmentStart to point

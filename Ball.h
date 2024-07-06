@@ -11,12 +11,12 @@ public:
 
     void drawAim() {
         if (launchChanged) {
+            // Only make calculations if values changed
             int adjustedAngle = getLaunchAngle() - 90;
             if (adjustedAngle < 0) {
                 adjustedAngle += 360;
             }
             float angleRad = radians(adjustedAngle);
-
             aimSimPos = getPos();
             aimSimVelocity.dx = getLaunchPower() * cos(angleRad);
             aimSimVelocity.dy = getLaunchPower() * sin(angleRad);
@@ -31,7 +31,6 @@ public:
                 a.drawPixel(round(aimSimPos.x), round(aimSimPos.y), WHITE);
             }
         }
-
     }
 
     void launch() {

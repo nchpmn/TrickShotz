@@ -28,13 +28,13 @@ public:
     }
 
     // Collisions: Ball-Line detection and Bounce
-    bool collideLine(const Pos<uint8_t>& startPoint, const Pos<uint8_t>& endPoint) {
+    bool collideLineCheck(const Pos<uint8_t>& startPoint, const Pos<uint8_t>& endPoint) {
         // Check for collision with a line
         float distance = calculateDistanceToSegment(position, startPoint, endPoint);
         return distance < radius;
     }
 
-    void handleCollision(const Pos<uint8_t>& startPoint, const Pos<uint8_t>& endPoint) {
+    void collideLineBounce(const Pos<uint8_t>& startPoint, const Pos<uint8_t>& endPoint) {
         // Calculate the closest point on the line segment to the ball's position
         Pos<float> closestPoint = calcClosestPoint(startPoint, endPoint, position);
 
@@ -52,7 +52,7 @@ public:
 
 
     // Collisions: Ball-Goal detection
-    bool collideGoal(Pos<uint8_t> goalPos, uint8_t goalRadius) const {
+    bool collideGoalCheck(Pos<uint8_t> goalPos, uint8_t goalRadius) const {
         // 1. Define a Vector for the difference in positions
         Vector delta(position - goalPos);
         // 2. Calculate the distance using the magnitude of the Vector

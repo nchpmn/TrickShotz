@@ -312,16 +312,16 @@ void updateLaunch() {
 
     // Check for collisions against lines
     for (const Line& line : levelLines) {
-        if (playerBall.collideLine(line.getStartPos(), line.getEndPos())) {
+        if (playerBall.collideLineCheck(line.getStartPos(), line.getEndPos())) {
             // If colliding, bounce the ball
-            playerBall.handleCollision(line.getStartPos(), line.getEndPos());
+            playerBall.collideLineBounce(line.getStartPos(), line.getEndPos());
         }
     }
 
 
     // Detect collision ball-goal
     // To be moved to LevelState::Launch after prototype
-    if (playerBall.collideGoal(levelGoal.getPos(), levelGoal.getRadius())) {
+    if (playerBall.collideGoalCheck(levelGoal.getPos(), levelGoal.getRadius())) {
         font3x5.setCursor(70,25);
         font3x5.print("GOAL!");
         levelState = LevelState::LevelWin;

@@ -30,7 +30,7 @@ public:
     // Collisions: Ball-Line detection and Bounce
     bool collideLineCheck(const Pos<uint8_t>& startPoint, const Pos<uint8_t>& endPoint) {
         // Check for collision with a line
-        float distance = calculateDistanceToSegment(position, startPoint, endPoint);
+        float distance = calcDistanceToSegment(position, startPoint, endPoint);
         return distance < radius;
     }
 
@@ -93,7 +93,7 @@ private:
 
 
     // Collisions: distance between point and line
-    float calculateDistanceToSegment(const Pos<float>& point, const Pos<uint8_t>& segmentStart, const Pos<uint8_t>& segmentEnd) const {
+    float calcDistanceToSegment(const Pos<float>& point, const Pos<uint8_t>& segmentStart, const Pos<uint8_t>& segmentEnd) const {
         Pos<float> closestPoint = calcClosestPoint(segmentStart, segmentEnd, point);
         Vector distanceVector(point - closestPoint);
         return distanceVector.magnitude();

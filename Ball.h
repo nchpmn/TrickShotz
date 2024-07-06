@@ -22,22 +22,33 @@ public:
     void update() {
         // Add Gravity to Velocity
         velocity.dy += gravity;
-
         // Calc the next frame's position
-        nextPosition.x = position.x += velocity.dx;
-        nextPosition.y = position.y += velocity.dy;
+        position.x += velocity.dx;
+        position.y += velocity.dy;
     }
 
     // Collisions: Ball-Line detection and Bounce
-    bool collideLine(const Pos<uint8_t>& startPos, const Pos<uint8_t>& endPos) {
-        // Calculate the distance from the ball's center to the line segment
-        float distance = calculateDistanceToSegment(position, startPos, endPos);
-        // If the distance is less than the ball's radius, a collision has occurred
-        if (distance < radius) {
-            // Handle the bounce effect by adjusting the ball's velocity
-            bounce(startPos, endPos);
-        }
+    bool collideLine(const Pos<uint8_t>& startPoint, const Pos<uint8_t>& endPoint) {
+        // Check for collision with a line
+        float distance = calculateDistanceToSegment(position, startPoint, endPoint);
+        return distance < radius;
     }
+
+    void handleCollision(const Pos<uint8_t>& startPoint, const Pos<uint8_t>& endPoint) {
+        // Calculate the closest point on the line segment to the ball's position
+        Pos<float> closestPoint = calcClosestPoint(startPoint, endPoint, position);
+
+        // Move the ball to the closest point on the line segment
+        Vector normal = Vector(position - closestPoint).normalise();
+        position.x = closestPoint.x + normal.dx * radius;
+        position.y = closestPoint.y + normal.dy * radius;
+
+        // Reflect the velocity vector around the normal
+        float normalDotVelocity = normal.dx * velocity.dx + normal.dy * velocity.dy;
+        velocity.dx -= 2 * normalDotVelocity * normal.dx;
+        velocity.dy -= 2 * normalDotVelocity * normal.dy;
+    }
+
 
 
     // Collisions: Ball-Goal detection
@@ -77,47 +88,40 @@ private:
 
     // Collisions: distance between point and line
     float calculateDistanceToSegment(const Pos<float>& point, const Pos<uint8_t>& segmentStart, const Pos<uint8_t>& segmentEnd) const {
-        // Create vectors for the segment and the point relative to the segment's start
         Vector segmentVector(segmentEnd - segmentStart);
         Vector pointVector(point - segmentStart);
 
-        // Calculate the squared length of the segment vector
-        float segmentLengthSquared = segmentVector.magnitudeSquared();
-        // Compute the dot product of the point vector and the segment vector
-        float dotProduct = pointVector.dot(segmentVector);
-        // Calculate the parameter t that represents the closest point on the segment
+        float dotProduct = calcDotProduct(segmentVector, pointVector);
+        float segmentLengthSquared = segmentVector.dx * segmentVector.dx + segmentVector.dy * segmentVector.dy;
+
         float t = dotProduct / segmentLengthSquared;
-        // Clamp t to ensure it lies within the segment [0, 1]
         t = clamp(t, 0.0f, 1.0f);
 
-        // Determine the closest point on the segment using parameter t
-        Pos<float> closestPoint(segmentStart.x + t * segmentVector.dx, segmentStart.y + t * segmentVector.dy);
-        // Create a vector from the closest point to the given point
+        Pos<float> closestPoint = calcClosestPoint(segmentStart, segmentEnd, point);
         Vector distanceVector(point - closestPoint);
-        // Return the magnitude of the distance vector, which is the shortest distance from the point to the segment
         return distanceVector.magnitude();
     }
 
-    // Function to handle bouncing off a line
-    void bounce(const Pos<uint8_t>& startPos, const Pos<uint8_t>& endPos) {
-        // Create a vector for the segment
-        Vector segmentVector(endPos - startPos);
-        // Calculate the normal vector to the segment
-        Vector normal(-segmentVector.dy, segmentVector.dx);
-        // Normalize the normal vector
-        normal.normalize();
-
-        // Compute the dot product of the velocity and the normal vector
-        float dotProduct = velocity.dot(normal);
-        // Reflect the velocity vector across the normal vector to simulate a bounce
-        velocity.dx -= 2 * dotProduct * normal.dx;
-        velocity.dy -= 2 * dotProduct * normal.dy;
-    }
-
-    // Utility function to clamp a value within a specified range
+    // Utility: clamp a value within a specified range
     float clamp(float value, float minValue, float maxValue) const {
         // Ensure value is within the range [minValue, maxValue]
         return max(minValue, min(maxValue, value));
+    }
+
+    // Utility: calculate a dot product
+    float calcDotProduct(const Vector& a, const Vector& b) {
+        return a.dx * b.dx + a.dy * b.dy;
+    }
+
+    // Utility: cloest point on a line segment to a single point
+    Pos<float> calcClosestPoint(const Pos<uint8_t>& lineStart, const Pos<uint8_t>& lineEnd, const Pos<float>& point) {
+        Vector segmentVector(lineEnd - lineStart);
+        Vector pointVector(point - lineStart);
+        float dotProduct = calcDotProduct(segmentVector, pointVector);
+        float segmentLengthSquared = segmentVector.dx * segmentVector.dx + segmentVector.dy * segmentVector.dy;
+        float t = dotProduct / segmentLengthSquared;
+        t = clamp(t, 0.0f, 1.0f);
+        return Pos<float>(lineStart.x + t * segmentVector.dx, lineStart.y + t * segmentVector.dy);
     }
     
 };

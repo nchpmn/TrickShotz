@@ -310,13 +310,14 @@ void updateLaunch() {
     // Move ball
     playerBall.update();
 
-    // Check for collision with each Line
-    for (uint8_t i = 0; i < numLines; ++i) {
-        if(collideLine(levelLines[i].getStartPos(), levelLines[i].getEndPos())) {
-            // It collided - Bounce!
-
+    // Check for collisions against lines
+    for (const Line& line : levelLines) {
+        if (playerBall.collideLine(line.getStartPos(), line.getEndPos())) {
+            // If colliding, bounce the ball
+            playerBall.handleCollision(line.getStartPos(), line.getEndPos());
         }
     }
+
 
     // Detect collision ball-goal
     // To be moved to LevelState::Launch after prototype

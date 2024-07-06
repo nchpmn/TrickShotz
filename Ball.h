@@ -10,6 +10,27 @@ public:
     }
 
     void drawAim() {
+        if (launchChanged) {
+            int adjustedAngle = getLaunchAngle() - 90;
+            if (adjustedAngle < 0) {
+                adjustedAngle += 360;
+            }
+            float angleRad = radians(adjustedAngle);
+
+            aimSimPos = getPos();
+            aimSimVelocity.dx = getLaunchPower() * cos(angleRad);
+            aimSimVelocity.dy = getLaunchPower() * sin(angleRad);
+        }
+
+        for (int t = 0; t < aimLineLength; ++t) {
+            // Apply gravity to the simulated trajectory
+            aimSimVelocity.dy += gravity;
+            aimSimPos.x += aimSimVelocity.dx;
+            aimSimPos.y += aimSimVelocity.dy;
+            if (t % 4 == 0) {
+                a.drawPixel(round(aimSimPos.x), round(aimSimPos.y), WHITE);
+            }
+        }
 
     }
 
@@ -76,8 +97,14 @@ public:
     uint8_t getLaunchPowerIndex() const { return launchPowerIndex; }
     float getLaunchPower() const { return launchPowerLevel[launchPowerIndex - 1]; }
     int getLaunchAngle() const { return launchAngle; }
-    void setLaunchPower(int newPower) { launchPowerIndex = newPower; }
-    void setLaunchAngle(int newAngle) { launchAngle = newAngle; }
+    void setLaunchPower(int newPower) { 
+        launchChanged = true;
+        launchPowerIndex = newPower;
+    }
+    void setLaunchAngle(int newAngle) { 
+        launchChanged = true;
+        launchAngle = newAngle;
+    }
 
 
 private:
@@ -88,6 +115,10 @@ private:
     uint8_t launchPowerIndex = 1; // Index of launchPowerLevels[] array
     float launchPowerLevel[5] = { 0.5, 1, 1.5, 2, 2.5 }; // Actual values used in calculations
     uint16_t launchAngle; // Launch angle 0 to 359
+    bool launchChanged = true;
+    uint8_t aimLineLength = 25;
+    Pos<float> aimSimPos;
+    Vector aimSimVelocity;
     float gravity = 0.05;
     float friction = 0.95;
 

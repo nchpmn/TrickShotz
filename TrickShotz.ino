@@ -296,8 +296,14 @@ void drawAim() {
 
 // LevelState::Launch
 void updateLaunch() {
+    // Detect collision ball-lines
+    // To be moved to LevelState::Launch after prototype
+    // for (uint8_t i = 0; i < numLines; ++i) {
+    //     playerBall.collideLine(levelLines[i].getStartPos(), levelLines[i].getEndPos());
+    // }
+
     // Move ball
-    playerBall.move();
+    playerBall.update();
 
     // Detect collision ball-goal
     // To be moved to LevelState::Launch after prototype
@@ -307,15 +313,9 @@ void updateLaunch() {
         levelState = LevelState::LevelWin;
     }
 
-    // Detect collision ball-lines
-    // To be moved to LevelState::Launch after prototype
-    for (uint8_t i = 0; i < numLines; ++i) {
-        if (playerBall.collideLine(levelLines[i].getStartPos(), levelLines[i].getEndPos(), levelLines[i].getThick())) {
-            font3x5.setCursor(0,25);
-            font3x5.print("Collide!");
-        }
-    }
+
 }
+
 void drawLaunch() {
     drawLevel();
     drawLevelUI();

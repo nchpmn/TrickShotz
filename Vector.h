@@ -23,6 +23,15 @@ public:
         return sqrt(dx * dx + dy * dy);
     }
 
+    float magnitudeSquared() const {
+        return dx * dx + dy * dy;
+    }
+
+    // Dot product
+    float dot(const Vector& other) const {
+        return dx * other.dx + dy * other.dy;
+    }
+
     // Normalize the vector
     Vector normalize() const {
         float mag = magnitude();

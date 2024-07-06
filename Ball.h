@@ -47,6 +47,10 @@ public:
         float normalDotVelocity = normal.dx * velocity.dx + normal.dy * velocity.dy;
         velocity.dx -= 2 * normalDotVelocity * normal.dx;
         velocity.dy -= 2 * normalDotVelocity * normal.dy;
+
+        // Apply friction to the velocity
+        velocity *= friction;
+
     }
 
 
@@ -85,6 +89,8 @@ private:
     float launchPowerLevel[5] = { 0.5, 1, 1.5, 2, 2.5 }; // Actual values used in calculations
     uint16_t launchAngle; // Launch angle 0 to 359
     float gravity = 0.05;
+    float friction = 0.95;
+
 
     // Collisions: distance between point and line
     float calculateDistanceToSegment(const Pos<float>& point, const Pos<uint8_t>& segmentStart, const Pos<uint8_t>& segmentEnd) const {

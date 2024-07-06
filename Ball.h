@@ -20,27 +20,12 @@ public:
     }
 
     void update() {
+        // Add Gravity to Velocity
         velocity.dy += gravity;
 
         // Calc the next frame's position
-        Pos<float> nextPos;
-        nextPos.x = position.x += velocity.dx;
-        nextPos.y = position.y += velocity.dy;
-
-        // Check for collision with each Line
-        for (uint8_t i = 0; i < numLines; ++i) {
-            if(collideLine(levelLines[i].getStartPos(), levelLines[i].getEndPos())) {
-                // It collided - Bounce!
-
-            }
-        }
-
-
-
-
-
-        position.x += velocity.dx;
-        position.y += velocity.dy;
+        nextPosition.x = position.x += velocity.dx;
+        nextPosition.y = position.y += velocity.dy;
     }
 
     // Collisions: Ball-Line detection and Bounce
@@ -82,6 +67,7 @@ public:
 
 private:
     Pos<float> position;
+    Pos<float> nextPosition;
     uint8_t radius;
     Vector velocity;
     uint8_t launchPowerIndex = 1; // Index of launchPowerLevels[] array

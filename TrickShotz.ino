@@ -296,38 +296,21 @@ void drawAim() {
 
 // LevelState::Launch
 void updateLaunch() {
-
-    /*
-    ORDER OF OPERATIONS:
-    1a. Add Gravity to Velocity
-    1b. Calc next ball Pos (current Pos + current Velocity)
-    2a. Check for collisions in new Pos
-    2b. If colliding, move ball ("Bounce")
-    3. Finalise Ball new Pos
-    4. Check for collision with Goal
-    */
-
     // Move ball
     playerBall.update();
-
-    // Check for collisions against lines
+    // Collide Ball-Line
     for (const Line& line : levelLines) {
         if (playerBall.collideLineCheck(line.getStartPos(), line.getEndPos())) {
             // If colliding, bounce the ball
             playerBall.collideLineBounce(line.getStartPos(), line.getEndPos());
         }
     }
-
-
-    // Detect collision ball-goal
-    // To be moved to LevelState::Launch after prototype
+    // Collide Ball-Goal
     if (playerBall.collideGoalCheck(levelGoal.getPos(), levelGoal.getRadius())) {
         font3x5.setCursor(70,25);
         font3x5.print("GOAL!");
         levelState = LevelState::LevelWin;
     }
-
-
 }
 
 void drawLaunch() {

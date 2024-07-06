@@ -94,15 +94,6 @@ private:
 
     // Collisions: distance between point and line
     float calculateDistanceToSegment(const Pos<float>& point, const Pos<uint8_t>& segmentStart, const Pos<uint8_t>& segmentEnd) const {
-        Vector segmentVector(segmentEnd - segmentStart);
-        Vector pointVector(point - segmentStart);
-
-        float dotProduct = calcDotProduct(segmentVector, pointVector);
-        float segmentLengthSquared = segmentVector.dx * segmentVector.dx + segmentVector.dy * segmentVector.dy;
-
-        float t = dotProduct / segmentLengthSquared;
-        t = clamp(t, 0.0f, 1.0f);
-
         Pos<float> closestPoint = calcClosestPoint(segmentStart, segmentEnd, point);
         Vector distanceVector(point - closestPoint);
         return distanceVector.magnitude();

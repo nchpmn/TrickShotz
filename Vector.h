@@ -33,7 +33,7 @@ public:
     }
 
     // Normalize the vector
-    Vector normalize() const {
+    Vector normalise() const {
         float mag = magnitude();
         return Vector(dx / mag, dy / mag);
     }

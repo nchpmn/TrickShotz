@@ -6,7 +6,7 @@
 //
 // PROTOTYPE ONLY
 
-#define VERSION "v240617 DEV"
+#define VERSION "v240707 DEV"
 
 
 // LIBRARIES
@@ -197,7 +197,7 @@ void drawLevel() {
 void drawLevelUI() {
     const int uiAngleX = 20;
     const int uiPowerX = 70;
-    uint8_t heldFrames = 0;
+    static uint8_t heldFrames = 0;
     // Draw the bottom UI bar and elements
     a.fillRect(0, 55, 128, 15, BLACK);
     a.drawLine(0, 55, 128, 55, WHITE);
@@ -205,14 +205,16 @@ void drawLevelUI() {
     // Reset level at any time
     if (a.pressed(B_BUTTON)) {
         if (heldFrames == 70) {
-            // reload level
+            DEBUG_PRINTLN("RESET triggered");
+            heldFrames = 0;
+            levelState = LevelState::ResetLevel;
         } else {
-            heldFrames++;
             a.fillRect(0, 57, heldFrames*2, 8);
             font3x5.setCursor(3, 57);
             font3x5.setTextColor(BLACK);
             font3x5.print(F("RESTART LEVEL..."));
             font3x5.setTextColor(WHITE);
+            heldFrames++;
         }
     } else {
         // Draw Angle
@@ -245,7 +247,8 @@ void drawLevelUI() {
 
 // LevelState::Reset
 void updateResetLevel() {
-
+    // What other code needs to go here? This seems to work perfectly..!
+    levelState = LevelState::Load;
 }
 
 // LevelState::Aim

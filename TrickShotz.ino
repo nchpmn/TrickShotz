@@ -203,19 +203,22 @@ void drawLevelUI() {
     a.drawLine(0, 55, 128, 55, WHITE);
 
     // Reset level at any time
-    if (a.pressed(B_BUTTON)) {
+    if (a.justReleased(B_BUTTON)) {
         if (heldFrames == 70) {
-            DEBUG_PRINTLN("RESET triggered");
+            DEBUG_PRINTLN("\nRESET triggered");
             heldFrames = 0;
             levelState = LevelState::ResetLevel;
-        } else {
-            a.fillRect(0, 57, heldFrames*2, 8);
+        }
+        heldFrames = 0;
+    } else if (a.pressed(B_BUTTON)) {
+            a.fillRect(0, 57, heldFrames*2, 8, WHITE);
             font3x5.setCursor(3, 57);
             font3x5.setTextColor(BLACK);
             font3x5.print(F("RESTART LEVEL..."));
             font3x5.setTextColor(WHITE);
-            heldFrames++;
-        }
+            if (heldFrames < 70) {
+                heldFrames++;
+            }
     } else {
         // Draw Angle
         font3x5.setCursor(uiAngleX, 57);
@@ -231,16 +234,12 @@ void drawLevelUI() {
             // 1 digit = 7 Characters
             a.drawRect(uiAngleX + (7 * 4), 58, 3, 3, WHITE);
         }
-
         // Draw Power
         font3x5.setCursor(uiPowerX, 57);
         font3x5.print(F("POWER:"));
         for (int i = 0; i < playerBall.getLaunchPowerIndex(); i++) {
             a.fillRect((uiPowerX + 25 + i*4), (62 - i), 3, i+1);
         }
-    }
-    if (a.justReleased(B_BUTTON)) {
-        heldFrames = 0;
     }
 }
 

@@ -198,6 +198,7 @@ void drawLevelUI() {
     const int uiAngleX = 20;
     const int uiPowerX = 70;
     static uint8_t heldFrames = 0;
+
     // Draw the bottom UI bar and elements
     a.fillRect(0, 55, 128, 15, BLACK);
     a.drawLine(0, 55, 128, 55, WHITE);
@@ -205,40 +206,35 @@ void drawLevelUI() {
     // Reset level at any time
     if (a.justReleased(B_BUTTON)) {
         if (heldFrames == 70) {
-            DEBUG_PRINTLN("\nRESET triggered");
+            DEBUG_PRINTLN(F("\nRESET triggered"));
             heldFrames = 0;
             levelState = LevelState::ResetLevel;
         }
         heldFrames = 0;
     } else if (a.pressed(B_BUTTON)) {
-            a.fillRect(0, 57, heldFrames*2, 8, WHITE);
-            font3x5.setCursor(3, 57);
-            font3x5.setTextColor(BLACK);
-            font3x5.print(F("RESTART LEVEL..."));
-            font3x5.setTextColor(WHITE);
-            if (heldFrames < 70) {
-                heldFrames++;
-            }
+        a.fillRect(0, 57, heldFrames * 2, 8, WHITE);
+        font3x5.setCursor(3, 57);
+        font3x5.setTextColor(BLACK);
+        font3x5.print(F("RESTART LEVEL..."));
+        font3x5.setTextColor(WHITE);
+        if (heldFrames < 70) {
+            heldFrames++;
+        }
     } else {
         // Draw Angle
         font3x5.setCursor(uiAngleX, 57);
         font3x5.print(F("ANGLE:"));
         font3x5.print(playerBall.getLaunchAngle());
-        if (playerBall.getLaunchAngle() >= 100) {
-            // 3 digits = 9 Characters
-            a.drawRect(uiAngleX + (9 * 4), 58, 3, 3, WHITE);
-        } else if (playerBall.getLaunchAngle() >= 10) {
-            // 2 digits = 8 Characters
-            a.drawRect(uiAngleX + (8 * 4), 58, 3, 3, WHITE);
-        } else {
-            // 1 digit = 7 Characters
-            a.drawRect(uiAngleX + (7 * 4), 58, 3, 3, WHITE);
-        }
+        uint8_t launchAngle = playerBall.getLaunchAngle();
+        uint8_t rectX = uiAngleX + 7 * 4 + ((launchAngle >= 10) ? 4 : 0) + ((launchAngle >= 100) ? 4 : 0);
+        a.drawRect(rectX, 58, 3, 3, WHITE);
+
         // Draw Power
         font3x5.setCursor(uiPowerX, 57);
         font3x5.print(F("POWER:"));
-        for (int i = 0; i < playerBall.getLaunchPowerIndex(); i++) {
-            a.fillRect((uiPowerX + 25 + i*4), (62 - i), 3, i+1);
+        uint8_t launchPowerIndex = playerBall.getLaunchPowerIndex();
+        for (uint8_t i = 0; i < launchPowerIndex; i++) {
+            a.fillRect((uiPowerX + 25 + i * 4), (62 - i), 3, i + 1);
         }
     }
 }

@@ -239,6 +239,11 @@ void drawLevelUI() {
     }
 }
 
+void drawLevelUIBanner() {
+    a.fillRect(0, 9, 128, 12, BLACK);
+    a.drawLine(0, 10, 128, 10, WHITE);
+    a.drawLine(0, 19, 128, 19, WHITE);
+}
 
 // LevelState::Reset
 void updateResetLevel() {
@@ -306,8 +311,6 @@ void updateLaunch() {
     }
     // Collide Ball-Goal
     if (playerBall.collideGoalCheck(levelGoal.getPos(), levelGoal.getRadius())) {
-        font3x5.setCursor(70,25);
-        font3x5.print("GOAL!");
         levelState = LevelState::LevelWin;
     }
 }
@@ -327,8 +330,9 @@ void updateWinLevel() {
 void drawWinLevel() {
     drawLevel();
     drawLevelUI();
-    font3x5.setCursor(60,0);
-    font3x5.print("WIN!");
+    drawLevelUIBanner();
+    font3x5.setCursor((64 - 5*3), 12);
+    font3x5.print("GOAL!");
 }
 
 // LevelState::Lose
@@ -336,6 +340,11 @@ void updateLoseLevel() {
 
 }
 void drawLoseLevel() {
+    drawLevel();
+    drawLevelUI();
+    drawLevelUIBanner();
+    font3x5.setCursor((64 - 12*3), 12);
+    font3x5.print("OUT OF BOUNDS!");
 }
 
 

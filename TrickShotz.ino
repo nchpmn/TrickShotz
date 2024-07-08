@@ -249,35 +249,35 @@ void updateResetLevel() {
 // LevelState::Aim
 void updateAim() {
     // Update launch power
+    uint8_t launchPowerIndex = playerBall.getLaunchPowerIndex();
     if (a.justPressed(UP_BUTTON)) {
-        playerBall.setLaunchPower(min(playerBall.getLaunchPowerIndex() + 1, 5));
-    }
-    if (a.justPressed(DOWN_BUTTON)) {
-        playerBall.setLaunchPower(max(playerBall.getLaunchPowerIndex() - 1, 1));
+        playerBall.setLaunchPower(min(launchPowerIndex + 1, 5));
+    } else if (a.justPressed(DOWN_BUTTON)) {
+        playerBall.setLaunchPower(max(launchPowerIndex - 1, 1));
     }
 
     // Set launchAngle (Left/Right)
-    const uint8_t HELD_FRAMES_DELAY = 45;
-    const uint8_t HELD_FRAMES_FREQ = 3;
+    uint16_t launchAngle = playerBall.getLaunchAngle();
+    #define HELD_FRAMES_DELAY 45
+    #define HELD_FRAMES_FREQ 3
     static uint16_t heldFramesCount = 0;
+
     if (a.justPressed(RIGHT_BUTTON)) {
-        playerBall.setLaunchAngle((playerBall.getLaunchAngle() + 1) % 360);
+        playerBall.setLaunchAngle((launchAngle + 1) % 360);
+    } else if (a.justPressed(LEFT_BUTTON)) {
+        playerBall.setLaunchAngle((launchAngle + 360 - 1) % 360);
     } else if (a.pressed(RIGHT_BUTTON)) {
         if (heldFramesCount > HELD_FRAMES_DELAY && heldFramesCount % HELD_FRAMES_FREQ == 0) {
-            playerBall.setLaunchAngle((playerBall.getLaunchAngle() + 1) % 360);
+            playerBall.setLaunchAngle((launchAngle + 1) % 360);
         }
         heldFramesCount++;
-    }
-    if (a.justPressed(LEFT_BUTTON)) {
-        playerBall.setLaunchAngle((playerBall.getLaunchAngle() - 1 + 360) % 360);
-    }else if (a.pressed(LEFT_BUTTON)) {
+    } else if (a.pressed(LEFT_BUTTON)) {
         if (heldFramesCount > HELD_FRAMES_DELAY && heldFramesCount % HELD_FRAMES_FREQ == 0) {
-            playerBall.setLaunchAngle((playerBall.getLaunchAngle() - 1 + 360) % 360);
+            playerBall.setLaunchAngle((launchAngle + 360 - 1) % 360);
         }
         heldFramesCount++;
-    }
-    if (a.justReleased(RIGHT_BUTTON) || (a.justReleased(LEFT_BUTTON))) {
-        heldFramesCount = 0;
+    } else {
+        heldFramesCount = 0;  // Reset the held frames count if no button is pressed
     }
 
     if (a.justPressed(A_BUTTON)) {
@@ -286,6 +286,7 @@ void updateAim() {
         levelState = LevelState::Launch;
     }
 }
+
 void drawAim() {
     drawLevel();
     playerBall.drawAim();

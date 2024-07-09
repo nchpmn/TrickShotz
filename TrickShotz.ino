@@ -225,7 +225,7 @@ void drawLevelUI() {
         font3x5.setCursor(uiAngleX, 57);
         font3x5.print(F("ANGLE:"));
         font3x5.print(playerBall.getLaunchAngle());
-        uint8_t launchAngle = playerBall.getLaunchAngle();
+        uint16_t launchAngle = playerBall.getLaunchAngle();
         uint8_t rectX = uiAngleX + 7 * 4 + ((launchAngle >= 10) ? 4 : 0) + ((launchAngle >= 100) ? 4 : 0);
         a.drawRect(rectX, 58, 3, 3, WHITE);
 

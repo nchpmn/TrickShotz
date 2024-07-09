@@ -8,6 +8,9 @@
 // GLOBAL DEFINITIONS
 #define FRAME_RATE 60
 
+// GLOBAL VARIABLES
+bool firstLoad = true;
+
 // DEBUGGING TOGGLE
 #define DEBUG true
 #if DEBUG

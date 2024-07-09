@@ -152,6 +152,7 @@ void drawEndScreen() {
 // LevelState::Load
 void updateLevelLoad(const LevelData *level, Ball &ball, Goal &goal, Line *lines, uint8_t &numLines) {
     DEBUG_PRINTLN("\nBEGIN updateLevelLoad()");
+
     #if DEBUG
     printLevelData(level);
     #endif
@@ -176,6 +177,10 @@ void updateLevelLoad(const LevelData *level, Ball &ball, Goal &goal, Line *lines
     DEBUG_PRINT(ball.getY());
     DEBUG_PRINT(", ");
     DEBUG_PRINTLN(ball.getRadius());
+    if (firstLoad) {
+        ball.setLaunchAngle(35);
+        ball.setLaunchPower(2);
+    }
 
     // Load goal data
     GoalData goalData;
@@ -247,7 +252,7 @@ void drawLevelUIBanner() {
 
 // LevelState::Reset
 void updateResetLevel() {
-    // What other code needs to go here? This seems to work perfectly..!
+    firstLoad = false;
     levelState = LevelState::Load;
 }
 
@@ -338,6 +343,7 @@ void drawLaunch() {
 void updateWinLevel() {
     if (a.justPressed(A_BUTTON)) {
         currentLevel++;
+        firstLoad = true;
         levelState = LevelState::Load;
     }
 }

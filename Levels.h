@@ -31,41 +31,56 @@ struct LevelData {
 };
 
 
+// MACROS FOR LEVEL DATA
+#define BALL_DATA(x, y, radius) { x, y, radius }
+#define GOAL_DATA(x, y, radius) { x, y, radius }
+#define LINE_DATA(x1, y1, x2, y2) { x1, y1, x2, y2 }
+#define LEVEL_DATA(ball, goal, numLines, ...) { ball, goal, numLines, { __VA_ARGS__ } }
 
 // INDIVIDUAL LEVELS
-const LevelData level01 PROGMEM = {
-    { 10, 10, 3 },  // Ball: x, y, radius
-    { 64, 32, 6 },  // Goal: x, y, radius
-    3,  // Number of lines
-    {
-        { 0, 20, 50, 60 },  // Lines: x1, y1, x2, y2
-        { 110, 10, 110, 50 },
-        { 30, 15, 95, 15 },
-    }
+const LevelData levels[] PROGMEM = {
+    // 01
+    LEVEL_DATA(
+        BALL_DATA(30, 20, 3),
+        GOAL_DATA(98, 25, 10),
+        1,
+        LINE_DATA(10, 50, 118, 50)),
+    // 02
+    LEVEL_DATA(
+        BALL_DATA(30, 20, 3),
+        GOAL_DATA(98, 25, 5),
+        2,
+        LINE_DATA(50, 50, 78, 50),
+        LINE_DATA(64, 5, 64, 30)),
+    // 03
+    LEVEL_DATA(
+        BALL_DATA(89, 12, 3),
+        GOAL_DATA(89, 34, 5),
+        3,
+        LINE_DATA(69, 19, 128, 19),
+        LINE_DATA(20, 50, 128, 50),
+        LINE_DATA(20, 0, 20, 50)),
+    // 04
+    LEVEL_DATA(
+        BALL_DATA(14, 42, 3),
+        GOAL_DATA(106, 39, 4),
+        5,
+        LINE_DATA(0, 51, 128, 51),
+        LINE_DATA(0, 25, 25, 0),
+        LINE_DATA(27, 19, 69, 19),
+        LINE_DATA(67, 21, 67, 51),
+        LINE_DATA(126, 0, 126, 51)),
+    // 05
+    LEVEL_DATA(
+        BALL_DATA(64, 6, 3),
+        GOAL_DATA(64, 50, 5),
+        3,
+        LINE_DATA(50, 10, 78, 10),
+        LINE_DATA(0, 24, 40, 64),
+        LINE_DATA(128, 24, 88, 64))
 };
 
-const LevelData level02 PROGMEM = {
-    { 30, 30, 5 },  // Ball: x, y, radius
-    { 100, 50, 10 },  // Goal: x, y, radius
-    2,  // Number of lines
-    {
-        { 10, 10, 20, 20 },  // Lines: x1, y1, x2, y2
-        { 40, 40, 50, 50 },
-    }
-};
 
-const LevelData level03 PROGMEM = {
-    { 20, 20, 4 },  // Ball: x, y, radius
-    { 80, 40, 8 },  // Goal: x, y, radius
-    3,  // Number of lines
-    {
-        { 15, 15, 95, 45 },  // Lines: x1, y1, x2, y2
-        { 35, 0, 0, 45 },
-        { 55, 55, 65, 65 },
-    }
-};
-
-const LevelData levels[] PROGMEM = { level01, level02, level03 };
 const uint8_t NUM_LEVELS = sizeof(levels) / sizeof(LevelData);
 
 void printLevelData(const LevelData *level) {

@@ -40,17 +40,17 @@ struct LevelData {
 
 // INDIVIDUAL LEVELS
 const LevelData levels[] PROGMEM = {
-    // Temp-Debug
-    LEVEL_DATA(
-        BALL_DATA(64, 32, 3),
-        GOAL_DATA(110, 20, 4),
-        5,
-        LINE_DATA(10, 50, 118, 50),
-        LINE_DATA(40, 3, 5, 30),
-        LINE_DATA(60, 4, 125, 40),
-        LINE_DATA(2, 30, 64, 60),
-        LINE_DATA(127, 32, 75, 59)
-        ),
+    // Debug Level - Diagonal & Horizontal Lines
+    // LEVEL_DATA(
+    //    BALL_DATA(64, 32, 3),
+    //    GOAL_DATA(110, 20, 4),
+    //    5,
+    //    LINE_DATA(10, 50, 118, 50),
+    //    LINE_DATA(40, 3, 5, 30),
+    //    LINE_DATA(60, 4, 125, 40),
+    //    LINE_DATA(2, 30, 64, 60),
+    //    LINE_DATA(127, 32, 75, 59)
+    //    ),
     // 01
     LEVEL_DATA(
         BALL_DATA(30, 20, 3),
@@ -61,7 +61,7 @@ const LevelData levels[] PROGMEM = {
     // 02
     LEVEL_DATA(
         BALL_DATA(30, 20, 3),
-        GOAL_DATA(98, 25, 5),
+        GOAL_DATA(98, 25, 7),
         2,
         LINE_DATA(50, 50, 78, 50),
         LINE_DATA(64, 5, 64, 30)
@@ -69,7 +69,7 @@ const LevelData levels[] PROGMEM = {
     // 03
     LEVEL_DATA(
         BALL_DATA(89, 12, 3),
-        GOAL_DATA(89, 34, 5),
+        GOAL_DATA(89, 34, 7),
         3,
         LINE_DATA(69, 19, 128, 19),
         LINE_DATA(20, 50, 128, 50),
@@ -78,7 +78,7 @@ const LevelData levels[] PROGMEM = {
     // 04
     LEVEL_DATA(
         BALL_DATA(14, 42, 3),
-        GOAL_DATA(106, 39, 4),
+        GOAL_DATA(106, 39, 5),
         5,
         LINE_DATA(0, 51, 128, 51),
         LINE_DATA(0, 25, 25, 0),

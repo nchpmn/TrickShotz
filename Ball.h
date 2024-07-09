@@ -203,7 +203,12 @@ private:
     DEBUG_PRINT("t value: ");
     DEBUG_PRINTLN(t);
 
-    return Pos<float>(lineStart.x + t * segmentVector.dx, lineStart.y + t * segmentVector.dy);
+        DEBUG_PRINT("Closest point: (");
+        DEBUG_PRINT(floatLineStart.x + t * segmentVector.dx);
+        DEBUG_PRINT(", ");
+        DEBUG_PRINT(floatLineStart.y + t * segmentVector.dy);
+        DEBUG_PRINTLN(")");
+
 }
 
     

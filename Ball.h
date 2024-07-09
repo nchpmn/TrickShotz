@@ -169,18 +169,18 @@ private:
     // Utility: cloest point on a line segment to a single point
     Pos<float> calcClosestPoint(const Pos<uint8_t>& lineStart, const Pos<uint8_t>& lineEnd, const Pos<float>& point) {
         // Convert lineStart and lineEnd to Pos<float> for proper arithmetic operations
-        Pos<float> floatLineStart(lineStart.x, lineStart.y);
-        Pos<float> floatLineEnd(lineEnd.x, lineEnd.y);
+        Pos<int16_t> intLineStart(lineStart.x, lineStart.y);
+        Pos<int16_t> intLineEnd(lineEnd.x, lineEnd.y);
 
-        Vector segmentVector(floatLineEnd - floatLineStart);
-        Vector pointVector(point - floatLineStart);
+        Vector segmentVector(intLineEnd - intLineStart);
+        Vector pointVector(point - intLineStart);
         
         float dotProduct = calcDotProduct(segmentVector, pointVector);
         float segmentLengthSquared = segmentVector.dx * segmentVector.dx + segmentVector.dy * segmentVector.dy;
 
         // Guard against division by zero
         if (segmentLengthSquared == 0) {
-            return floatLineStart;
+            return Pos<float>(intLineStart.x, intLineStart.y);;
         }
 
         float t = dotProduct / segmentLengthSquared;
@@ -209,12 +209,12 @@ private:
         DEBUG_PRINTLN(t);
 
         DEBUG_PRINT("Closest point: (");
-        DEBUG_PRINT(floatLineStart.x + t * segmentVector.dx);
+        DEBUG_PRINT(intLineStart.x + t * segmentVector.dx);
         DEBUG_PRINT(", ");
-        DEBUG_PRINT(floatLineStart.y + t * segmentVector.dy);
+        DEBUG_PRINT(intLineStart.y + t * segmentVector.dy);
         DEBUG_PRINTLN(")");
 
-        return Pos<float>(floatLineStart.x + t * segmentVector.dx, lineStart.y + t * segmentVector.dy);
+        return Pos<float>(intLineStart.x + t * segmentVector.dx, lineStart.y + t * segmentVector.dy);
     }
 
     

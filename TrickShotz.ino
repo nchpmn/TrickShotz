@@ -302,6 +302,20 @@ void drawAim() {
 void updateLaunch() {
     // Move ball
     playerBall.update();
+
+    // Ball Offscren Check + Timer
+    static uint8_t offscreenTimer = 0;
+    #define OFFSCREEN_TIMELIMIT 120
+    if (playerBall.offscreenCheck()) {
+        offscreenTimer++;
+        if (offscreenTimer > OFFSCREEN_TIMELIMIT) {
+            levelState = LevelState::LevelLose;
+            return;  // Exit early since we've changed the state
+        }
+    } else {
+        offscreenTimer = 0;  // Reset the timer if the ball is onscreen
+    }
+
     // Collide Ball-Line
     for (const Line& line : levelLines) {
         if (playerBall.collideLineCheck(line.getStartPos(), line.getEndPos())) {

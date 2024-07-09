@@ -85,6 +85,15 @@ public:
         return (distance + radius <= goalRadius);
     }
 
+    bool offscreenCheck() {
+        if (position.x < 0 || position.x > WIDTH || 
+        position.y < 0 || position.y > HEIGHT) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     Pos<float> getPos() const { return position; };
     float getX() const { return position.x; }

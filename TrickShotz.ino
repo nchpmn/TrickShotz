@@ -308,6 +308,13 @@ void updateLaunch() {
     // Move ball
     playerBall.update();
 
+    // Debug: Print ball position
+    DEBUG_PRINT("\nBall position: x = ");
+    DEBUG_PRINT(playerBall.getX());
+    DEBUG_PRINT(", y = ");
+    DEBUG_PRINTLN(playerBall.getY());
+
+
     // Ball Offscren Check + Timer
     static uint8_t offscreenTimer = 0;
     #define OFFSCREEN_TIMELIMIT 120
@@ -323,9 +330,17 @@ void updateLaunch() {
 
     // Collide Ball-Line
     for (const Line& line : levelLines) {
+        // Debug: Print line being checked
+        DEBUG_PRINT("Checking line: x1=");
+        DEBUG_PRINT(line.getStartPos().x);
+
         if (playerBall.collideLineCheck(line.getStartPos(), line.getEndPos())) {
             // If colliding, bounce the ball
+            // Debug: Print collision information
+            DEBUG_PRINTLN(" Collision detected, ball bounced");
             playerBall.collideLineBounce(line.getStartPos(), line.getEndPos());
+        } else {
+            DEBUG_PRINTLN(" No Collsiion");
         }
     }
     // Collide Ball-Goal

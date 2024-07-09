@@ -51,6 +51,23 @@ public:
     bool collideLineCheck(const Pos<uint8_t>& startPoint, const Pos<uint8_t>& endPoint) {
         // Check for collision with a line
         float distance = calcDistanceToSegment(position, startPoint, endPoint);
+        
+        // Debugging: Print distances and positions
+        DEBUG_PRINT("\nBall position: (");
+        DEBUG_PRINT(position.x);
+        DEBUG_PRINT(", ");
+        DEBUG_PRINT(position.y);
+        DEBUG_PRINT("), Start point: (");
+        DEBUG_PRINT(startPoint.x);
+        DEBUG_PRINT(", ");
+        DEBUG_PRINT(startPoint.y);
+        DEBUG_PRINT("), End point: (");
+        DEBUG_PRINT(endPoint.x);
+        DEBUG_PRINT(", ");
+        DEBUG_PRINT(endPoint.y);
+        DEBUG_PRINT("), Distance: ");
+        DEBUG_PRINTLN(distance);
+
         return distance < radius;
     }
 
@@ -151,14 +168,44 @@ private:
 
     // Utility: cloest point on a line segment to a single point
     Pos<float> calcClosestPoint(const Pos<uint8_t>& lineStart, const Pos<uint8_t>& lineEnd, const Pos<float>& point) {
-        Vector segmentVector(lineEnd - lineStart);
-        Vector pointVector(point - lineStart);
-        float dotProduct = calcDotProduct(segmentVector, pointVector);
-        float segmentLengthSquared = segmentVector.dx * segmentVector.dx + segmentVector.dy * segmentVector.dy;
-        float t = dotProduct / segmentLengthSquared;
-        t = clamp(t, 0.0f, 1.0f);
-        return Pos<float>(lineStart.x + t * segmentVector.dx, lineStart.y + t * segmentVector.dy);
+    Vector segmentVector(lineEnd - lineStart);
+    Vector pointVector(point - lineStart);
+    float dotProduct = calcDotProduct(segmentVector, pointVector);
+    float segmentLengthSquared = segmentVector.dx * segmentVector.dx + segmentVector.dy * segmentVector.dy;
+    
+    // Guard against division by zero
+    if (segmentLengthSquared == 0) {
+        return Pos<float>(lineStart.x, lineStart.y);
     }
+
+    float t = dotProduct / segmentLengthSquared;
+    t = clamp(t, 0.0f, 1.0f);
+
+    // Debugging output
+    DEBUG_PRINT("\nSegment vector: (");
+    DEBUG_PRINT(segmentVector.dx);
+    DEBUG_PRINT(", ");
+    DEBUG_PRINT(segmentVector.dy);
+    DEBUG_PRINTLN(")");
+
+    DEBUG_PRINT("Point vector: (");
+    DEBUG_PRINT(pointVector.dx);
+    DEBUG_PRINT(", ");
+    DEBUG_PRINT(pointVector.dy);
+    DEBUG_PRINTLN(")");
+
+    DEBUG_PRINT("Dot product: ");
+    DEBUG_PRINTLN(dotProduct);
+
+    DEBUG_PRINT("Segment length squared: ");
+    DEBUG_PRINTLN(segmentLengthSquared);
+
+    DEBUG_PRINT("t value: ");
+    DEBUG_PRINTLN(t);
+
+    return Pos<float>(lineStart.x + t * segmentVector.dx, lineStart.y + t * segmentVector.dy);
+}
+
     
 };
 

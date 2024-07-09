@@ -21,7 +21,8 @@ struct LineData {
     uint8_t x2;
     uint8_t y2;
 };
-#define MAX_LINES 10
+
+#define MAX_LINES 5
 
 struct LevelData {
     BallData ball;
@@ -39,10 +40,10 @@ struct LevelData {
 
 // INDIVIDUAL LEVELS
 const LevelData levels[] PROGMEM = {
-    // 04-Temp-Debug
+    // Temp-Debug
     LEVEL_DATA(
         BALL_DATA(64, 32, 3),
-        GOAL_DATA(106, 39, 4),
+        GOAL_DATA(110, 20, 4),
         5,
         LINE_DATA(10, 50, 118, 50),
         LINE_DATA(40, 3, 5, 30),

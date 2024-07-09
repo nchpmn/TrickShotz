@@ -12,7 +12,7 @@
 bool firstLoad = true;
 
 // DEBUGGING TOGGLE
-#define DEBUG true
+#define DEBUG false
 #if DEBUG
 #define DEBUG_PRINT(x) Serial.print(x)
 #define DEBUG_PRINTLN(x) Serial.println(x)

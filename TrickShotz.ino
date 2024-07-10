@@ -161,7 +161,7 @@ void updateLevelLoad(const LevelData *level, Ball &ball, Goal &goal, Line *lines
 
     // Load line data
     for (uint8_t i = 0; i < MAX_LINES; ++i) {
-        lines[i] = Line(0,0,0,0);
+        lines[i].setPoints(0, 0, 0, 0);
     }
     for (uint8_t i = 0; i < numLines; ++i) {
         LineData lineData;

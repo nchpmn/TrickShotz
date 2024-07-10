@@ -22,7 +22,7 @@ struct LineData {
     uint8_t y2;
 };
 
-#define MAX_LINES 5
+#define MAX_LINES 6
 
 struct LevelData {
     BallData ball;
@@ -94,7 +94,18 @@ const LevelData levels[] PROGMEM = {
         LINE_DATA(50, 10, 78, 10),
         LINE_DATA(0, 24, 40, 64),
         LINE_DATA(128, 24, 88, 64)
-        )
+        ),
+    // 06
+    LEVEL_DATA(
+        BALL_DATA(20, 15, 3),
+        GOAL_DATA(100, 45, 5),
+        4,
+        LINE_DATA(5, 50, 123, 50),
+        LINE_DATA(64, 0, 64, 30),
+        LINE_DATA(93, 50, 90, 35),
+        LINE_DATA(107, 50, 110, 35)
+    ),
+
 };
 
 

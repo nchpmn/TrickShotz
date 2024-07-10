@@ -229,11 +229,21 @@ void drawLevelUI() {
             heldFrames++;
         }
     } else {
+        // Draw Level Number
+        uint8_t levelNumb = currentLevel + 1;
+        uint8_t levelDigits = (levelNumb >= 100) ? 2 : (levelNumb >= 10) ? 1 : 0;
+        uint8_t rectWidth = 5 + levelDigits * 4; // Each digit adds 4 to width
+        a.fillRect(0, 56, rectWidth, 8, WHITE);
+        font3x5.setTextColor(BLACK);
+        font3x5.setCursor(1,57);
+        font3x5.print(currentLevel+1);
+        font3x5.setTextColor(WHITE);
+
         // Draw Angle
         font3x5.setCursor(uiAngleX, 57);
         font3x5.print(F("ANGLE:"));
-        font3x5.print(playerBall.getLaunchAngle());
         uint16_t launchAngle = playerBall.getLaunchAngle();
+        font3x5.print(launchAngle);
         uint8_t rectX = uiAngleX + 7 * 4 + ((launchAngle >= 10) ? 4 : 0) + ((launchAngle >= 100) ? 4 : 0);
         a.drawRect(rectX, 58, 3, 3, WHITE);
 

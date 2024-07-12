@@ -182,7 +182,7 @@ void updateLevelLoad(const LevelData *level, Ball &ball, Goal &goal, Line *lines
     DEBUG_PRINTLN(ball.getRadius());
     if (firstLoad) {
         ball.setLaunchAngle(35);
-        ball.setLaunchPower(2);
+        ball.setLaunchPower(1);
     }
 
     // Load goal data

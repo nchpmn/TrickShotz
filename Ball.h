@@ -138,7 +138,7 @@ private:
     uint8_t radius;
     Vector velocity;
     uint8_t launchPowerIndex = 2; // Index of launchPowerLevels[] array
-    float launchPowerLevel[5] = { 0.5, 1, 1.5, 2, 2.5 }; // Actual values used in calculations
+    float launchPowerLevel[5] = { 1, 1.5, 2.25, 3, 4 }; // Actual values used in calculations
     uint16_t launchAngle = 40; // Launch angle 0 to 359
     bool launchChanged = true;
     uint8_t aimLineLength = 25;

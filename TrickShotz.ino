@@ -10,6 +10,7 @@
 
 
 // LIBRARIES
+// Arduboy2 library courtesy of @MLXXXp - BSD 3-Clause + various other Licences
 #include <Arduboy2.h>
 Arduboy2 a;
 // Micro font courtesy of @filmote - BSD 3-Clause License
